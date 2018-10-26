@@ -1,0 +1,62 @@
+{template 'common/header'}
+<div class="we7-page-title">模块更新</div>
+<ul class="we7-page-tab">
+	<li {if $_GPC['do'] == 'redirect' || $_GPC['do'] == ''}class="active"{/if}><a>模块列表</a></li>
+</ul>
+
+<div style="font-size: 13px;margin-bottom: 19px;color:#428bca;margin-top: -10px"><strong>帮助说明：</strong>
+	<br/> &nbsp;&nbsp;&nbsp;升级 &nbsp;是指将模块更新到最新版本.
+	<br/> &nbsp;&nbsp;&nbsp;安装 &nbsp;是指下载并安装模块.
+	<br/> &nbsp;&nbsp;&nbsp;下载 &nbsp;是指从云端强制比对下载（首次安装模块推荐使用，并需要到公众号应用-未安装应用中点击安装。）.
+</div>
+
+<table class="table we7-table table-hover">
+	<col width="20%"/>
+	<col width="20%"/>
+	<col width="20%"/>
+	<col width="20%"/>
+	<col width="0"/>
+	<col/>
+	<tr>
+		<th class="text-left">模块名称</th>
+		<th>模块标识</th>
+		<th>版本号</th>
+		<th class="text-left">操作</th>
+	</tr>
+	{if $result && $total}
+		{loop $result $row}
+	<tr>
+		<td class="text-left">{$row['title']}</td>
+		<td>{$row['name']}</td>
+        {if !module_ver($row['name']) }
+          <td>{$row['version']}</td>
+          {else}
+          {if $row['version'] > module_ver($row['name']) }
+          <td style="color:#428bca">升级 {php echo module_ver($row['name'])} -> {$row['version']} 版</td>
+          {else}
+          <td>{$row['version']}</td>
+          {/if}
+        {/if}
+		<td class="text-left">
+			<div class="link-group" style="text-align: left;margin-left:-10px;">
+              {if $row['found'] == 0 }
+				<a href="{url 'cloud/moduleup'}m={$row['name']}&d=prepare">安装</a>
+              {else}
+              	{if $row['version'] > module_ver($row['name']) }
+					<a href="{url 'cloud/moduleup'}m={$row['name']}&d=prepare" style="color: red;font-weight: 600;">升级</a>
+              	{else}
+              		<a href="{url 'cloud/redirect/version-del'}m={$row['id']}"></a>
+              	{/if}
+              {/if}
+              	<a href="{url 'cloud/moduleup'}m={$row['name']}&d=prepare">下载</a>
+			</div>
+		</td>
+	</tr>
+		{/loop}
+	{/if}
+</table>
+
+<div class="pull-right">
+	{$pager}
+</div>
+{template 'common/footer'}

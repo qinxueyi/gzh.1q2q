@@ -1,0 +1,148 @@
+{template 'common/header'}
+<style type="text/css">
+
+    .select {
+        width: 200px;
+        height: 35px;
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        -webkit-appearance: none;
+        margin-left: 20px;
+    }
+
+    .select:hover {
+        border: 1px solid #277de2;
+    }
+
+    .articleOne :hover {
+        border: 1px solid #277de2;
+    }
+
+    .articleOne {
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        width: 180px;
+        height: 33px;
+    }
+
+    .articleTwo {
+        border: 1px solid #dddddd;
+        border-radius: 4px;
+        width: 160px;
+        height: 33px;
+    }
+
+    #button {
+        width: 50px;
+        height: 33px;
+    }
+
+    #export {
+        margin-left: 10px;
+        width: 50px;
+        height: 33px;
+
+    }
+    .right-content{
+        width:80%;
+    }
+</style>
+
+<div id="parent">
+    选择公众号:
+    <select name="uniacid" id="selectWeChat" class="select">
+        <option select="select"></option>
+        <?php
+           $weChatList=weChatList();
+           foreach ($weChatList as $weChat){
+           echo '<option value='.$weChat['uniacid'].'>'.$weChat['name'].'</option>';
+        }
+        ?>
+    </select>
+    分组:
+    <select name="selectAge" id="selectNum2">
+        <option selected="selected"></option>
+        <option value="1">18-21</option>
+        <option value="2">22-25</option>
+    </select>
+    文章:
+    <input type="text" value="" placeholder="请输入文章标题关键字" id="article" class="articleOne"/>
+    <input type="text" id="article_time" class="articleTwo" readonly="readonly"/>
+    <script>
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#article_time' //指定元素
+                , type: 'date'
+                , range: true
+                , max: -1
+            });
+        });
+    </script>
+    <input type="button" id="button" value="搜索" onclick="search()">
+
+    <input type="button" id="export" value="导出" onclick="exports()">
+</div>
+<table id="demo" lay-filter="test"></table>
+<script>
+
+    layui.use('table', function () {
+        search();
+    });
+</script>
+<script>
+    function search() {
+        var table = layui.table;
+        $uniacid = $("#selectWeChat").val(); //公众号Id
+        $article = $("#article").val(); //文章
+        $time = $("#article_time").val(); //time
+        $url = "index.php?c=account&a=article-list&do=selectList";
+        if ($uniacid != "") {
+            $url += "&uniacid=" + $uniacid;
+        }
+        if ($article != "") {
+            $url += "&article=" + $article;
+        }
+        if ($time != "") {
+            $url += "&time=" + $time.substring(13);
+        }
+        table.render({
+            elem: '#demo'
+            , url: $url //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'name', title: '公众号名称',  fixed: 'left'}
+                , {field: 'title', title: '文章标题'}
+                , {field: 'position', title: '文章位置'}
+                , {field: 'statistics_date', title: '发文时间'}
+                , {field: 'fan_num', title: '送达人数'}
+                , {field: 'reader_num', title: '阅读数'}
+                , {field: 'reader_rate', title: '阅读率'}
+                , {field: 'original_reader_num', title: '原文阅读数'}
+                , {field: 'original_reader_rate', title: '原文阅读率'}
+            ]]
+        });
+    }
+    //导出
+    function exports() {
+        $uniacid = $("#selectWeChat").val(); //公众号Id
+        $article = $("#article").val(); //文章
+        $time = $("#article_time").val(); //time
+        $page = $(".layui-input").val();
+        $limit = $('.layui-laypage-limits select').val();
+        $url = "http://wq.com/index.php?c=account&a=article-list&do=selectList&export=yes&page=" + $page + "&limit=" + $limit;
+        if ($uniacid != "") {
+            $url += "&uniacid=" + $uniacid;
+        }
+        if ($article != "") {
+            $url += "&article=" + $article;
+        }
+        if ($time != "") {
+            $url += "&time=" + $time.substring(13);
+        }
+        window.location.href = $url;
+
+    }
+
+</script>

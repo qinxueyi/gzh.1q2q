@@ -1,0 +1,87 @@
+{template 'common/header'}
+<div class="form-horizontal" id="js-cloud-diagnose" ng-controller="CloudDiagnoseCtrl" ng-cloak>
+	<h5 class="page-header">云服务状态诊断</h5>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">站点URL</label>
+		<div class="col-sm-10">
+			<p class="form-control-static">{$_W['siteroot']}</p>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">站点IP</label>
+		<div class="col-sm-10">
+			<p class="form-control-static"><?php if('/'==DIRECTORY_SEPARATOR){echo $server_ip=$_SERVER['SERVER_ADDR'];}else{echo $server_ip=@gethostbyname($_SERVER['SERVER_NAME']);} ?></p>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">系统版本</label>
+		<div class="col-sm-10">
+			<p class="form-control-static">WeEngine{php echo IMS_VERSION}{php echo IMS_FAMILY} (Release {php echo IMS_RELEASE_DATE})</p>
+		</div>
+	</div>
+	<div class="form-group">
+	</div>
+
+	<h5 class="page-header">云服务网络诊断</h5>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">服务器时间检查</label>
+		<div class="col-sm-10">
+			<p class="form-control-static" id="check-time">检测中...</p>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">DNS解析函数</label>
+		<div class="col-sm-10">
+			<p class="form-control-static">{if function_exists('gethostbyname')}<i class="fa fa-check text-success"></i> 正常{else}<i class="fa fa-remove text-warning"></i> 异常{/if}</p>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">云平台域名解析</label>
+		<div class="col-sm-10 js-checkip">
+			{loop $checkips $index $ip}
+				<p class="form-control-static">云节点{php echo $index+1;}：<span id="serverdnsip">{$ip}</span>; 速率测试：<span class="form-control-static" id="checkresult">检测中...</span></p>
+			{/loop}
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="col-sm-2 control-label">云平台到站点测试</label>
+		<div class="col-sm-10">
+			<p class="form-control-static" id="check-touch">检测中...</p>
+		</div>
+	</div>
+</div>
+<form method="post">
+<div class="modal fade in form-horizontal" id="set-server-ip" tabindex="-1" role="dialog" aria-hidden="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">设置云服务ip地址</h4>
+			</div>
+			<div class="modal-body">
+				<div class="form-group">
+					<label class="control-label col-xs-3">云服务ip</label>
+					<div class="col-xs-9">
+						<input type="text" class="form-control" name="ip" value="{$_W['setting']['cloudip']['ip']}" />
+						<span class="help-block">如果您解析的云服务ip异常，可以在此手动设置</span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="submit" class="btn btn-primary" name="updateserverip" value="ok">确认</button>
+				<input type="hidden" name="token" value="{$_W['token']}" />
+			</div>
+		</div>
+	</div>
+</div>
+</form>
+<script>
+angular.module('cloudApp').value('config', {
+	version: "{php echo IMS_VERSION}",
+	siteurl: "{php echo $_W['siteroot']}",
+	date: {php echo $_W['timestamp']},
+});
+angular.bootstrap($('#js-cloud-diagnose'), ['cloudApp']);
+</script>
+{template 'common/footer'}

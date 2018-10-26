@@ -1,0 +1,90 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: admin
+ * Date: 2018/10/12
+ * Time: 12:57
+ */
+/**
+ * @param $appId
+ * @param $appSecRet
+ * 获取accessToken
+ */
+
+function getAccessToken($appId, $appSecRet)
+{
+    $token_access_url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=" . $appId . "&secret=" . $appSecRet;
+    $res = file_get_contents($token_access_url); //获取文件内容或获取网络请求的内容
+    $result = json_decode($res, true); //接受一个 JSON 格式的字符串并且把它转换为 PHP 变量
+    $access_token = $result['access_token'];
+    return $access_token;
+}
+
+/**
+ *用户分析数据接口
+ */
+function getUserInfo()
+{   //获取accessToken
+    $accessToken = getAccessToken($appId = "wxb87c867dc23a726a", $appSecRet = "e3be07134dc3d51c8ba73661196a76da");
+    $json = json_encode(array("access_token" => $accessToken, "begin_date" => "2018-10-11", "end_date" => "2018-10-11"));
+    $getAddReduceFanUrl = "https://api.weixin.qq.com/datacube/getusersummary?access_token=" . $accessToken;
+    //获取用户增减数据
+    $getAddReduceFan = http_post_json($getAddReduceFanUrl, $json);
+    $getAddReduceFan =
+        //获取累计用户数据
+    $getAddUpFanUrl = "https://api.weixin.qq.com/datacube/getusercumulate?access_token=" . $accessToken;
+    $getAddUpFan = http_post_json($getAddUpFanUrl, $json);
+
+
+    $fan = array();
+    $fan['sum_fan'] = $getAddUpFan['list'][0]['cumulate_user'];//总粉丝
+    $fan['add_fan'];//新增粉丝
+    $fan['cancel_fan'] = 0;//取关粉丝
+    $fan['auto_fan'] = 0;//净增粉丝
+    foreach ($getAddUpFanUrl["list"] as $item) {
+        echo $item['new_user'] . "<br />";
+        echo $item['cancel_fan'] . "<br />";
+    }
+    $fan['auto_fan'] = $fan['add_fan'] - $fan['cancel_fan'];  //计算净增粉丝
+    //保存数据库
+    // insertVipCnFan($fan);
+}
+
+function insertVipCnFan($model)
+{
+    $result = pdo_insert('vipcn_fan', $model);
+    if (!empty($result)) {
+        $uid = pdo_insertid();
+        echo('添加Fan主键' . $uid);
+    } else {
+        alert("失败");
+    }
+}
+
+
+/**
+ * PHP发送Json对象数据
+ *
+ * @param $url 请求url
+ * @param $jsonStr 发送的json字符串
+ * @return array
+ */
+function http_post_json($url, $jsonStr)
+{
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json; charset=utf-8',
+            'Content-Length: ' . strlen($jsonStr)
+        )
+    );
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+    return json_decode($response, true);
+}
+getUserInfo();
+
