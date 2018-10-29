@@ -1,0 +1,30 @@
+Array
+(
+    [id] => 2
+    [uniacid] => 4
+    [time] => 6000
+    [content] => { "articles": [   {  "title":"迟志强老歌《十不该》《小妹十不该》",   "description":"点击上方经典歌曲推荐订阅 ，只做精品，拒绝糟粕，力求精致，追求完美。精挑细选，每天都有好歌曲！★相关歌曲推荐",              "url":"http://mp.weixin.qq.com/s?__biz=MzU0NjY3MzIwNQ==&mid=100000264&idx=1&sn=f9f6419a573737c5b079247fb600048b&chksm=7b5b45524c2ccc4490e46233d2d6b8c550cc345aff5bb001a8bf79d9cd6e58f2e5f5f0cdb9cd#rd" }          ]     }
+    [msgtype] => news
+    [cumulative_time] => 
+    [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+)
+Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+    [id] => 7
+    [uniacid] => 4
+    [time] => 10000
+    [content] => {"media_id":"px6YSHuU9yMg5QvcCdfTjYMBjvmB2rSavzNuapXvF84"}
+    [msgtype] => image
+    [cumulative_time] => 
+    [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+)
+Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
