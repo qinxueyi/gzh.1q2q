@@ -58,7 +58,7 @@ function getArticleList($model)
             pdo_insert('article_list', $articleModel);
         }
     }
-    echo "success";
+    echo "success";  
 
 }
 
