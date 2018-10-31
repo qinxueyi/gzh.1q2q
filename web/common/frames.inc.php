@@ -52,14 +52,14 @@ $we7_system_menu['account'] = array(
                         ),
                     ),
                 ),
-                // 'platform_site' => array(
-                // 	'title' => '微官网-文章',
-                // 	'url' => url('site/multi/display'),
-                // 	'icon' => 'wi wi-home',
-                // 	'permission_name' => 'platform_site',
-                // 	'sub_permission' => array(
-                // 	),
-                // )
+                'platform_site' => array(
+                	'title' => '标签管理',
+                	'url' => url('platform/tag/display'),
+                	'icon' => 'wi wi-home',
+                	'permission_name' => 'platform_tag',
+                	'sub_permission' => array(
+                	),
+                )
             ),
         ),
         // 'platform_module' => array(

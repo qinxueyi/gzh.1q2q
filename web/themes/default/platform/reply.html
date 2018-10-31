@@ -10,6 +10,7 @@
 		<li {if $m == 'default'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'default')}">默认回复</a></li>
 		<li {if $m == 'service'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'service')}">常用服务</a></li>
 		<li {if $m == 'userapi'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'userapi')}">自定义接口回复</a></li>
+		<li {if $m == 'delay'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'delay')}">延迟推送</a></li>
 		<li><a href="{url 'profile/reply-setting'}">回复设置</a></li>
 	</ul>
 {else}
@@ -284,6 +285,95 @@
 			angular.bootstrap($('#default'), ['replyFormApp']);
 		});
 	</script>
+{elseif $m == 'delay'}
+<div class="panel-body col-sm-12">
+	<table class="table we7-table table-hover vertical-middle table-manage">
+		<tr>
+			<th>内容</th>
+			<th>类型</th>
+			<th>延迟时间</th>
+			<th>操作</th>
+		</tr>
+		{loop $data $index $item}
+		{if $item['msgtype'] == 'text'}
+		<tr>
+			<td>{$item['content']}</td>
+			<td>文本</td>
+			<td>{$item['time']}</td>
+			<td><a href="">删除</a></td>
+		</tr>
+		{elseif $item['msgtype'] == 'mpnews'}
+		<tr>
+			<td><img src="{$item['content']}" width="100"></td>
+			<td>图文</td>
+			<td>{$item['time']}</td>
+			<td><a href="">删除</a></td>
+		</tr>
+		{elseif $item['msgtype'] == 'image'}
+		<tr>
+			<td><img src="{$item['content']}" width="100"></td>
+			<td>图片</td>
+			<td>{$item['time']}</td>
+			<td><a href="">删除</a></td>
+		</tr>
+		{/if}
+		{/loop}
+	</table>
+</div>
+<hr>
+<h4>添加延迟推送</h4>
+<form id="reply-form" class="form-horizontal form" action="{php echo url('platform/reply/post', array('m' => $m))}" method="post" enctype="multipart/form-data" id="delay-form">
+	<div class="col-sm-12 form-inline" style="margin-bottom:10px;">
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">延迟推送时间 :</label>
+		    <input type="text" class="form-control" name="delay-hour" style="width: 70px">
+		</div>
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">时</label>
+		    <input type="text" class="form-control" name="delay-minute" style="width: 70px">
+		</div>
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">分</label>
+		    <input type="text" class="form-control" name="delay-second" style="width: 70px">
+		</div>
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
+		</div>
+	</div>
+
+	<div class="col-sm-12">
+		{if $m ==  'userapi'}
+		{php echo module_build_form('userapi', $rid)}
+		{elseif in_array($m, $sysmods)}
+		{php echo module_build_form('core', $rid, array('basic'=> false,'news'=> false,'image'=> false,'voice'=> false,'video'=> false))}
+		{else}
+		{php echo module_build_form($m, $rid)}
+		{/if}
+	</div>
+	<input type="hidden" name="token" value="{$_W['token']}">
+	<div>
+		<nav class="navbar navbar-wxapp-bottom navbar-fixed-bottom" role="navigation">
+			<div class="container">
+				<div class="pager">
+					<input type="submit" name="submit" value="发布" class="reply-form-submit btn btn-primary">
+					<!-- <span value="发布" class="btn btn-primary" ng-click="submitForm()">发布</span> -->
+				</div>
+			</div>
+		</nav>
+	</div>
+</form>
+<script>
+require(['underscore'], function() {
+	angular.module('replyFormApp').value('config', {
+		replydata: {php echo json_encode($reply)},
+		uniacid: {php echo json_encode($_W['uniacid'])},
+		links: {
+			postUrl: "{php echo url('platform/reply/post', array('m' => $_GPC['m']));}",
+		},
+	});
+	angular.bootstrap($('#reply-form'), ['replyFormApp']);
+});
+</script>
 {elseif $m == 'service'}
 	<div class="NoKeyword-list" id="js-service-display" ng-controller="serviceDisplay" ng-cloak>
 		<div class="table we7-tables">
