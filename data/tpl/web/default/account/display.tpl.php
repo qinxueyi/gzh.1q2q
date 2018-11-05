@@ -112,7 +112,6 @@
 		<th>微信号</th>
 		<th>二维码</th>
 		<th>粉丝数</th>
-		<th>粉丝男女比例</th>
 		<th class="text-right">操作</th>
 	</tr>
 	<!-- <tr class="color-gray" ng-repeat="list in account"> 原来的-->
@@ -138,7 +137,6 @@
 		<td><p class="color-dark" ng-bind="list.account"></td>
 		<td><img ng-src="{{list.qrcode}}" class="img-responsive icon"></td>
 		<td><p class="color-dark" ng-bind="list.fans_total"></td>
-		<td><p class="color-dark" ng-bind="list.sex-rate"></td>
 		<td>
 			<p ng-bind="list.end"></p>
 		</td>
