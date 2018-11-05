@@ -59,9 +59,11 @@ function getUserInfo($model)
     $fan['active_fan'] = 0; //活跃粉丝
     $fan['active_rate']; //活跃度
     $activeEvent = pdo_get('active_event', array('uniacid =' => $model["uniacid"], 'statistics_date =' => $date));
-    $fan['active_fan'] = $activeEvent['active_fan_sum'];
-    $activeRateRound = round($fan['active_fan'] / $fan['sum_fan'], 2) * 100;
-    $fan['active_rate'] = $activeRateRound . "%";
+    if (!empty($activeEvent)) {
+        $fan['active_fan'] = $activeEvent['active_fan_sum'];
+        $activeRateRound = round($fan['active_fan'] / $fan['sum_fan'], 2) * 100;
+        $fan['active_rate'] = $activeRateRound . "%";
+    }
     foreach ($getAddReduceFan["list"] as $item) {
         $fan['add_fan'] = $fan['add_fan'] + $item['new_user'];
         $fan['cancel_fan'] = $fan['cancel_fan'] + $item['cancel_user'];
