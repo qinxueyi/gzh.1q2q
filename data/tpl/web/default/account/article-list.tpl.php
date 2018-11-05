@@ -2,7 +2,7 @@
 <style type="text/css">
 
     .select {
-        width: 200px;
+        width: 100px;
         height: 35px;
         border: 1px solid #dddddd;
         border-radius: 4px;
@@ -45,6 +45,11 @@
     }
     .right-content{
         width:80%;
+    }
+    #layui-table-page1 select{
+        height: 18px!important;
+        background:none!important;
+        -webkit-appearance:menulist;
     }
 </style>
 

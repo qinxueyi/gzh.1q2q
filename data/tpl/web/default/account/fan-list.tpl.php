@@ -39,6 +39,11 @@
     .right-content{
         width:80%;
     }
+    #layui-table-page1 select{
+        height: 18px!important;
+        background:none!important;
+        -webkit-appearance:menulist;
+    }
 </style>
 <div id="parent">
     选择公众号:
