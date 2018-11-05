@@ -300,21 +300,28 @@
 			<td>{$item['content']}</td>
 			<td>文本</td>
 			<td>{$item['time']}</td>
-			<td><a href="">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
 		</tr>
 		{elseif $item['msgtype'] == 'mpnews'}
 		<tr>
 			<td><img src="{$item['content']}" width="100"></td>
 			<td>图文</td>
 			<td>{$item['time']}</td>
-			<td><a href="">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
+		</tr>
+		{elseif $item['msgtype'] == 'news'}
+		<tr>
+			<td><img src="{$item['content']}" width="100"></td>
+			<td>图文链接</td>
+			<td>{$item['time']}</td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
 		</tr>
 		{elseif $item['msgtype'] == 'image'}
 		<tr>
 			<td><img src="{$item['content']}" width="100"></td>
 			<td>图片</td>
 			<td>{$item['time']}</td>
-			<td><a href="">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
 		</tr>
 		{/if}
 		{/loop}

@@ -8,7 +8,7 @@ load()->model('reply');
 load()->model('module');
 load()->model('material');
 
-$dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status','getAccessToken');
+$dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status','getAccessToken','delete_event');
 $do = in_array($do, $dos) ? $do : 'display';
 
 $m = empty($_GPC['m']) ? 'keyword' : trim($_GPC['m']);
@@ -410,7 +410,6 @@ if ($do == 'post') {
 
 	if ($m == 'delay') {//延迟推送
 
-
 		$data['time'] = (intval($_GPC['delay-hour']) * 3600 + intval($_GPC['delay-minute']) *60 + intval($_GPC['delay-second']))*1000;
 		$data['uniacid'] = $_GPC['__uniacid'];
 		//判断数据类型
@@ -422,14 +421,24 @@ if ($do == 'post') {
 			$content= trim($contents[$get_content], '\"');
 			$data['content'] = json_encode(array('content'=>$content));
 
-		}elseif ($_GPC['reply']['reply_news']) {//mpnews类型
-			$data['msgtype'] = 'mpnews';
+		}elseif ($_GPC['reply']['reply_news']) {
 			$contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
 			$contents = json_decode('[' . $contents . ']', true);
 			$get_content = array_rand($contents, 1);
 			$content = $contents[$get_content];
-			$data['content'] = json_encode(array('media_id'=>$content['mediaid']));
-
+			if ($content['mediaid']) {
+				$data['msgtype'] = 'mpnews';//mpnews类型
+				$data['content'] = json_encode(array('media_id'=>$content['mediaid']));
+			}else{
+				$data['msgtype'] = 'news';//news类型
+				$wechat_news = pdo_get('wechat_news',array('attach_id'=>$content['attach_id'],'displayorder'=>$content['displayorder']));
+				$news['title'] = $wechat_news['title'];
+				$news['description'] = $wechat_news['description'];
+				$news['url'] = $wechat_news['content_source_url'];
+				$news['picurl'] = $wechat_news['thumb_url'];
+				$new['articles'][] = $news;
+				$data['content'] = json_encode($new);
+			}
 		}elseif ($_GPC['reply']['reply_image']) {//image类型
 			$data['msgtype'] = 'image';
 			$contents = explode(',', htmlspecialchars_decode($_GPC['reply']['reply_image']));
@@ -450,6 +459,10 @@ if ($do == 'post') {
 
 		}
 		$res = pdo_insert('event_list',$data);	
+		if ($res) {
+			itoast('发布成功!', referer(), 'success');
+		}
+
 	}
 
 }
@@ -557,6 +570,15 @@ if ($do == 'getAccessToken') {
 	$token = $account_api->getAccessToken();
 	return $token;
 }
+
+if ($do = 'delete_event') {
+	$id = $_GPC['id'];
+	$res = pdo_delete('event_list',array('id'=>$id));
+	if ($res) {
+		itoast('删除成功!', referer(), 'success');
+	}
+}
+
 
 
 

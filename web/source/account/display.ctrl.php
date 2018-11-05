@@ -9,6 +9,19 @@ load()->model('user');
 // load()->classs('weixin.account');
 // $weixin_account = new WeiXinAccount();
 
+// $data = array(
+// 	'touser' => 'oNfBl05DPiy2F9DZBYJck63c6uBI',
+// 	'msgtype' => 'text',
+// 	'text' => array(
+// 		'content' => 'www.baidu.com',
+// 	)
+// );
+// $acc = WeAccount::create($_W['acid']);
+// $status = $acc->sendCustomNotice($data);
+// echo "<pre>";
+// var_dump($status );
+// echo "</pre>";
+// die;
 $dos = array('rank', 'display', 'switch');
 $do = in_array($_GPC['do'], $dos)? $do : 'display' ;
 $_W['page']['title'] = '公众号列表 - 公众号';
@@ -73,11 +86,23 @@ if ($do == 'display') {
 	$account_table->searchWithPage($pindex, $psize);
 	$account_list = $account_table->searchAccountList();
 	$account_list = array_values($account_list);
-	//查询所有粉丝数据
+	
 	foreach($account_list as &$account) {
 		$account = uni_fetch($account['uniacid']);
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
 		$account['fans_total'] = pdo_getcolumn("mc_mapping_fans", array('uniacid' => $account['uniacid'], 'acid' => $account['acid'], 'follow' => 1), 'count(*)');
+		uni_update_week_stat();
+		$yesterday = date('Ymd', strtotime('-1 days'));
+		$yesterday_stat = pdo_get('stat_fans', array('date' => $yesterday, 'uniacid' => $account['uniacid']));
+		$yesterday_stat['new'] = intval($yesterday_stat['new']);
+		$yesterday_stat['cancel'] = intval($yesterday_stat['cancel']);
+		$yesterday_stat['jing_num'] = intval($yesterday_stat['new']) - intval($yesterday_stat['cancel']);
+		$yesterday_stat['cumulate'] = intval($yesterday_stat['cumulate']);
+			$today_stat = pdo_get('stat_fans', array('date' => date('Ymd'), 'uniacid' => $account['uniacid']));
+		$today_stat['new'] = intval($today_stat['new']);
+		$today_stat['cancel'] = intval($today_stat['cancel']);
+		$today_stat['jing_num'] = $today_stat['new'] - $today_stat['cancel'];
+		$account['cumulate'] = intval($today_stat['jing_num']) + $yesterday_stat['cumulate'];
 	}
 	if ($_W['ispost']) {
 		iajax(0, $account_list);
@@ -85,3 +110,11 @@ if ($do == 'display') {
 
 }
 template('account/display');
+
+
+
+
+
+
+
+
