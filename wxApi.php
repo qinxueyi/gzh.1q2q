@@ -98,7 +98,7 @@ function getPushMessage($receiveData)
 ////    fwrite($myfile, "openid:" . $openId);
 ////    fwrite($myfile, "appid:" . $appId);
 ////    fwrite($myfile, "secret:" . $secret);
-//    fwrite($myfile, "List:" . json_encode($eventList));
+//    fwrite($myfile, "List:" . json_encode($eventList);
 //    fclose($myfile);
 
 }
