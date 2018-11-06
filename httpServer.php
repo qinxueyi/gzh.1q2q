@@ -23,7 +23,7 @@ $http->on('request', function ($request, $response) {
                 $sendArr['touser'] = $value['openId'];
                 $sendArr['msgtype'] = $value['msgtype'];
                 //$message[$value['msgtype']] = $value['content'];
-                $sendArr[$value['msgtype']] = json_decode($value["content"], true);
+                $sendArr[$value['msgtype']] = $value["content"];
                 $json = json_encode($sendArr, JSON_UNESCAPED_UNICODE);
                 //print_r($json);
                 $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" . $accessToken;
