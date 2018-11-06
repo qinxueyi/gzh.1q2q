@@ -81,7 +81,6 @@ function getWeChatsInfo($componentVerifyToken, $pre_auth_code_resp)
     return $we_chatsInfo_resp;
 }
 
-
 function http_post_json($url, $jsonStr)
 {
     $ch = curl_init();
