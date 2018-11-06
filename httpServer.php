@@ -25,7 +25,7 @@ $http->on('request', function ($request, $response) {
                 //$message[$value['msgtype']] = $value['content'];
                 $sendArr[$value['msgtype']] = $value["content"];
                 $json = json_encode($sendArr, JSON_UNESCAPED_UNICODE);
-                //print_r($json);
+                print_r($json);
                 $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" . $accessToken;
                 $resp = http_post_json($url, $json);
                 //print_r($value);
