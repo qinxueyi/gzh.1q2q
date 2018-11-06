@@ -19,11 +19,11 @@ $http->on('request', function ($request, $response) {
             swoole_timer_after($value['time'], function () use ($value) {
                 $accessToken = file_get_contents("http://gzh.1q2q.com/getAccessToken.php?uniacid=" . $value['uniacid']);
                 //print_r($accessToken);
-                print_r($value);
+                //print_r($value);
                 $sendArr['touser'] = $value['openId'];
                 $sendArr['msgtype'] = $value['msgtype'];
                 //$message[$value['msgtype']] = $value['content'];
-                $sendArr[$value['msgtype']] = $value["content"];
+                $sendArr[$value['msgtype']] = json_decode($value["content"], true);
                 $json = json_encode($sendArr, JSON_UNESCAPED_UNICODE);
                 print_r($json);
                 $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" . $accessToken;
