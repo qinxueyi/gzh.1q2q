@@ -1,4 +1,9 @@
 {template 'common/header'}
+<style>
+	.emoji-triggers{
+		display:none;
+	}
+</style>
 {if in_array($m, $sysmods)}
 	<div class="we7-page-title">
 		自动回复
@@ -311,7 +316,7 @@
 		</tr>
 		{elseif $item['msgtype'] == 'news'}
 		<tr>
-			<td><img src="{$item['content']}" width="100"></td>
+			<td><img src="{$item['content'][0]['picurl']}" width="100"></td>
 			<td>图文链接</td>
 			<td>{$item['time']}</td>
 			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>

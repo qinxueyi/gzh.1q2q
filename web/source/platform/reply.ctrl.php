@@ -170,6 +170,9 @@ if ($do == 'display') {
 				$content = json_decode($v['content'],true);
 				$material = material_get($content['media_id']);
 				$data[$k]['content'] = tomedia($material['attachment']);
+			}elseif($v['msgtype'] == 'news'){//图片类型
+				$content = json_decode($v['content'],true);
+				$data[$k]['content'] = $content['articles'];
 			}elseif($v['msgtype'] == 'mpnews'){//图文消息
 				$content = json_decode($v['content'],true);
 				$material = material_get($content['media_id']);
@@ -419,8 +422,7 @@ if ($do == 'post') {
 			$contents = explode(',', $contents);
 			$get_content = array_rand($contents, 1);
 			$content= trim($contents[$get_content], '\"');
-			$data['content'] = json_encode(array('content'=>$content));
-
+			$data['content'] = urldecode(json_encode(array('content'=>urlencode($content))));
 		}elseif ($_GPC['reply']['reply_news']) {
 			$contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
 			$contents = json_decode('[' . $contents . ']', true);
