@@ -13,7 +13,7 @@ $http->on('request', function ($request, $response) {
     $sear = $request->post;
     $arr = $sear['data'];
     $data = unserialize($arr);
-//    print_r($data);
+    print_r($data);
     if (!empty($data)) {
         foreach ($data as $value) {
             swoole_timer_after($value['time'], function () use ($value) {
