@@ -73,11 +73,8 @@ if ($receiveData['Event'] == "subscribe") {
     insertConcern($receiveData);
     //异步延迟推送
     $pushMessageList = getPushMessage($receiveData);
-
     $param['data'] = serialize($pushMessageList);
     sendUserMessage("http://gzh.1q2q.com:9501", $param);
-
-
 }
 
 /**
