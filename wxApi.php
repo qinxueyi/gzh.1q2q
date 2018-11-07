@@ -100,6 +100,10 @@ function savePushMessageByExceedDay($pushMessage)
 /**
  *发送超过24H客户消息 2H检查一次
  */
+$do = $_GET['doing'];
+if ($do == "send") {
+    pushMessageByExceedDay();
+}
 function pushMessageByExceedDay()
 {
     $redis = new Redis();
@@ -113,9 +117,10 @@ function pushMessageByExceedDay()
             //转为数组
             $setSendMessage = json_decode($value, true);
             //消耗的时间
-            $consumeTime = time() - $setSendMessage['begin_time'] * 1000;
+            $consumeTime = (time() - $setSendMessage['begin_time']) * 1000;
             //如果小于24小时可以放入异步定时器中
             if ($setSendMessage['time'] - $consumeTime < 86400000) {
+                $setSendMessage['time'] = $setSendMessage['time'] - $consumeTime;
                 $sendMessage[] = $setSendMessage;
                 //移除set存放的数据
                 $redis->srem('pushMessage', $value);
