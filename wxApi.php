@@ -71,26 +71,86 @@ function insertOrUpdateActiveFanList($accountWeChats)
 if ($receiveData['Event'] == "subscribe") {
     //插入记录表
     insertConcern($receiveData);
-    //异步延迟推送
-    $pushMessageList = getPushMessage($receiveData);
+    //将大于24H客服消息放入Redis
+    $pushMessageListByExceedDay = getPushMessage($receiveData, false);
+    if (!empty($pushMessageListByExceedDay)) {
+        savePushMessageByExceedDay($pushMessageListByExceedDay);
+    }
+    //异步延迟推送<24H
+    $pushMessageList = getPushMessage($receiveData, true);
     $param['data'] = serialize($pushMessageList);
     sendUserMessage("http://gzh.1q2q.com:9501", $param);
 }
+
+
+/**
+ * 将超过24H客服消息保存在Redis
+ */
+function savePushMessageByExceedDay($pushMessage)
+{
+    $redis = new Redis();
+    $redis->connect("121.40.84.207", 6379);
+    $redis->auth('weiying123');
+    foreach ($pushMessage as $value) {
+        $redis->sAdd('pushMessage', json_encode($value));
+    }
+
+}
+
+/**
+ *发送超过24H客户消息 2H检查一次
+ */
+function pushMessageByExceedDay()
+{
+    $redis = new Redis();
+    $redis->connect("121.40.84.207", 6379);
+    $redis->auth('weiying123');
+    //取出set需要发送的数据
+    $pushMessageList = $redis->sMembers('pushMessage');
+    if (!empty($pushMessageList)) {
+        $sendMessage = array();
+        foreach ($pushMessageList as $value) {
+            //转为数组
+            $setSendMessage = json_decode($value, true);
+            //消耗的时间
+            $consumeTime = time() - $setSendMessage['begin_time'] * 1000;
+            //如果小于24小时可以放入异步定时器中
+            if ($setSendMessage['time'] - $consumeTime < 86400000) {
+                $sendMessage[] = $setSendMessage;
+                //移除set存放的数据
+                $redis->srem('pushMessage', $value);
+            }
+
+        }
+        //发送数据
+        if (!empty($sendMessage)) {
+            $param['data'] = serialize($sendMessage);
+            sendUserMessage("http://gzh.1q2q.com:9501", $param);
+        }
+    }
+}
+
 
 /**
  * @param $receiveData
  * 获取推送数据
  */
-function getPushMessage($receiveData)
+function getPushMessage($receiveData, $limit = true)
 {
     //获取openid
     $openId = $receiveData['FromUserName'];
-    $eventList = pdo_getall("event_list", array("uniacid" => $receiveData['uniacid']));
+    //小于24H
+    if ($limit) {
+        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time <" => 86400000));
+    }//大于24H
+    else {
+        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time >=" => 86400000));
+    }
     foreach ($eventList as $k => $value) {
         $value['openId'] = $openId;
+        $value['begin_time'] = time();
         $eventList[$k] = $value;
     }
-
     return $eventList;
 //    $myfile = fopen("a.txt", "w") or die("Unable to open file!");
 ////    fwrite($myfile, "openid:" . $openId);
