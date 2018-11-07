@@ -429,7 +429,7 @@ if ($do == 'post') {
 			$get_content = array_rand($contents, 1);
 			$content = $contents[$get_content];
 			if ($content['mediaid']) {
-				$data['msgtype'] = 'mpnews';//mpnews类型
+				$data['msgtype'] = 'mpnews';//mpnews类型 
 				$data['content'] = json_encode(array('media_id'=>$content['mediaid']));
 			}else{
 				$data['msgtype'] = 'news';//news类型
