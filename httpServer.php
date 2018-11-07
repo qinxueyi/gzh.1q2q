@@ -29,7 +29,7 @@ $http->on('request', function ($request, $response) {
                 $url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=" . $accessToken;
                 $resp = http_post_json($url, $json);
                 //print_r($value);
-                //print_r($resp);
+                print_r($resp);
             });
         }
     }
