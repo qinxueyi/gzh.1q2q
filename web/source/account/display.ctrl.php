@@ -8,7 +8,6 @@ defined('IN_IA') or exit('Access Denied');
 load()->model('user');
 // load()->classs('weixin.account');
 // $weixin_account = new WeiXinAccount();
-
 // $data = array(
 // 	'touser' => 'oNfBl05DPiy2F9DZBYJck63c6uBI',
 // 	'msgtype' => 'text',
