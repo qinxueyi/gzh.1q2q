@@ -1,0 +1,119 @@
+Array
+(
+    [0] => Array
+        (
+            [id] => 61
+            [uniacid] => 4
+            [time] => 10000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541644366
+        )
+
+    [1] => Array
+        (
+            [id] => 62
+            [uniacid] => 4
+            [time] => 20000
+            [content] => {"articles":[{"title":"\u56fe\u6587\u94fe\u63a5","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}
+            [msgtype] => news
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541644366
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":"<a href=\"https:\/\/www.baidu.com\/\">这是文字链接<\/a>"}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 64
+            [uniacid] => 4
+            [time] => 86385200
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541644366
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"news","news":{"articles":[{"title":"图文链接","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 63
+            [uniacid] => 4
+            [time] => 86356000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541644177
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 63
+            [uniacid] => 4
+            [time] => 86365000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541644366
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 61
+            [uniacid] => 4
+            [time] => 10000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541646473
+        )
+
+    [1] => Array
+        (
+            [id] => 62
+            [uniacid] => 4
+            [time] => 20000
+            [content] => {"articles":[{"title":"\u56fe\u6587\u94fe\u63a5","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}
+            [msgtype] => news
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541646473
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":"<a href=\"https:\/\/www.baidu.com\/\">这是文字链接<\/a>"}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"news","news":{"articles":[{"title":"图文链接","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
