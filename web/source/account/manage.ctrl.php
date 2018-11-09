@@ -65,7 +65,6 @@ if ($do == 'display') {
 		$account['end'] = $account['endtime'] == 0 ? '永久' : date('Y-m-d', $account['starttime']) . '~'. date('Y-m-d', $account['endtime']);
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
 	}
-
 	$total = $account_table->getLastQueryTotal();
 	$pager = pagination($total, $pindex, $psize);
 	template('account/manage-display' . ACCOUNT_TYPE_TEMPLATE);
