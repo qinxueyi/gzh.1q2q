@@ -10,6 +10,7 @@ load()->model('visit');
 load()->app('common');
 load()->classs('wesession');
 $hash = $_GPC['hash'];
+require_once './wxApi.php';
 if (!empty($hash)) {
     $id = pdo_fetchcolumn("SELECT acid FROM " . tablename('account') . " WHERE hash = :hash", array(':hash' => $hash));
 }
@@ -49,7 +50,7 @@ $_W['account']['avatar'] = $_W['attachurl'] . 'headimg_' . $_W['acid'] . '.jpg?t
 $_W['attachurl'] = attachment_set_attach_url();
 
 visit_update_today('web', 'we7_api');
-//require_once './wxApi.php';
+
 $engine = new WeEngine();
 if (!empty($_W['setting']['copyright']['status'])) {
     $engine->died('抱歉，站点已关闭，关闭原因：' . $_W['setting']['copyright']['reason']);
@@ -64,6 +65,7 @@ if ($_W['isajax'] && $_W['ispost'] && $_GPC['flag'] == 1) {
 if ($_W['isajax'] && $_W['ispost'] && $_GPC['flag'] == 2) {
     $engine->decrypt();
 }
+
 load()->func('compat.biz');
 $_W['isajax'] = false;
 $engine->start();
@@ -85,6 +87,7 @@ class WeEngine
 
     public function __construct()
     {
+        //require_once './wxApi.php';
         global $_W;
         $this->account = WeAccount::create($_W['account']);
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
@@ -145,6 +148,7 @@ class WeEngine
 
     public function start()
     {
+
         global $_W;
         if (empty($this->account)) {
             exit('Miss Account.');
@@ -283,6 +287,7 @@ class WeEngine
 
     private function isValidResponse($response)
     {
+
         if ($response === 'success') {
             return true;
         }
@@ -433,7 +438,7 @@ class WeEngine
                 }
             }
         }
-        require_once './wxApi.php';
+       // require_once './wxApi.php';
     }
 
 

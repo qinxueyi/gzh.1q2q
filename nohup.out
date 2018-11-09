@@ -117,3 +117,270 @@ Array
     [errcode] => 0
     [errmsg] => ok
 )
+Array
+(
+    [0] => Array
+        (
+            [id] => 64
+            [uniacid] => 4
+            [time] => 54472200
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541646473
+        )
+
+    [1] => Array
+        (
+            [id] => 63
+            [uniacid] => 4
+            [time] => 55472000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541646473
+        )
+
+)
+[2018-11-08 21:51:54 #19030.2]	NOTICE	Server is shutdown now.
+[2018-11-08 21:52:42 *4529.1]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-11-08 21:52:42 $4525.0]	WARNING	swSignal_callback: signal[1] callback is null.
+[2018-11-08 21:52:42 #4524.2]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-11-08 21:52:42 *4528.0]	WARNING	swSignalfd_onSignal: signal[1] callback is null.
+[2018-11-08 21:56:21 #4524.2]	NOTICE	Server is shutdown now.
+[2018-11-08 21:58:16 #4836.2]	NOTICE	Server is shutdown now.
+Array
+(
+    [0] => Array
+        (
+            [id] => 61
+            [uniacid] => 4
+            [time] => 10000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541686737
+        )
+
+    [1] => Array
+        (
+            [id] => 62
+            [uniacid] => 4
+            [time] => 20000
+            [content] => {"articles":[{"title":"\u56fe\u6587\u94fe\u63a5","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}
+            [msgtype] => news
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541686737
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":"<a href=\"https:\/\/www.baidu.com\/\">这是文字链接<\/a>"}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"news","news":{"articles":[{"title":"图文链接","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 61
+            [uniacid] => 4
+            [time] => 3000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688201
+        )
+
+    [1] => Array
+        (
+            [id] => 62
+            [uniacid] => 4
+            [time] => 20000
+            [content] => {"articles":[{"title":"\u56fe\u6587\u94fe\u63a5","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}
+            [msgtype] => news
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688201
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":"<a href=\"https:\/\/www.baidu.com\/\">这是文字链接<\/a>"}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"news","news":{"articles":[{"title":"图文链接","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 61
+            [uniacid] => 4
+            [time] => 3000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688319
+        )
+
+    [1] => Array
+        (
+            [id] => 62
+            [uniacid] => 4
+            [time] => 20000
+            [content] => {"articles":[{"title":"\u56fe\u6587\u94fe\u63a5","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}
+            [msgtype] => news
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688319
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":"<a href=\"https:\/\/www.baidu.com\/\">这是文字链接<\/a>"}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"news","news":{"articles":[{"title":"图文链接","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 63
+            [uniacid] => 4
+            [time] => 81336000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541686737
+        )
+
+    [1] => Array
+        (
+            [id] => 63
+            [uniacid] => 4
+            [time] => 82800000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688201
+        )
+
+    [2] => Array
+        (
+            [id] => 63
+            [uniacid] => 4
+            [time] => 82918000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688319
+        )
+
+    [3] => Array
+        (
+            [id] => 64
+            [uniacid] => 4
+            [time] => 81918200
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688319
+        )
+
+    [4] => Array
+        (
+            [id] => 64
+            [uniacid] => 4
+            [time] => 80336200
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541686737
+        )
+
+    [5] => Array
+        (
+            [id] => 64
+            [uniacid] => 4
+            [time] => 81800200
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541688201
+        )
+
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 61
+            [uniacid] => 4
+            [time] => 3000
+            [content] => {"content":"<a href=\"https://www.baidu.com/\">这是文字链接</a>"}
+            [msgtype] => text
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541716464
+        )
+
+    [1] => Array
+        (
+            [id] => 62
+            [uniacid] => 4
+            [time] => 20000
+            [content] => {"articles":[{"title":"\u56fe\u6587\u94fe\u63a5","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}
+            [msgtype] => news
+            [cumulative_time] => 
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1541716464
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":"<a href=\"https:\/\/www.baidu.com\/\">这是文字链接<\/a>"}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"news","news":{"articles":[{"title":"图文链接","description":null,"url":"https:\/\/www.baidu.com\/","picurl":"http:\/\/www.zxc.com\/web\/index.php?c=utility&a=wxcode&do=image&attach=http%3A%2F%2Fmmbiz.qpic.cn%2Fmmbiz_jpg%2Fj59NmI7fuJAUYFH9kyIicX0wbe5ibod9ia209wXFelgNjT1tquQaBNICrtds8ECPd8d31a7ibHIMGbBZ9ibVxicNib9Rw%2F0%3Fwx_fmt%3Djpeg"}]}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)
+Array
+(
+)
+[2018-11-09 06:49:02 *5714.1]	NOTICE	swFactoryProcess_finish (ERROR 1004): send 166 byte failed, because connection[fd=7] is closed.
+Array
+(
+)

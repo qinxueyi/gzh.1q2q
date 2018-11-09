@@ -93,6 +93,7 @@ function savePushMessageByExceedDay($pushMessage)
     foreach ($pushMessage as $value) {
         $redis->sAdd('pushMessage', json_encode($value));
     }
+    return ;
 }
 
 /**
