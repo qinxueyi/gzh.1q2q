@@ -104,15 +104,15 @@ function getPushMessage($receiveData, $limit = true)
 {
     //获取openid
     $openId = $receiveData['FromUserName'];
-    //$conditionModel = array("uniacid =" => $receiveData['uniacid'], "time <" => 86400000, "status =" => 1);
+    $conditionModel = array("uniacid =" => $receiveData['uniacid'], "status =" => 1);
     //小于24H
     if ($limit) {
-        //$conditionModel['time <'] = 86400000;
-        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time <" => 86400000));
+        $conditionModel['time <'] = 86400000;
+        $eventList = pdo_getall("event_list", $conditionModel);
     }//大于24H
     else {
-       // $conditionModel['time >='] = 86400000;
-        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time >=" => 86400000));
+        $conditionModel['time >='] = 86400000;
+        $eventList = pdo_getall("event_list", $conditionModel);
     }
     foreach ($eventList as $k => $value) {
         $value['openId'] = $openId;
