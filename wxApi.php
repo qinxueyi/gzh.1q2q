@@ -108,11 +108,11 @@ function getPushMessage($receiveData, $limit = true)
     //小于24H
     if ($limit) {
         //$conditionModel['time <'] = 86400000;
-        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time <" => 86400000, "status =" => 1));
+        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time <" => 86400000));
     }//大于24H
     else {
        // $conditionModel['time >='] = 86400000;
-        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time >=" => 86400000, "status =" => 1));
+        $eventList = pdo_getall("event_list", array("uniacid =" => $receiveData['uniacid'], "time >=" => 86400000));
     }
     foreach ($eventList as $k => $value) {
         $value['openId'] = $openId;
