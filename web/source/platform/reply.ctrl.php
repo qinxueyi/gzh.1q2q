@@ -8,7 +8,7 @@ load()->model('reply');
 load()->model('module');
 load()->model('material');
 
-$dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status','getAccessToken','delete_event');
+$dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status','getAccessToken','delete_event','status');
 $do = in_array($do, $dos) ? $do : 'display';
 
 $m = empty($_GPC['m']) ? 'keyword' : trim($_GPC['m']);
@@ -123,9 +123,8 @@ if ($do == 'display') {
 		$service_list = reply_getall_common_service();
 	}
 	if ($m == 'userapi') {
-		$pindex = max(1, intval($_GPC['page']));
+		$pindex = max(1, intval($_GPC['page']));//^\[U\++[A-Za-z0-9]+\]$
 		$psize = 8;
-
 		$condition = "uniacid = :uniacid AND `module`=:module";
 		$params = array();
 		$params[':uniacid'] = $_W['uniacid'];
@@ -227,11 +226,9 @@ if ($do == 'post') {
 			if (empty($keywords)) {
 				itoast('必须填写有效的触发关键字.');
 			}
-
 			$rulename = trim($_GPC['rulename']);
 			$containtype = '';
 			$_GPC['reply'] = (array)$_GPC['reply'];
-
 			foreach ($_GPC['reply'] as $replykey => $replyval) {
 				if (!empty($replyval)) {
 					$type = substr($replykey, 6);
@@ -422,7 +419,13 @@ if ($do == 'post') {
 			$contents = explode(',', $contents);
 			$get_content = array_rand($contents, 1);
 			$content= trim($contents[$get_content], '\"');
-			$data['content'] = urldecode(json_encode(array('content'=>urlencode($content))));
+			$preg = preg_match_all("/\[U\+[A-Za-z0-9]+\]/",$content,$arr);
+			foreach ($arr[0] as $k => $v) {
+				$str = emoji($v);
+				$res = preg_replace("/\[U\+[A-Za-z0-9]+\]/",$str,$content,1);
+				$content = $res;
+			}
+			$data['content'] = urldecode(json_encode(array('content'=>urlencode($res))));
 		}elseif ($_GPC['reply']['reply_news']) {
 			$contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
 			$contents = json_decode('[' . $contents . ']', true);
@@ -573,7 +576,7 @@ if ($do == 'getAccessToken') {
 	return $token;
 }
 
-if ($do = 'delete_event') {
+if ($do == 'delete_event') {
 	$id = $_GPC['id'];
 	$res = pdo_delete('event_list',array('id'=>$id));
 	if ($res) {
@@ -582,6 +585,23 @@ if ($do = 'delete_event') {
 }
 
 
+
+
+
+if ($do == 'status') {
+	$id = $_GPC['id'];
+	$event = pdo_get('event_list',array('id'=>$id));
+	if ($event['status'] == 1) {//当前是启用状态 需要禁用
+		$data['status'] = 0;
+		$res = pdo_update('event_list',$data,array('id'=>$id));
+	}else{//当前是禁用状态 需要启用
+		$data['status'] = 1;
+		$res = pdo_update('event_list',$data,array('id'=>$id));
+	}
+	if ($res) {
+		itoast('修改状态成功!', referer(), 'success');
+	}
+}
 
 
 //转换时间函数
@@ -600,5 +620,51 @@ function changeTime($time)
 	    }
 	}
 
+	return $str;
+}
+
+
+//字节转Emoji表情
+    function bytes_to_emoji($cp)
+    {
+        if ($cp > 0x10000){       # 4 bytes
+            return chr(0xF0 | (($cp & 0x1C0000) >> 18)).chr(0x80 | (($cp & 0x3F000) >> 12)).chr(0x80 | (($cp & 0xFC0) >> 6)).chr(0x80 | ($cp & 0x3F));
+        }else if ($cp > 0x800){   # 3 bytes
+            return chr(0xE0 | (($cp & 0xF000) >> 12)).chr(0x80 | (($cp & 0xFC0) >> 6)).chr(0x80 | ($cp & 0x3F));
+        }else if ($cp > 0x80){    # 2 bytes
+            return chr(0xC0 | (($cp & 0x7C0) >> 6)).chr(0x80 | ($cp & 0x3F));
+        }else{                    # 1 byte
+            return chr($cp);
+        }
+    }
+
+
+//字符串转字节
+function getBytes($string) { 
+    $bytes = array(); 
+    for($i = 0; $i < strlen($string); $i++){ 
+         $bytes[] = ord($string[$i]); 
+    } 
+    return $bytes; 
+} 
+
+function UnicodeEncode($str){
+    //split word
+    preg_match_all('/./u',$str,$matches);
+ 
+    $unicodeStr = "";
+    foreach($matches[0] as $m){
+        //拼接
+        $unicodeStr .= "&#".base_convert(bin2hex(iconv('UTF-8',"UCS-4",$m)),16,10);
+    }
+    return $unicodeStr;
+}
+
+function emoji($data)
+{
+	$res = ltrim($data,'[');
+	$res = rtrim($res,']');
+	$a = str_replace('U+','0x',$res);//$a的值为0x1F628
+	$str = bytes_to_emoji(intval($a,16));
 	return $str;
 }
