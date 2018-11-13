@@ -8,7 +8,7 @@ $config['db']['master']['username'] = 'root';
 $config['db']['master']['password'] = '7777STAR';
 $config['db']['master']['port'] = '3306';
 $config['db']['master']['database'] = 'we8';
-$config['db']['master']['charset'] = 'utf8';
+$config['db']['master']['charset'] = 'utf8mb4';
 $config['db']['master']['pconnect'] = 0;
 $config['db']['master']['tablepre'] = 'ims_';
 
@@ -18,7 +18,7 @@ $config['db']['slave']['1']['username'] = '';
 $config['db']['slave']['1']['password'] = '';
 $config['db']['slave']['1']['port'] = '3307';
 $config['db']['slave']['1']['database'] = '';
-$config['db']['slave']['1']['charset'] = 'utf8';
+$config['db']['slave']['1']['charset'] = 'utf8mb4';
 $config['db']['slave']['1']['pconnect'] = 0;
 $config['db']['slave']['1']['tablepre'] = 'ims_';
 $config['db']['slave']['1']['weight'] = 0;

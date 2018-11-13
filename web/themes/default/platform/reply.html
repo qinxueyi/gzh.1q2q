@@ -291,6 +291,9 @@
 		});
 	</script>
 {elseif $m == 'delay'}
+<div class="alert we7-page-alert">
+	<i class="wi wi-info-sign"></i>文字格式a链接格式为&lt; a href=&quot; 此处填写链接地址(加上)&quot;&gt;此处填写内容&lt;/ a&gt;
+</div>
 <div class="panel-body col-sm-12">
 	<table class="table we7-table table-hover vertical-middle table-manage">
 		<tr>
@@ -305,35 +308,61 @@
 			<td>{$item['content']}</td>
 			<td>文本</td>
 			<td>{$item['time']}</td>
-			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;                                                                                                                                                                                                               " class="btn btn-danger">删除</a>
+			{if $item['status'] == 1}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
+			{else}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
+			{/if}
+			</td>
 		</tr>
 		{elseif $item['msgtype'] == 'mpnews'}
 		<tr>
 			<td><img src="{$item['content']}" width="100"></td>
 			<td>图文</td>
 			<td>{$item['time']}</td>
-			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
+			{if $item['status'] == 1}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
+			{else}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
+			{/if}
+			</td>
 		</tr>
 		{elseif $item['msgtype'] == 'news'}
 		<tr>
 			<td><img src="{$item['content'][0]['picurl']}" width="100"></td>
 			<td>图文链接</td>
 			<td>{$item['time']}</td>
-			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
+			{if $item['status'] == 1}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
+			{else}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
+			{/if}
+			</td>
 		</tr>
 		{elseif $item['msgtype'] == 'image'}
 		<tr>
 			<td><img src="{$item['content']}" width="100"></td>
 			<td>图片</td>
 			<td>{$item['time']}</td>
-			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;">删除</a></td>
+			<td><a href="{php echo url('platform/reply/delete_event',array('id'=>$item['id']))}" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
+			{if $item['status'] == 1}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
+			{else}
+			<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
+			{/if}
+			</td>
 		</tr>
 		{/if}
 		{/loop}
 	</table>
 </div>
 <hr>
-<h4>添加延迟推送</h4>
+<span><b>添加延迟推送</b></span>
+<br>
+<br>
 <form id="reply-form" class="form-horizontal form" action="{php echo url('platform/reply/post', array('m' => $m))}" method="post" enctype="multipart/form-data" id="delay-form">
 	<div class="col-sm-12 form-inline" style="margin-bottom:10px;">
 		<div class="form-group">
