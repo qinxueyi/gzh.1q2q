@@ -33,13 +33,19 @@ if ($do == "getUserInfo") {
         $content['value'] = "欢迎来到上海贝富";
         $content['color'] = "#00FFFF";
         $reply_content['data']['content'] = $content;
-       $response= http_post_json($reply_url, json_encode($reply_content));
-       print_r($response);
+        $response = http_post_json($reply_url, json_encode($reply_content));
+        print_r($response);
     } else {
         echo "打扰了";
     }
 }
 
+
+function getTemplateId()
+{
+
+
+}
 
 function http_post_json($url, $jsonStr)
 {
