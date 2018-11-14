@@ -88,7 +88,7 @@
 				</form> -->
 				<form action="" class="form-inline  pull-left" method="get">
 					<input type="hidden" name="c" value="account">
-					<input type="hidden" name="a" value="manage">
+					<input type="hidden" name="a" value="display">
 					<div class="input-group form-group" style="width: 400px;">
 						<input type="text" name="keyword" value="<?php  echo $_GPC['keyword'];?>" class="form-control" placeholder="搜索关键字"/>
 						<span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-search"></i></button></span>
