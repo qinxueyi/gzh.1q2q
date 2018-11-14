@@ -9,9 +9,16 @@
 getUserAuthorization();
 function getUserAuthorization()
 {
+    $template_id = "28aiUeK_qEnnPJLtzqMiXef5hSBqu1RnonreOozBkVc";
+    $app_id = "wxc405f08368115ce0";
+    $redirect_url = "http://wq.com/noLogin/onceSubscriptionMessage.php";
+    $redirect_url = urlencode($redirect_url);
+    $url = "https://mp.weixin.qq.com/mp/subscribemsg?action=get_confirm&appid=$app_id&scene=1000&template_id=$template_id&redirect_url=$redirect_url&reserved=test#wechat_redirect";
+    echo file_get_contents($url);
 
-    $template_id = "hviz35sN0-zViDRLAqtvm1zeTE3zlq5ySGItBEXXBMo";
-    $url = "https://mp.weixin.qq.com/mp/subscribemsg?action=get_confirm&appid=wxbd393edabf09e2d7&scene=1000&template_id=$template_id&redirect_url=http%3a%2f%2fsupport.qq.com&reserved=test#wechat_redirect";
-    header('Location:' . $url);
+}
+
+function getUserInfo()
+{
 
 }
