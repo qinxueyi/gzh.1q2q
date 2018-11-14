@@ -110,6 +110,7 @@ if($do == 'base') {
 				}
 				break;
 		}
+		
 		if(!in_array($type, array('qrcodeimgsrc', 'headimgsrc', 'name', 'endtime', 'jointype'))) {
 			$result = pdo_update(uni_account_tablename(ACCOUNT_TYPE), $data, array('acid' => $acid, 'uniacid' => $uniacid));
 		}
