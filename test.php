@@ -1,17 +1,14 @@
 <?php
+define('IN_API', true);
+require_once './framework/bootstrap.inc.php';
+load()->func('pdo');
 
-$string ="0x1F628";
-function strToHex($str){
-    $hex="";
-    for($i=0;$i<strlen($str);$i++)
-        $hex.=dechex(ord($str[$i]));
-    $hex=strtoupper($hex);
-    return $hex;
-}
-//echo bin2hex("0x1F628");
+$conditionModel = array("uniacid =" => 4, "status =" => 1);
 
-echo intval("0x1F628",16);
-var_dump(0x1F628);
+$conditionModel['time <'] = 86400000;
+$eventList = pdo_getall("event_list", $conditionModel);
+print_r($eventList);
+
 
 //print_r(hexdec($string));
 //$redis = new Redis();
