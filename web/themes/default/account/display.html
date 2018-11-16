@@ -72,8 +72,10 @@
 			</div>
 		</div>
 		<ul ng-if="!accountList" style="text-align:center;width:100%"><span ng-if="!accountList">暂无数据</span></ul> -->
-		{if $account}
-		
+		{if !empty($account_info['uniacid_limit']) && (!empty($account_info['founder_uniacid_limit']) && $_W['user']['owner_uid'] || empty($_W['user']['owner_uid'])) || $_W['isfounder'] && !user_is_vice_founder()}
+		<div class="pull-right">
+			<a href="{url 'account/post-step'}" class="btn btn-primary we7-padding-horizontal">添加公众号</a>
+		</div>
 		{/if}
 <table class="table we7-table table-hover vertical-middle table-manage" id="js-system-account-display" ng-controller="SystemAccountDisplay" ng-cloak>
 	<col width="120px"/>
@@ -107,11 +109,18 @@
 				</ul>
 			</div> -->
 	</tr>
+	<tr style="height:10px;">
+		<span style="font-size:10px;">标签筛选:</span>
+		{loop $tag $index $item}
+			<a href="{php echo url('account/display',array('tag_id'=>$item['id']))}" style="font-size:10px;margin-left:10px;">{$item['tag_name']}</a>
+		{/loop}
+	</tr>
 	<tr>
 		<th colspan="2" class="text-left">帐号</th>
 		<th>微信号</th>
 		<th>二维码</th>
 		<th>粉丝数</th>
+		<th>标签</th>
 		<th class="text-right">操作</th>
 	</tr>
 	<!-- <tr class="color-gray" ng-repeat="list in account"> 原来的-->
@@ -137,6 +146,7 @@
 		<td><p class="color-dark" ng-bind="list.account"></td>
 		<td><img ng-src="{{list.qrcode}}" class="img-responsive icon"></td>
 		<td><p class="color-dark" ng-bind="list.fans_total"></td>
+		<td><p class="color-dark" ng-bind="list.tag"></td>
 		<td>
 			<p ng-bind="list.end"></p>
 		</td>

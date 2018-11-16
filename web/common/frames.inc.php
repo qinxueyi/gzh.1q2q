@@ -22,19 +22,26 @@ $we7_system_menu['account'] = array(
                     'permission_name' => 'platform_reply',
                     'sub_permission' => array(),
                 ),
+                'platform_qr' => array(
+                    'title' => '一次性订阅消息',
+                    'url' => url('platform/subscription/display'),
+                    'icon' => 'wi wi-message',
+                    'permission_name' => 'platform_subscription',
+                    'sub_permission' => array(),
+                ),
                 'platform_menu' => array(
                     'title' => '自定义菜单',
                     'url' => url('platform/menu/post'),
                     'icon' => 'wi wi-custommenu',
                     'permission_name' => 'platform_menu',
                 ),
-                'platform_qr' => array(
-                    'title' => '二维码/转化链接',
-                    'url' => url('platform/qr'),
-                    'icon' => 'wi wi-qrcode',
-                    'permission_name' => 'platform_qr',
-                    'sub_permission' => array(),
-                ),
+                // 'platform_qr' => array(
+                //     'title' => '二维码/转化链接',
+                //     'url' => url('platform/qr'),
+                //     'icon' => 'wi wi-qrcode',
+                //     'permission_name' => 'platform_qr',
+                //     'sub_permission' => array(),
+                // ),
                 'platform_material' => array(
                     'title' => '素材/编辑器',
                     'url' => url('platform/material'),
@@ -59,7 +66,8 @@ $we7_system_menu['account'] = array(
                 	'permission_name' => 'platform_tag',
                 	'sub_permission' => array(
                 	),
-                )
+                ),
+                
             ),
         ),
         // 'platform_module' => array(

@@ -75,7 +75,7 @@ if ($do == 'display') {
 	if (!empty($keyword)) {
 		$account_table->searchWithKeyword($keyword);
 	}
-
+	
 	$letter = $_GPC['letter'];
 	if(isset($letter) && strlen($letter) == 1) {
 		$account_table->searchWithLetter($letter);
@@ -84,10 +84,27 @@ if ($do == 'display') {
 	$account_table->accountRankOrder();
 	$account_table->searchWithPage($pindex, $psize);
 	$account_list = $account_table->searchAccountList();
+	if (isset($_GPC['tag_id'])) {
+		$tag_id = $_GPC['tag_id'];
+		$account_list = $account_table->searchWithTag($tag_id);
+	}
 	$account_list = array_values($account_list);
-	
+	$tag = pdo_getall('account_tag');
 	foreach($account_list as &$account) {
 		$account = uni_fetch($account['uniacid']);
+		$account_tag_id = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']),'tag_id');
+		if ($account_tag_id) {
+			$tag_array = explode(',',$account_tag_id['tag_id']);
+			foreach ($tag_array as $k => $v) {
+				$tag_name[] = pdo_get('account_tag',array('id'=>$v));
+			}
+			$account['tag'] = $account_tag_id['tag_id'];
+		}else{
+			$account['tag'] = '暂无标签';
+		}
+		// echo "<pre>";
+		// var_dump($account['tag']);
+		// echo "</pre>";
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
 		$account['fans_total'] = pdo_getcolumn("mc_mapping_fans", array('uniacid' => $account['uniacid'], 'acid' => $account['acid'], 'follow' => 1), 'count(*)');
 		uni_update_week_stat();
@@ -106,7 +123,7 @@ if ($do == 'display') {
 	if ($_W['ispost']) {
 		iajax(0, $account_list);
 	}
-
+	
 }
 template('account/display');
 

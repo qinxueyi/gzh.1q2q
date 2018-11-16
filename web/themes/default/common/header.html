@@ -1,7 +1,12 @@
 {template 'common/header-base'}
 <div data-skin="default" class="skin-default {if $_GPC['main-lg']} main-lg-body {/if}">
 {php $frames = buildframes(FRAME);_calc_current_frames($frames);}
-<div class="head">
+<style>
+	.head ul li{
+		display: inline;
+	}
+</style>
+<div class="head" style="position:fixed;top:0;width:100%">
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container {if !empty($frames['section']['platform_module_menu']['plugin_menu'])}plugin-head{/if}">
 			<div class="navbar-header">
@@ -72,13 +77,105 @@
 	}
 </script>
 {/if} 
-<div class="main">
+<div class="main" style="margin-left:179px;width:calc( 100% - 200px);margin-top:56px;height:calc( 100% - 10px);">
+
+
 {if !defined('IN_MESSAGE')}
 <div class="container">
+	<!-- 判断如果是公众号才显示 系统和广告不显示 -->
+
+
+	<style>
+	.gundong{
+		height:100%;	
+		width:99%;
+		border:1px solid #eee;
+
+	}
+	.zuigao{
+		height:100%;
+		overflow:auto;
+		width:200px;
+	}
+	.zuigao::-webkit-scrollbar {
+	     width: 4px;    
+	     height: 4px;
+	}
+	.zuigao::-webkit-scrollbar-thumb {
+	     border-radius: 5px;
+	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	     background: rgba(0,0,0,0.2);
+	}
+	.zuigao::-webkit-scrollbar-track {
+	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	     border-radius: 0;
+	     background: rgba(0,0,0,0.1);
+	}
+
+	</style>
+
+	<div class="zuigao" style="position:absolute;">
+		<div class="gundong">
+			<!-- <form action="" method="post">
+				<div class="input-group" style="width:155px;margin:auto;margin-top:20px;">
+				    <input type="search" class="form-control" id="keyword" placeholder="请输入公众号名" style="font-size:10px;">
+				    <span class="input-group-btn">
+				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+				    </span>
+				</div>
+			</form> -->
+				<?php 
+					load()->model('user');
+					$account_table = table('account');
+					$account_list = $account_table->searchAccountList();
+					$account_list = array_values($account_list);
+					foreach ($_W['tag'] as $k => $v) {
+						foreach ($account_list as $k1 => $v1) {
+							$account = uni_fetch($v1['uniacid']);
+							$tag = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
+							if($tag){
+								$tag_array = explode(',',$tag['tag_id']);
+								if(in_array($v['id'],$tag_array)){
+									$_W['tag'][$k]['account'][$k1]['name'] = $account['name'];
+									$_W['tag'][$k]['account'][$k1]['uniacid'] = $account['uniacid'];
+								}
+							}
+						}
+					}
+				?>
+			<!-- 折叠菜单 begin -->
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:155px;margin:auto;margin-top:20px;">
+			
+			{loop $_W['tag'] $index $item}
+			  <div class="panel panel-default">
+			    <div class="panel-heading" role="tab" id="heading{$item['id']}" style="background-color:white">
+			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{$item['id']}" aria-expanded="true" aria-controls="collapse{$item['id']}">
+			          {$item['tag_name']}
+			        </a>
+			        <div style="float:right;font-color:red;">
+			      		<span class="glyphicon glyphicon-chevron-down"></span>
+			        </div>
+			    </div> 
+			    <div id="collapse{$item['id']}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{$item['id']}">
+			    	{loop $item['account'] $index1 $item1}
+				      <div class="panel-body">
+				        <a href="{php echo url('account/display/switch',array('uniacid'=>$item1['uniacid']))}">{$item1['name']}</a>
+				      </div>
+			    	{/loop}
+			    </div>
+			  </div>
+			  {/loop}
+			  
+			</div>
+			<!-- 折叠菜单 end -->
+		</div>
+	</div>
+
+
 	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽">{if $_GPC['main-lg']}正常{else}宽屏{/if}</a>
 	{if in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))}
 	<div class="panel panel-content main-panel-content {if !empty($frames['section']['platform_module_menu']['plugin_menu'])}panel-content-plugin{/if}">
-		<div class="content-head panel-heading main-panel-heading">
+		<div class="content-head panel-heading main-panel-heading" style="margin-left:200px;">
 			{if ($_GPC['c'] != 'cloud' && !empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi', 'service','delay'))) || defined('IN_MODULE')}
 				{template 'common/header-module'}
 			{else}
@@ -86,9 +183,9 @@
 			{/if}
 		</div>
 	<div class="panel-body clearfix main-panel-body {if !empty($_W['setting']['copyright']['leftmenufixed'])}menu-fixed{/if}">
-		<div class="left-menu">
+		<div class="left-menu" style="position:fixed;left:0;top:57px;">
 			{if empty($frames['section']['platform_module_menu']['plugin_menu'])}
-			<div class="left-menu-content">
+			<div class="left-menu-content" style="height:100%">
 				{loop $frames['section'] $frame_section_id $frame_section}
 				
 				{if FRAME == 'store' && !($_W['isfounder'] && !user_is_vice_founder()) && !empty($frame_section['founder'])}
@@ -199,6 +296,7 @@
 				</div>
 			{/if}
 		</div>
-		<div class="right-content">
+		
+		<div class="right-content" style="margin-left:200px;">
 	{/if}
 {/if}
