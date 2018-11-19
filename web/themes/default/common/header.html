@@ -84,7 +84,6 @@
 <div class="container">
 	<!-- 判断如果是公众号才显示 系统和广告不显示 -->
 
-
 	<style>
 	.gundong{
 		height:100%;	
@@ -142,10 +141,13 @@
 							}
 						}
 					}
+					$c = $_GPC['c'];
+					$a = $_GPC['a'];
+					$do = $_GPC['do'];
+					$href = "$c/$a/$do";
 				?>
 			<!-- 折叠菜单 begin -->
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:155px;margin:auto;margin-top:20px;">
-			
 			{loop $_W['tag'] $index $item}
 			  <div class="panel panel-default">
 			    <div class="panel-heading" role="tab" id="heading{$item['id']}" style="background-color:white">
@@ -159,7 +161,7 @@
 			    <div id="collapse{$item['id']}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading{$item['id']}">
 			    	{loop $item['account'] $index1 $item1}
 				      <div class="panel-body">
-				        <a href="{php echo url('account/display/switch',array('uniacid'=>$item1['uniacid']))}">{$item1['name']}</a>
+				        <a href="{php echo url($href,array('uniacid'=>$item1['uniacid']))}" id="account_href">{$item1['name']}</a>
 				      </div>
 			    	{/loop}
 			    </div>
@@ -170,7 +172,6 @@
 			<!-- 折叠菜单 end -->
 		</div>
 	</div>
-
 
 	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽">{if $_GPC['main-lg']}正常{else}宽屏{/if}</a>
 	{if in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))}

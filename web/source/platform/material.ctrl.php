@@ -4,6 +4,26 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
+if ($_GPC['uniacid']) {
+	$uniacid = intval($_GPC['uniacid']);
+	$_W['uniacid'] = $uniacid;
+	$_W['account'] = uni_fetch($uniacid);
+	$role = permission_account_user_role($_W['uid'], $uniacid);
+	if(empty($role)) {
+		itoast('操作失败, 非法访问.', '', 'error');
+	}
+	if (empty($_W['isfounder'])) {
+		$account_endtime = uni_fetch($uniacid);
+		$account_endtime = $account_endtime['endtime'];
+		if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
+			itoast('公众号已到期。', '', 'error');
+		}
+	}
+	uni_account_save_switch($uniacid);
+	uni_account_switch($uniacid);
+}
+
+
 load()->model('material');
 load()->model('mc');
 load()->model('account');

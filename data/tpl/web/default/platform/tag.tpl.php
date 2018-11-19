@@ -1,0 +1,175 @@
+<?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
+<div class="we7-page-title">
+	素材管理
+</div>
+<ul class="we7-page-tab">
+	<li class="active">
+	<a href="<?php  echo url('platform/tag')?>">标签管理</a>
+</ul>
+<!-- <div class="clearfix we7-margin-bottom"> -->
+	<!-- <form action="" class="form-inline  pull-left" method="get">
+		<input type="hidden" name="c" value="account">
+		<input type="hidden" name="a" value="recycle">
+		<div class="input-group form-group" style="width: 400px;">
+			<input type="text" name="keyword" value="<?php  echo $_GPC['keyword'];?>" class="form-control" placeholder="搜索关键字"/>
+			<span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-search"></i></button></span>
+		</div>
+	</form> -->
+<!-- </div> -->
+<a href="javascript:;" data-toggle="modal" data-target="#new_type" class="btn btn-primary we7-margin-left" style="float:right;">添加标签</a>
+<a href="javascript:;" data-toggle="modal" data-target="#choose_tags" class="btn btn-primary we7-margin-left" style="float:right;margin-bottom:20px;">选择标签</a>
+
+<table class="table we7-table table-hover vertical-middle table-manage">
+	<col width="208px" />
+	<col width="100px"/>
+	<col width="150px" />
+	<tr>
+		<th colspan="1" class="text-left">标签名字</th>
+		<th class="text-right">操作</th>
+	</tr>
+	<?php  if(!empty($accounts_tag)) { ?>
+		<?php  if(is_array($accounts_tag)) { foreach($accounts_tag as $index => $item) { ?>
+		<tr class="color-gray">
+			<td class="text-left"><p class="color-dark"><?php  echo $item['tag_name'];?></p>
+			<td class="vertical-middle">
+				<div class="link-group">
+					<a href="<?php  echo url('platform/tag/delete_tag',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;">删除</a>
+				</div>
+			</td>
+		</tr>
+		<?php  } } ?>
+	<?php  } else { ?>
+		<tr class="color-gray">
+			<td class="text-left"><p class="color-dark">暂无数据</p>
+			<td class="vertical-middle">
+				<div class="link-group">
+				</div>
+			</td>
+		</tr>
+	<?php  } ?>
+</table>
+
+
+
+<div class="modal fade" id="new_type" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="we7-modal-dialog modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<div class="modal-title">添加标签</div>
+			</div>
+			<div class="modal-body">
+				<div class="reply" ng-click="createNew('reply')">
+					<a href="javascript:;">
+						<div class="content">
+							<form id="reply-form" class="form-horizontal form" action="<?php  echo url('platform/tag/add')?>" method="post" enctype="multipart/form-data" id="delay-form">
+								<div class="title" style="float:left;line-height:34px;margin-right:15px;">标签名字 </div>
+								<input type="text" class="form-control" name="tag_name" style="width:80%;">
+								<div style="text-align:center;margin-top:20px;">
+									<input type="submit" name="submit" value="发布" class="reply-form-submit btn btn-primary">
+								</div>
+							</form>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style type="text/css">
+	.moren{
+		text-align: center;
+		height: 60px;
+		line-height: 60px;
+		border: 1px solid #eee;
+		float: left;
+		background: #f4f5f9;
+		border-radius: 5px;
+		width: 95%;
+		margin:auto;
+		margin-bottom: 10px;
+	}
+	.this_action{
+		border-color: #66AFE9;
+
+	}
+</style>
+<div class="modal fade" id="choose_tags" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="we7-modal-dialog modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<div class="modal-title">选择标签</div>
+			</div>
+			<div class="modal-body">
+				<div class="reply" ng-click="createNew('reply')">
+					<a href="javascript:;">
+						<div class="content">
+							<div>
+								<?php  if(is_array($all_tag)) { foreach($all_tag as $index => $item) { ?>
+									<div class="col-sm-4">
+										<div class="moren" data-id="<?php  echo $item['id'];?>"><?php  echo $item['tag_name'];?></div>
+									</div>
+									<!-- <div>
+										<label for=""><input type="checkbox"><?php  echo $item['tag_name'];?></label>
+									</div> -->
+								<?php  } } ?>
+							</div>
+							<div style="text-align:center;margin-top:20px;clear:both" >
+									<input type="button"  value="发布" class="reply-form-submit btn btn-primary tijiao">
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('.moren').click(function(){
+		if(!$(this).is('.this_action')){
+			$(this).addClass('this_action');
+		}else{
+			$(this).removeClass('this_action');
+		}
+	})
+	$('.tijiao').click(function(){
+		var ids = [];
+		$('.this_action').each(function(){
+			ids.push($(this).attr('data-id'));
+		})
+		console.log(ids.length);
+		if(ids.length < 1){
+			alert('请选择！');
+			return false;
+		}
+		$.post("<?php  echo url('platform/tag/choose_tag')?>",{ids:ids},function(res){
+			if (res.message == 1) {
+				alert('添加成功');
+				location.href="";
+			}else{
+				alert('添加失败');
+				location.href="";
+			}
+		},'json')
+	})
+</script>
+
+
+<!-- <div class="text-right">
+	<?php  echo $pager;?>
+</div> -->
+<!-- <script>
+	$(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	angular.module('accountApp').value('config', {
+		del_accounts : <?php echo !empty($del_accounts) ? json_encode($del_accounts) : 'null'?>,
+		links: {
+			// postRecover: "<?php  echo url('account/recycle/recover')?>",
+			postDel: "<?php  echo url('account/tag/delete')?>",
+		}
+	});
+	angular.bootstrap($('#js-system-account-tag'), ['accountApp']);
+</script> -->
+<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/footer', TEMPLATE_INCLUDEPATH)) : (include template('common/footer', TEMPLATE_INCLUDEPATH));?>
