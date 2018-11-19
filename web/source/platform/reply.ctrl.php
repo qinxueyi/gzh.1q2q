@@ -4,12 +4,32 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
+if ($_GPC['uniacid']) {
+	$uniacid = intval($_GPC['uniacid']);
+	$_W['uniacid'] = $uniacid;
+	$_W['account'] = uni_fetch($uniacid);
+	$role = permission_account_user_role($_W['uid'], $uniacid);
+	if(empty($role)) {
+		itoast('操作失败, 非法访问.', '', 'error');
+	}
+	if (empty($_W['isfounder'])) {
+		$account_endtime = uni_fetch($uniacid);
+		$account_endtime = $account_endtime['endtime'];
+		if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
+			itoast('公众号已到期。', '', 'error');
+		}
+	}
+	uni_account_save_switch($uniacid);
+	uni_account_switch($uniacid);
+}
+
 load()->model('reply');
 load()->model('module');
 load()->model('material');
 
 $dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status','getAccessToken','delete_event','status');
 $do = in_array($do, $dos) ? $do : 'display';
+
 
 $m = empty($_GPC['m']) ? 'keyword' : trim($_GPC['m']);
 if (in_array($m, array('keyword', 'special', 'welcome', 'default', 'apply', 'service', 'userapi','delay'))) {
@@ -47,6 +67,7 @@ if (in_array($m, array('custom'))) {
 	$site_urls = $site->getTabUrls();
 }
 if ($do == 'display') {
+	//判断参数中是否含有uniacid公众号id
 	if ($m == 'keyword' || !in_array($m, $sysmods)) {
 		$pindex = max(1, intval($_GPC['page']));
 		$psize = 8;
