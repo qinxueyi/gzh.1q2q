@@ -14,7 +14,6 @@ $do = in_array($_GPC['do'], $dos)? $do : 'display';
 
 $_W['page']['title'] = $account_typename . '列表 - ' . $account_typename;
 $account_info = permission_user_account_num();
-
 	$role_type = in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER, ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_MANAGER));
 
 

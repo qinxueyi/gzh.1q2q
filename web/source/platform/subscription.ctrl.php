@@ -4,6 +4,7 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
+
 if ($_GPC['uniacid']) {
 	$uniacid = intval($_GPC['uniacid']);
 	$_W['uniacid'] = $uniacid;
@@ -36,26 +37,9 @@ $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '公众号-标签管理';
 
 if ($do == 'display') {
-	$all_tag = pdo_getall('account_tag');
 
-	$uniacid = $_W['uniacid'];
-	$a_tag = pdo_get('account_tag_link',array('uniacid'=>$uniacid));
-	$tag = explode(',',$a_tag['tag_id']);
-	//去掉当前已选的标签
-	foreach ($all_tag as $k => $v) {
-		foreach ($tag as $k1 => $v1) {
-			if ($v1 == $v['id']) {
-				unset($all_tag[$k]);
-			}
-		}
-	}
-	$accounts_tag = array();
-	foreach ($tag as $k => $v) {
-		$tags = pdo_get('account_tag',array('id'=>$v));
-		if ($tags) {
-			$accounts_tag[] = $tags;
-		}
-	}
+
+	
 }
 if ($do == 'add') {
 	$data['tag_name'] = $_GPC['tag_name'];
@@ -124,7 +108,7 @@ if ($do == 'choose_tag') {
 }
 
 
-template('platform/tag');
+template('platform/subscription');
 
 
 

@@ -4,32 +4,42 @@
  * User: admin
  * Date: 2018/11/14
  * Time: 11:23
+ * 一次性订阅消息
  */
 
 $do = $_GET['do'];
 
-
+/**
+ * 添加场景
+ */
 function addScene()
 {
+    $once_subscription_list_data = array();
+    $once_subscription_list_data['scene_name'] = $_POST['scene_name'];
+    $once_subscription_list_data['authorization_url'] = $_POST['authorization_url'];
+    $once_subscription_list_data['template_id'] = $_POST['template_id'];
+    $once_subscription_list_data['reply_title'] = $_POST['reply_title'];
+    $once_subscription_list_data['reply_content'] = $_POST['reply_content'];
+    $once_subscription_list_data['skip_type'] = $_POST['skip_type'];
+    $once_subscription_list_data['color'] = $_POST['color'];
+    $once_subscription_list_data['click_url'] = $_POST['click_url'];
+    pdo_insert("once_subscription_list", $once_subscription_list_data);
 
-
-    
 }
 
-function http_post_json($url, $jsonStr)
+/**
+ * 修改场景
+ */
+function updateScenc()
 {
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonStr);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-            'Content-Type: application/json; charset=utf-8',
-            'Content-Length: ' . strlen($jsonStr)
-        )
-    );
-    $response = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-    return json_decode($response, true);
+    $once_subscription_list_data = array();
+    $once_subscription_list_data['scene_name'] = $_POST['scene_name'];
+    $once_subscription_list_data['authorization_url'] = $_POST['authorization_url'];
+    $once_subscription_list_data['template_id'] = $_POST['template_id'];
+    $once_subscription_list_data['reply_title'] = $_POST['reply_title'];
+    $once_subscription_list_data['reply_content'] = $_POST['reply_content'];
+    $once_subscription_list_data['skip_type'] = $_POST['skip_type'];
+    $once_subscription_list_data['color'] = $_POST['color'];
+    $once_subscription_list_data['click_url'] = $_POST['click_url'];
+    pdo_update("once_subscription_list", $once_subscription_list_data, array("id" => $_POST['id']));
 }

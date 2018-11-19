@@ -120,6 +120,22 @@ class AccountTable extends We7Table {
 		return $this;
 	}
 
+	public function searchWithTag($tag_id) {
+		//先查询所有公众号
+		// $this->query->from('account_tag_link')
+		$account_list = $this->searchAccountList();
+		foreach ($account_list as $k => $v) {
+			$tag = $this->query->from('account_tag_link')->where(array('uniacid'=>$v['uniacid']))->get();
+			if ($tag) {
+				$tagId = explode(',',$tag['tag_id']);
+				if (in_array($tag_id,$tagId)) {
+					$res[] = $v;
+				}
+			}
+		}
+		return $res;
+	}
+
 	public function searchWithTitle($title) {
 		$this->query->where('a.name', $title);
 		return $this;

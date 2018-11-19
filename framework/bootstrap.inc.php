@@ -38,7 +38,7 @@ load()->model('module');
 load()->library('agent');
 load()->classs('db');
 load()->func('communication');
-
+load()->model('user');
 
 define('CLIENT_IP', getip());
 
@@ -164,4 +164,23 @@ if (Agent::isMicroMessage() == Agent::MICRO_MESSAGE_YES) {
 $controller = $_GPC['c'];
 $action = $_GPC['a'];
 $do = $_GPC['do'];
+
+//所有公众号的标签
+$_W['tag'] = pdo_getall('account_tag');
+$account_table = table('account');
+$account_table->searchWithType(array(ACCOUNT_TYPE_OFFCIAL_NORMAL, ACCOUNT_TYPE_OFFCIAL_AUTH));
+$account_list = $account_table->searchAccountList();
+
+// echo "<pre>";
+// var_dump($account_list);
+// echo "</pre>";die;
+// foreach ($_W['tag'] as $k => $v) {
+      
+//     echo "<pre>";
+//     var_dump($v);
+//     echo "</pre>";
+// }
+// die;
+//当前用户所有的公众号
+
 header('Content-Type: text/html; charset=' . $_W['charset']);
