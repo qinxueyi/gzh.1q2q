@@ -9,8 +9,8 @@
 $do = $_GET['do'];
 //发起用户授权
 if ($do == "getUserAuthorization") {
-    $template_id = "28aiUeK_qEnnPJLtzqMiXef5hSBqu1RnonreOozBkVc";
-    $app_id = "wxc405f08368115ce0";
+    $template_id = "hviz35sN0-zViDRLAqtvm1zeTE3zlq5ySGItBEXXBMo";
+    $app_id = "wxb87c867dc23a726a";
     $redirect_url = "http://gzh.1q2q.com/web/index.php?c=account&a=once-subscription&do=getUserInfo";
     $redirect_url = urlencode($redirect_url);
     $url = "https://mp.weixin.qq.com/mp/subscribemsg?action=get_confirm&appid=$app_id&scene=1000&template_id=$template_id&redirect_url=$redirect_url&reserved=test#wechat_redirect";
@@ -20,7 +20,7 @@ if ($do == "getUserAuthorization") {
 //通过API推送订阅模板消息给到授权微信用户
 if ($do == "getUserInfo") {
     if ($_GET['action'] == "confirm") {
-        $accessToken = file_get_contents("http://gzh.1q2q.com/getAccessToken.php?uniacid=5");
+        $accessToken = file_get_contents("http://gzh.1q2q.com/getAccessToken.php?uniacid=4");
         $reply_url = "https://api.weixin.qq.com/cgi-bin/message/template/subscribe?access_token=$accessToken";
         //发送消息
         $reply_content = array();
@@ -30,7 +30,7 @@ if ($do == "getUserInfo") {
         $reply_content['title'] = '欢迎';
         $data = array();
         $content = array();
-        $content['value'] = "欢迎来到上海贝富";
+        $content['value'] = "欢迎来到金曲来一首";
         $content['color'] = "#00FFFF";
         $reply_content['data']['content'] = $content;
         $response = http_post_json($reply_url, json_encode($reply_content));
