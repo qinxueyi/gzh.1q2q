@@ -111,7 +111,7 @@
 	</tr>
 	<tr style="height:10px;">
 		<span style="font-size:10px;">标签筛选:</span>
-		{loop $tag $index $item}
+		{loop $tag1 $index $item}
 			<a href="{php echo url('account/display',array('tag_id'=>$item['id']))}" style="font-size:10px;margin-left:10px;">{$item['tag_name']}</a>
 		{/loop}
 	</tr>

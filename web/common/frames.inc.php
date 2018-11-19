@@ -84,12 +84,12 @@ $we7_system_menu['account'] = array(
                     'icon' => 'wi wi-fansmanage',
                     'permission_name' => 'mc_fans',
                 ),
-                'mc_member' => array(
-                    'title' => '会员管理',
-                    'url' => url('mc/member'),
-                    'icon' => 'wi wi-fans',
-                    'permission_name' => 'mc_member',
-                )
+                // 'mc_member' => array(
+                //     'title' => '会员管理',
+                //     'url' => url('mc/member'),
+                //     'icon' => 'wi wi-fans',
+                //     'permission_name' => 'mc_member',
+                // )
             ),
         ),
         // 'profile' => array(
@@ -125,17 +125,17 @@ $we7_system_menu['account'] = array(
         // 	),
         // ),
 
-        'statistics' => array(
-            'title' => '统计',
-            'menu' => array(
-                'app' => array(
-                    'title' => '访问统计',
-                    'url' => url('statistics/app'),
-                    'icon' => 'wi wi-statistical',
-                    'permission_name' => 'statistics_app',
-                ),
-            ),
-        ),
+        // 'statistics' => array(
+        //     'title' => '统计',
+        //     'menu' => array(
+        //         'app' => array(
+        //             'title' => '访问统计',
+        //             'url' => url('statistics/app'),
+        //             'icon' => 'wi wi-statistical',
+        //             'permission_name' => 'statistics_app',
+        //         ),
+        //     ),
+        // ),
 
     ),
 );
@@ -557,17 +557,17 @@ $we7_system_menu['system'] = array(
                 )
             )
         ),
-        'message' => array(
-            'title' => '消息提醒',
-            'menu' => array(
-                'system_message_notice' => array(
-                    'title' => '消息提醒',
-                    'url' => url('message/notice'),
-                    'icon' => 'wi wi-bell',
-                    'permission_name' => 'system_message_notice',
-                )
-            )
-        ),
+        // 'message' => array(
+        //     'title' => '消息提醒',
+        //     'menu' => array(
+        //         'system_message_notice' => array(
+        //             'title' => '消息提醒',
+        //             'url' => url('message/notice'),
+        //             'icon' => 'wi wi-bell',
+        //             'permission_name' => 'system_message_notice',
+        //         )
+        //     )
+        // ),
 
         'system_statistics' => array(
             'title' => '统计',
