@@ -6,21 +6,7 @@
 defined('IN_IA') or exit('Access Denied');
 
 load()->model('user');
-// load()->classs('weixin.account');
-// $weixin_account = new WeiXinAccount();
-// $data = array(
-// 	'touser' => 'oNfBl05DPiy2F9DZBYJck63c6uBI',
-// 	'msgtype' => 'text',
-// 	'text' => array(
-// 		'content' => 'www.baidu.com',
-// 	)
-// );
-// $acc = WeAccount::create($_W['acid']);
-// $status = $acc->sendCustomNotice($data);
-// echo "<pre>";
-// var_dump($status );
-// echo "</pre>";
-// die;
+
 $dos = array('rank', 'display', 'switch');
 $do = in_array($_GPC['do'], $dos)? $do : 'display' ;
 $_W['page']['title'] = '公众号列表 - 公众号';
@@ -120,6 +106,7 @@ if ($do == 'display') {
 		$today_stat['jing_num'] = $today_stat['new'] - $today_stat['cancel'];
 		$account['cumulate'] = intval($today_stat['jing_num']) + $yesterday_stat['cumulate'];
 	}
+	
 	if ($_W['ispost']) {
 		iajax(0, $account_list);
 	}

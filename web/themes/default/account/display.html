@@ -177,6 +177,7 @@
 </div>
 <script>
 	switch_url = "{php echo url('account/display/switch')}";
+	console.log(switch_url);
 	angular.module('accountApp').value('config', {
 		accountList: {php echo !empty($account_list) ? json_encode($account_list) : 'null'},
 		links: {

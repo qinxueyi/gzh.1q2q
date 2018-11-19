@@ -126,10 +126,10 @@
 				<?php 
 					load()->model('user');
 					$account_table = table('account');
-					$account_list = $account_table->searchAccountList();
-					$account_list = array_values($account_list);
+					$account_list1 = $account_table->searchAccountList();
+					$account_list1 = array_values($account_list1);
 					foreach ($_W['tag'] as $k => $v) {
-						foreach ($account_list as $k1 => $v1) {
+						foreach ($account_list1 as $k1 => $v1) {
 							$account = uni_fetch($v1['uniacid']);
 							$tag = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
 							if($tag){
