@@ -1,25 +1,27 @@
 <?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
-<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('founder/header', TEMPLATE_INCLUDEPATH)) : (include template('founder/header', TEMPLATE_INCLUDEPATH));?>
+<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('user/user-header', TEMPLATE_INCLUDEPATH)) : (include template('user/user-header', TEMPLATE_INCLUDEPATH));?>
 <div class="keyword-list-head clearfix we7-margin-bottom">
 	<form action="" method="get">
-		<input type="hidden" name="c" value="founder">
+		<input type="hidden" name="c" value="user">
 		<input type="hidden" name="a" value="display">
-		<label for="" class="col-sm-1 control-label">副创始人组</label>
+		<input type="hidden" name="do" value="<?php  echo $_GPC['do'];?>">
+		<input type="hidden" name="type" value="<?php  echo $_GPC['type'];?>">
+		<label for="" class="col-sm-1 control-label">用户组</label>
 		<div class="input-controls col-sm-3">
 			<select name="groupid" class="we7-select form-control">
 				<option value="" selected="selected">不限</option>
-				<?php  if(is_array($founder_groups)) { foreach($founder_groups as $group) { ?>
+				<?php  if(is_array($user_groups)) { foreach($user_groups as $group) { ?>
 				<option value="<?php  echo $group['id'];?>"<?php  if($group['id'] == $_GPC['groupid']) { ?> selected="selected"<?php  } ?>><?php  echo $group['name'];?></option>
 				<?php  } } ?>
 			</select>
 		</div>
 		<div class="input-group pull-left col-sm-4">
-			<input type="text" name="search" id="" value="<?php  echo $_GPC['search'];?>" class="form-control"  placeholder="搜索副创始人或手机号" />
+			<input type="text" name="search" id="" value="<?php  echo $_GPC['search'];?>" class="form-control"  placeholder="搜索用户名或手机号" />
 			<span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-search"></i></button></span>
 		</div>
 	</form>
 	<div class="pull-right">
-		<a href="<?php  echo url('founder/create')?>" class="btn btn-primary">+添加副创始人</a>
+		<?php  if($_GPC['type'] == 'display' || $_GPC['type'] == '') { ?><a href="<?php  echo url('user/create');?>" class="btn btn-primary">+添加用户</a><?php  } ?>
 	</div>
 </div>
 <table class="table we7-table table-hover table-manage vertical-middle" id="js-users-display" ng-controller="UsersDisplay" ng-cloak>
@@ -28,10 +30,10 @@
 	<col width="170px"/>
 	<col width="100px"/>
 	<col width="100px"/>
-	<col width="100px"/>
-	<col width="100px"/>
-	<col width="180px"/>
-	<col width="180px"/>
+	<col width="80px"/>
+	<col width="80px"/>
+	<col width="130px"/>
+	<col width="130px"/>
 	<col width="150px"/>
 	<tr>
 		<th></th>
@@ -69,8 +71,12 @@
 		</td>
 		<td class="vertical-middle table-manage-td">
 			<div class="link-group" ng-if="!user.founder">
-				<a ng-href="{{links.edit}}uid={{user.uid}}" ng-if="type == 'display'">编辑</a>
-				<a href="javascript:;" ng-click="operate(user.uid, '')" class="del" ng-if="type == 'display'">删除</a>
+				<a ng-href="{{links.edit}}uid={{user.uid}}" ng-if="type == 'display' || type == 'clerk'">编辑</a>
+				<a href="javascript:;" ng-click="operate(user.uid, 'recycle')" ng-if="type == 'display' || type == 'clerk'" data-toggle="tooltip" data-placement="left" title="禁用后可在用户回收站查找到并重新启用。">禁用</a>
+				<a href="javascript:;" ng-click="operate(user.uid, 'check_pass')" ng-if="type == 'check'">通过</a>
+				<a href="javascript:;" ng-click="operate(user.uid, 'recycle')" ng-if="type == 'check'" data-toggle="tooltip" data-placement="left" title="拒绝后可在用户回收站查找到并启用。">拒绝</a>
+				<a href="javascript:;" ng-click="operate(user.uid, 'recycle_restore')" ng-if="type == 'recycle'">启用</a>
+				<a href="javascript:;" ng-click="operate(user.uid, 'recycle_delete')" class="del" ng-if="type == 'recycle'">删除</a>
 			</div>
 			<div class="manage-option text-right" ng-if="!user.founder">
 				<a href="{{links.edit}}uid={{user.uid}}">基础信息</a>
@@ -83,9 +89,12 @@
 		<td colspan="7" class="text-center">暂无数据</td>
 	</tr>
 </table>
-<div class="text-right">
+
+<div class="text-right pager-pagination-float">
 	<?php  echo $pager;?>
 </div>
+<span class="pager-total">共<?php  echo $total?>个</span>
+
 <script type="text/javascript">
 	$(function(){
 		$('[data-toggle="tooltip"]').tooltip();
@@ -95,8 +104,8 @@
 		users: <?php echo !empty($users) ? json_encode($users) : 'null'?>,
 		usergroups: <?php echo !empty($usergroups) ? json_encode($usergroups) : 'null'?>,
 		links: {
-			link: "<?php  echo url('founder/display/del')?>",
-			edit: "<?php  echo url('founder/edit')?>",
+			link: "<?php  echo url('user/display/operate')?>",
+			edit: "<?php  echo url('user/edit')?>",
 		},
 	});
 	angular.bootstrap($('#js-users-display'), ['userManageApp']);
