@@ -89,7 +89,7 @@ if ($do == 'display') {
 		$account_list = $account_table->searchWithTag($tag_id);
 	}
 	$account_list = array_values($account_list);
-	$tag = pdo_getall('account_tag');
+	$tag1 = pdo_getall('account_tag');
 	foreach($account_list as &$account) {
 		$account = uni_fetch($account['uniacid']);
 		$account_tag_id = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']),'tag_id');

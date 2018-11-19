@@ -146,6 +146,7 @@
 					$do = $_GPC['do'];
 					$href = "$c/$a/$do";
 				?>
+			{if in_array(FRAME, array('account')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) && !in_array($_GPC['c'], array('account')) }
 			<!-- 折叠菜单 begin -->
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:155px;margin:auto;margin-top:20px;">
 			{loop $_W['tag'] $index $item}
@@ -169,6 +170,7 @@
 			  {/loop}
 			  
 			</div>
+			{/if}
 			<!-- 折叠菜单 end -->
 		</div>
 	</div>
