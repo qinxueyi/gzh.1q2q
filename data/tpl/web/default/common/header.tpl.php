@@ -1,7 +1,12 @@
 <?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-base', TEMPLATE_INCLUDEPATH)) : (include template('common/header-base', TEMPLATE_INCLUDEPATH));?>
 <div data-skin="default" class="skin-default <?php  if($_GPC['main-lg']) { ?> main-lg-body <?php  } ?>">
 <?php  $frames = buildframes(FRAME);_calc_current_frames($frames);?>
-<div class="head">
+<style>
+	.head ul li{
+		display: inline;
+	}
+</style>
+<div class="head" style="position:fixed;top:0;width:100%">
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="container <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>plugin-head<?php  } ?>">
 			<div class="navbar-header">
@@ -72,13 +77,105 @@
 	}
 </script>
 <?php  } ?> 
-<div class="main">
+<div class="main" style="margin-left:179px;width:calc( 100% - 200px);margin-top:56px;height:calc( 100% - 10px);">
+
+
 <?php  if(!defined('IN_MESSAGE')) { ?>
 <div class="container">
+	<!-- 判断如果是公众号才显示 系统和广告不显示 -->
+
+
+	<style>
+	.gundong{
+		height:100%;	
+		width:99%;
+		border:1px solid #eee;
+
+	}
+	.zuigao{
+		height:100%;
+		overflow:auto;
+		width:200px;
+	}
+	.zuigao::-webkit-scrollbar {
+	     width: 4px;    
+	     height: 4px;
+	}
+	.zuigao::-webkit-scrollbar-thumb {
+	     border-radius: 5px;
+	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	     background: rgba(0,0,0,0.2);
+	}
+	.zuigao::-webkit-scrollbar-track {
+	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	     border-radius: 0;
+	     background: rgba(0,0,0,0.1);
+	}
+
+	</style>
+
+	<div class="zuigao" style="position:absolute;">
+		<div class="gundong">
+			<!-- <form action="" method="post">
+				<div class="input-group" style="width:155px;margin:auto;margin-top:20px;">
+				    <input type="search" class="form-control" id="keyword" placeholder="请输入公众号名" style="font-size:10px;">
+				    <span class="input-group-btn">
+				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+				    </span>
+				</div>
+			</form> -->
+				<?php  
+					load()->model('user');
+					$account_table = table('account');
+					$account_list = $account_table->searchAccountList();
+					$account_list = array_values($account_list);
+					foreach ($_W['tag'] as $k => $v) {
+						foreach ($account_list as $k1 => $v1) {
+							$account = uni_fetch($v1['uniacid']);
+							$tag = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
+							if($tag){
+								$tag_array = explode(',',$tag['tag_id']);
+								if(in_array($v['id'],$tag_array)){
+									$_W['tag'][$k]['account'][$k1]['name'] = $account['name'];
+									$_W['tag'][$k]['account'][$k1]['uniacid'] = $account['uniacid'];
+								}
+							}
+						}
+					}
+				?>
+			<!-- 折叠菜单 begin -->
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:155px;margin:auto;margin-top:20px;">
+			
+			<?php  if(is_array($_W['tag'])) { foreach($_W['tag'] as $index => $item) { ?>
+			  <div class="panel panel-default">
+			    <div class="panel-heading" role="tab" id="heading<?php  echo $item['id'];?>" style="background-color:white">
+			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php  echo $item['id'];?>" aria-expanded="true" aria-controls="collapse<?php  echo $item['id'];?>">
+			          <?php  echo $item['tag_name'];?>
+			        </a>
+			        <div style="float:right;font-color:red;">
+			      		<span class="glyphicon glyphicon-chevron-down"></span>
+			        </div>
+			    </div> 
+			    <div id="collapse<?php  echo $item['id'];?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php  echo $item['id'];?>">
+			    	<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
+				      <div class="panel-body">
+				        <a href="<?php  echo url('account/display/switch',array('uniacid'=>$item1['uniacid']))?>"><?php  echo $item1['name'];?></a>
+				      </div>
+			    	<?php  } } ?>
+			    </div>
+			  </div>
+			  <?php  } } ?>
+			  
+			</div>
+			<!-- 折叠菜单 end -->
+		</div>
+	</div>
+
+
 	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
 	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
 	<div class="panel panel-content main-panel-content <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>panel-content-plugin<?php  } ?>">
-		<div class="content-head panel-heading main-panel-heading">
+		<div class="content-head panel-heading main-panel-heading" style="margin-left:200px;">
 			<?php  if(($_GPC['c'] != 'cloud' && !empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi', 'service','delay'))) || defined('IN_MODULE')) { ?>
 				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-module', TEMPLATE_INCLUDEPATH)) : (include template('common/header-module', TEMPLATE_INCLUDEPATH));?>
 			<?php  } else { ?>
@@ -86,9 +183,9 @@
 			<?php  } ?>
 		</div>
 	<div class="panel-body clearfix main-panel-body <?php  if(!empty($_W['setting']['copyright']['leftmenufixed'])) { ?>menu-fixed<?php  } ?>">
-		<div class="left-menu">
+		<div class="left-menu" style="position:fixed;left:0;top:57px;">
 			<?php  if(empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>
-			<div class="left-menu-content">
+			<div class="left-menu-content" style="height:100%">
 				<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
 				
 				<?php  if(FRAME == 'store' && !($_W['isfounder'] && !user_is_vice_founder()) && !empty($frame_section['founder'])) { ?>
@@ -199,6 +296,7 @@
 				</div>
 			<?php  } ?>
 		</div>
-		<div class="right-content">
+		
+		<div class="right-content" style="margin-left:200px;">
 	<?php  } ?>
 <?php  } ?>
