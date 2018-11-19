@@ -1,0 +1,305 @@
+<?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-base', TEMPLATE_INCLUDEPATH)) : (include template('common/header-base', TEMPLATE_INCLUDEPATH));?>
+<div data-skin="default" class="skin-default <?php  if($_GPC['main-lg']) { ?> main-lg-body <?php  } ?>">
+<?php  $frames = buildframes(FRAME);_calc_current_frames($frames);?>
+<style>
+	.head ul li{
+		display: inline;
+	}
+</style>
+<div class="head" style="position:fixed;top:0;width:100%">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="container <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>plugin-head<?php  } ?>">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="<?php  echo $_W['siteroot'];?>">
+					<img src="<?php  if(!empty($_W['setting']['copyright']['blogo'])) { ?><?php  echo tomedia($_W['setting']['copyright']['blogo'])?><?php  } else { ?>./resource/images/logo/logo.png<?php  } ?>" class="pull-left" width="110px" height="35px">
+					<span class="version hidden"><?php echo IMS_VERSION;?></span>
+				</a>
+			</div>
+			<?php  if(!empty($_W['uid'])) { ?>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-left">
+					<?php  global $top_nav?>
+					<?php  if(is_array($top_nav)) { foreach($top_nav as $nav) { ?>
+					<li <?php  if(FRAME == $nav['name'] && !defined('IN_MODULE')) { ?> class="active"<?php  } ?>><a href="<?php  if(empty($nav['url'])) { ?><?php  echo url('home/welcome/' . $nav['name']);?><?php  } else { ?><?php  echo $nav['url'];?><?php  } ?>" <?php  if(!empty($nav['blank'])) { ?>target="_blank"<?php  } ?>><?php  echo $nav['title'];?></a></li>
+					<?php  } } ?>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-notice', TEMPLATE_INCLUDEPATH)) : (include template('common/header-notice', TEMPLATE_INCLUDEPATH));?>
+					<li class="dropdown">
+						<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"><i class="wi wi-user color-gray"></i><?php  echo $_W['user']['username'];?> <span class="caret"></span></a>
+						<ul class="dropdown-menu color-gray" role="menu">
+							<li>
+								<a href="<?php  echo url('user/profile');?>" target="_blank"><i class="wi wi-account color-gray"></i> 我的账号</a>
+							</li>
+							<li class="divider"></li>
+							<?php  if(permission_check_account_user('see_system_upgrade')) { ?><li><a href="<?php  echo url('cloud/upgrade');?>" target="_blank"><i class="wi wi-update color-gray"></i> 自动更新</a></li><?php  } ?>
+							<li><a href="<?php  echo url('system/updatecache');?>" target="_blank"><i class="wi wi-cache color-gray"></i> 更新缓存</a></li>
+							<li class="divider"></li>
+							<li>
+								<a href="<?php  echo url('user/logout');?>"><i class="fa fa-sign-out color-gray"></i> 退出系统</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<?php  } else { ?>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown"><a href="<?php  echo url('user/register');?>">注册</a></li>
+					<li class="dropdown"><a href="<?php  echo url('user/login');?>">登录</a></li>
+				</ul>
+			</div>
+			<?php  } ?>
+		</div>
+	</nav>
+</div>
+<?php  if(empty($_COOKIE['check_setmeal']) && !empty($_W['account']['endtime']) && ($_W['account']['endtime'] - TIMESTAMP < (6*86400))) { ?>
+<div class="system-tips we7-body-alert" id="setmeal-tips">
+	<div class="container text-right">
+		<div class="alert-info">
+			<a href="<?php  if($_W['isfounder']) { ?><?php  echo url('user/edit', array('uid' => $_W['account']['uid']));?><?php  } else { ?>javascript:void(0);<?php  } ?>">
+				该公众号管理员服务有效期：<?php  echo date('Y-m-d', $_W['account']['starttime']);?> ~ <?php  echo date('Y-m-d', $_W['account']['endtime']);?>.
+				<?php  if($_W['account']['endtime'] < TIMESTAMP) { ?>
+				目前已到期，请联系管理员续费
+				<?php  } else { ?>
+				将在<?php  echo floor(($_W['account']['endtime'] - strtotime(date('Y-m-d')))/86400);?>天后到期，请及时付费
+				<?php  } ?>
+			</a>
+			<span class="tips-close" onclick="check_setmeal_hide();"><i class="wi wi-error-sign"></i></span>
+		</div>
+	</div>
+</div>
+<script>
+	function check_setmeal_hide() {
+		util.cookie.set('check_setmeal', 1, 1800);
+		$('#setmeal-tips').hide();
+		return false;
+	}
+</script>
+<?php  } ?> 
+<div class="main" style="margin-left:179px;width:calc( 100% - 200px);margin-top:56px;height:calc( 100% - 10px);">
+
+
+<?php  if(!defined('IN_MESSAGE')) { ?>
+<div class="container">
+	<!-- 判断如果是公众号才显示 系统和广告不显示 -->
+
+	<style>
+	.gundong{
+		height:100%;	
+		width:99%;
+		border:1px solid #eee;
+
+	}
+	.zuigao{
+		height:100%;
+		overflow:auto;
+		width:200px;
+	}
+	.zuigao::-webkit-scrollbar {
+	     width: 4px;    
+	     height: 4px;
+	}
+	.zuigao::-webkit-scrollbar-thumb {
+	     border-radius: 5px;
+	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	     background: rgba(0,0,0,0.2);
+	}
+	.zuigao::-webkit-scrollbar-track {
+	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+	     border-radius: 0;
+	     background: rgba(0,0,0,0.1);
+	}
+
+	</style>
+
+	<div class="zuigao" style="position:absolute;">
+		<div class="gundong">
+			<!-- <form action="" method="post">
+				<div class="input-group" style="width:155px;margin:auto;margin-top:20px;">
+				    <input type="search" class="form-control" id="keyword" placeholder="请输入公众号名" style="font-size:10px;">
+				    <span class="input-group-btn">
+				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
+				    </span>
+				</div>
+			</form> -->
+				<?php  
+					load()->model('user');
+					$account_table = table('account');
+					$account_list1 = $account_table->searchAccountList();
+					$account_list1 = array_values($account_list1);
+					foreach ($_W['tag'] as $k => $v) {
+						foreach ($account_list1 as $k1 => $v1) {
+							$account = uni_fetch($v1['uniacid']);
+							$tag = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
+							if($tag){
+								$tag_array = explode(',',$tag['tag_id']);
+								if(in_array($v['id'],$tag_array)){
+									$_W['tag'][$k]['account'][$k1]['name'] = $account['name'];
+									$_W['tag'][$k]['account'][$k1]['uniacid'] = $account['uniacid'];
+								}
+							}
+						}
+					}
+					$c = $_GPC['c'];
+					$a = $_GPC['a'];
+					$do = $_GPC['do'];
+					$href = "$c/$a/$do";
+				?>
+			<?php  if(in_array(FRAME, array('account')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) && !in_array($_GPC['c'], array('account')) ) { ?>
+			<!-- 折叠菜单 begin -->
+			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:155px;margin:auto;margin-top:20px;">
+			<?php  if(is_array($_W['tag'])) { foreach($_W['tag'] as $index => $item) { ?>
+			  <div class="panel panel-default">
+			    <div class="panel-heading" role="tab" id="heading<?php  echo $item['id'];?>" style="background-color:white">
+			        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php  echo $item['id'];?>" aria-expanded="true" aria-controls="collapse<?php  echo $item['id'];?>">
+			          <?php  echo $item['tag_name'];?>
+			        </a>
+			        <div style="float:right;font-color:red;">
+			      		<span class="glyphicon glyphicon-chevron-down"></span>
+			        </div>
+			    </div> 
+			    <div id="collapse<?php  echo $item['id'];?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php  echo $item['id'];?>">
+			    	<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
+				      <div class="panel-body">
+				        <a href="<?php  echo url($href,array('uniacid'=>$item1['uniacid']))?>" id="account_href"><?php  echo $item1['name'];?></a>
+				      </div>
+			    	<?php  } } ?>
+			    </div>
+			  </div>
+			  <?php  } } ?>
+			  
+			</div>
+			<?php  } ?>
+			<!-- 折叠菜单 end -->
+		</div>
+	</div>
+
+	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
+	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
+	<div class="panel panel-content main-panel-content <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>panel-content-plugin<?php  } ?>">
+		<div class="content-head panel-heading main-panel-heading" style="margin-left:200px;">
+			<?php  if(($_GPC['c'] != 'cloud' && !empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi', 'service','delay'))) || defined('IN_MODULE')) { ?>
+				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-module', TEMPLATE_INCLUDEPATH)) : (include template('common/header-module', TEMPLATE_INCLUDEPATH));?>
+			<?php  } else { ?>
+				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-' . FRAME, TEMPLATE_INCLUDEPATH)) : (include template('common/header-' . FRAME, TEMPLATE_INCLUDEPATH));?>
+			<?php  } ?>
+		</div>
+	<div class="panel-body clearfix main-panel-body <?php  if(!empty($_W['setting']['copyright']['leftmenufixed'])) { ?>menu-fixed<?php  } ?>">
+		<div class="left-menu" style="position:fixed;left:0;top:57px;">
+			<?php  if(empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>
+			<div class="left-menu-content" style="height:100%">
+				<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
+				
+				<?php  if(FRAME == 'store' && !($_W['isfounder'] && !user_is_vice_founder()) && !empty($frame_section['founder'])) { ?>
+				<?php  continue;?>
+				<?php  } ?>
+				
+				
+
+				<?php  if(!isset($frame_section['is_display']) || !empty($frame_section['is_display'])) { ?>
+				<div class="panel panel-menu">
+					<?php  if($frame_section['title']) { ?>
+					<div class="panel-heading">
+						<span class="no-collapse"><?php  echo $frame_section['title'];?><i class="wi wi-appsetting pull-right setting"></i></span>
+					</div>
+					<?php  } ?>
+					<ul class="list-group">
+						<?php  if(is_array($frame_section['menu'])) { foreach($frame_section['menu'] as $menu_id => $menu) { ?>
+							<?php  if(!empty($menu['is_display'])) { ?>
+								<?php  if($menu_id == 'platform_module_more') { ?>
+									<!-- <li class="list-group-item list-group-more">
+										<a href="<?php  echo $menu['url']?>"><span class="label label-more">更多应用</span></a>
+									</li> -->
+								<?php  } else { ?>
+									<?php  if((in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER)) && $menu_id == 'front_download' || $menu_id != 'front_download') && !($menu_id == 'platform_menu' && $_W['account']['level'] == ACCOUNT_SUBSCRIPTION)) { ?>
+									<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+										<a href="<?php  echo $menu['url'];?>" class="text-over" <?php  if($frame_section_id == 'platform_module') { ?>target="_blank"<?php  } ?>>
+										<?php  if($menu['icon']) { ?>
+											<?php  if($frame_section_id == 'platform_module') { ?>
+												<img src="<?php  echo $menu['icon'];?>"/>
+											<?php  } else { ?>
+												<i class="<?php  echo $menu['icon'];?>"></i>
+											<?php  } ?>
+										<?php  } ?>
+										<?php  echo $menu['title'];?>
+										</a>
+									</li>
+									<?php  } ?>
+								<?php  } ?>
+							<?php  } ?>
+						<?php  } } ?>
+					</ul>
+				</div>
+				<?php  } ?>
+				<?php  } } ?>
+			</div>
+			<?php  } else { ?>
+				<div class="plugin-menu clearfix">
+					<div class="plugin-menu-main pull-left">
+						<ul class="list-group">
+							<li class="list-group-item<?php  if($_W['current_module']['name'] == $frames['section']['platform_module_menu']['plugin_menu']['main_module']) { ?> active<?php  } ?>">
+								<a href="<?php  echo url('home/welcome/ext', array('m' => $frames['section']['platform_module_menu']['plugin_menu']['main_module'], 'version_id' => intval($_GPC['version_id'])))?>">
+									<i class="wi wi-main-apply"></i>
+									<div>主应用</div>
+								</a>
+							</li>
+							<li class="list-group-item">
+								<div>插件</div>
+							</li>
+							<?php  if(is_array($frames['section']['platform_module_menu']['plugin_menu']['menu'])) { foreach($frames['section']['platform_module_menu']['plugin_menu']['menu'] as $plugin_name => $plugin) { ?>
+							<li class="list-group-item<?php  if($_W['current_module']['name'] == $plugin_name) { ?> active<?php  } ?>">
+								<a href="<?php  echo url('home/welcome/ext', array('m' => $plugin_name, 'version_id' => intval($_GPC['version_id'])))?>">
+									<img src="<?php  echo $plugin['icon'];?>" alt="" class="img-icon" />
+									<div><?php  echo $plugin['title'];?></div>
+								</a>
+							</li>
+							<?php  } } ?>
+						</ul>
+						<?php  unset($plugin_name);?>
+						<?php  unset($plugin);?>
+					</div>
+					<div class="plugin-menu-sub pull-left">
+						<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
+						<?php  if(!isset($frame_section['is_display']) || !empty($frame_section['is_display'])) { ?>
+							<div class="panel panel-menu">
+								<?php  if($frame_section['title']) { ?>
+								<div class="panel-heading">
+									<span class="no-collapse"><?php  echo $frame_section['title'];?><i class="wi wi-appsetting pull-right setting"></i></span>
+								</div>
+								<?php  } ?>
+								<ul class="list-group panel-collapse">
+									<?php  if(is_array($frame_section['menu'])) { foreach($frame_section['menu'] as $menu_id => $menu) { ?>
+									<?php  if(!empty($menu['is_display'])) { ?>
+									<?php  if($menu_id == 'platform_module_more') { ?>
+									<li class="list-group-item list-group-more">
+										<a href="<?php  echo url('module/manage-account');?>"><span class="label label-more">更多应用</span></a>
+									</li>
+									<?php  } else { ?>
+									<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+										<a href="<?php  echo $menu['url'];?>" class="text-over" <?php  if($frame_section_id == 'platform_module') { ?>target="_blank"<?php  } ?>>
+										<?php  if($menu['icon']) { ?>
+											<?php  if($frame_section_id == 'platform_module') { ?>
+											<img src="<?php  echo $menu['icon'];?>"/>
+											<?php  } else { ?>
+											<i class="<?php  echo $menu['icon'];?>"></i>
+											<?php  } ?>
+										<?php  } ?>
+										<?php  echo $menu['title'];?>
+										</a>
+									</li>
+									<?php  } ?>
+									<?php  } ?>
+									<?php  } } ?>
+								</ul>
+							</div>
+						<?php  } ?>
+						<?php  } } ?>
+					</div>
+				</div>
+			<?php  } ?>
+		</div>
+		
+		<div class="right-content" style="margin-left:200px;">
+	<?php  } ?>
+<?php  } ?>
