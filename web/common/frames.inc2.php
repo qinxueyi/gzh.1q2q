@@ -13,7 +13,7 @@ $we7_system_menu['account'] = array(
     'url' => url('home/welcome/platform'),
     'section' => array(
         'platform_plus' => array(
-            // 'title' => '增强功能',
+            'title' => '增强功能',
             'menu' => array(
                 'account_manage' => array(
                     'title' => '公众号管理',
@@ -77,50 +77,37 @@ $we7_system_menu['account'] = array(
                 	'title' => '标签管理',
                 	'url' => url('platform/tag/display'),
                 	'icon' => 'wi wi-home',
-                    'permission_name' => 'platform_tag',
-                    'sub_permission' => array(
-                    ),
+                	'permission_name' => 'platform_tag',
+                	'sub_permission' => array(
+                	),
                 ),
                 
             ),
         ),
-        'marketing' => array(
-            'title' => '营销工具',
-            'icon'=>'wi wi-fansmanage',
-            'menu' => array(
-                'mc_fans' => array(
-                    'title' => '随机连接',
-                    'url' => url('mc/fans'),
-                    'icon' => 'wi wi-fansmanage',
-                    'permission_name' => 'mc_fans',
-                ),
-                'mc_fans1' => array(
-                    'title' => '裂变活动',
-                    'url' => url('mc/fans'),
-                    'icon' => 'wi wi-fansmanage',
-                    'permission_name' => 'mc_fans',
-                ),
-                'mc_fans2' => array(
-                    'title' => '互动延时消息',
-                    'url' => url('mc/fans'),
-                    'icon' => 'wi wi-fansmanage',
-                    'permission_name' => 'mc_fans',
-                ),
-                'mc_fans3' => array(
-                    'title' => '参数二维码',
-                    'url' => url('mc/fans'),
-                    'icon' => 'wi wi-fansmanage',
-                    'permission_name' => 'mc_fans',
-                ),
-            ),
-        ),
         // 'platform_module' => array(
-        //  'title' => '应用模块',
-        //  'menu' => array(),
-        //  'is_display' => true,
+        // 	'title' => '应用模块',
+        // 	'menu' => array(),
+        // 	'is_display' => true,
         // ),
         'mc' => array(
-            // 'title' => '粉丝',
+            'title' => '粉丝',
+            'menu' => array(
+                'mc_fans' => array(
+                    'title' => '粉丝管理',
+                    'url' => url('mc/fans'),
+                    'icon' => 'wi wi-fansmanage',
+                    'permission_name' => 'mc_fans',
+                ),
+                // 'mc_member' => array(
+                //     'title' => '会员管理',
+                //     'url' => url('mc/member'),
+                //     'icon' => 'wi wi-fans',
+                //     'permission_name' => 'mc_member',
+                // )
+            ),
+        ),
+        'marketing' => array(
+            'title' => '营销工具',
             'menu' => array(
                 'mc_fans' => array(
                     'title' => '粉丝管理',
