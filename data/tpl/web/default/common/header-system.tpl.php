@@ -1,1 +1,1 @@
-<?php defined('IN_IA') or exit('Access Denied');?><span class="font-lg"><i class="wi wi-setting"></i> 系统管理</span>
+<?php defined('IN_IA') or exit('Access Denied');?><span class="font-lg"><i class="wi wi-setting"></i> 公众号管理</span>

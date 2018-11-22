@@ -5,6 +5,7 @@
 	.head ul li{
 		display: inline;
 	}
+	
 </style>
 <div class="head" style="position:fixed;top:0;width:100%;z-index:999">
 	<nav class="navbar navbar-default" role="navigation">
@@ -17,12 +18,7 @@
 			</div>
 			<?php  if(!empty($_W['uid'])) { ?>
 			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav navbar-left">
-					<?php  global $top_nav?>
-					<?php  if(is_array($top_nav)) { foreach($top_nav as $nav) { ?>
-					<li <?php  if(FRAME == $nav['name'] && !defined('IN_MODULE')) { ?> class="active"<?php  } ?>><a href="<?php  if(empty($nav['url'])) { ?><?php  echo url('home/welcome/' . $nav['name']);?><?php  } else { ?><?php  echo $nav['url'];?><?php  } ?>" <?php  if(!empty($nav['blank'])) { ?>target="_blank"<?php  } ?>><?php  echo $nav['title'];?></a></li>
-					<?php  } } ?>
-				</ul>
+				
 				<ul class="nav navbar-nav navbar-right">
 					<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-notice', TEMPLATE_INCLUDEPATH)) : (include template('common/header-notice', TEMPLATE_INCLUDEPATH));?>
 					<li class="dropdown">
@@ -77,20 +73,39 @@
 	}
 </script>
 <?php  } ?>
-<?php  if(in_array(FRAME, array('account')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) && !in_array($_GPC['c'], array('home'))  ) { ?>
+<style type="text/css">
+	.skin-default{
+		background-color:#424957;
+	}
+	.menu-self *{
+		background-color:#424957!important;
+	}
+	.text-over{
+		color:#D2D4D8!important;
+		background-color:#4A5264!important;
+		width:210px;
+	}
+	.text-over i{
+		background-color:#4A5264!important;
+	}
+	.two-menu{
+		background-color:#3C424E!important;
+	}
+	.two-menu i{
+		background-color:#3C424E!important;
+	}
+</style>
+
 <div class="main" style="margin-left:179px;width:calc( 100% - 200px);margin-top:56px;height:calc( 100% - 10px);">
-
-
 <?php  if(!defined('IN_MESSAGE')) { ?>
-<div class="container">
-	<!-- 判断如果是公众号才显示 系统和广告不显示 -->
 
+<div class="container">
+	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account'))) { ?>
 	<style>
 	.gundong{
 		height:100%;	
 		width:99%;
 		border:1px solid #eee;
-
 	}
 	.zuigao{
 		height:100%;
@@ -113,7 +128,6 @@
 	}
 
 	</style>
-
 	<div class="zuigao" style="position:absolute;">
 		<div class="gundong">
 			<!-- <form action="" method="post">
@@ -152,11 +166,11 @@
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:250px;margin:auto;margin-top:20px;">
 			<?php  if(is_array($_W['tag'])) { foreach($_W['tag'] as $index => $item) { ?>
 			  <div class="panel panel-default">
-			    <div class="panel-heading" role="tab" id="heading<?php  echo $item['id'];?>" style="background-color:white;cursor:pointer;" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php  echo $item['id'];?>" aria-expanded="true" aria-controls="collapse<?php  echo $item['id'];?>" >
+			    <div class="panel-heading" role="tab" id="heading<?php  echo $item['id'];?>" style="background-color:white;cursor:pointer;" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php  echo $item['id'];?>" aria-expanded="true" aria-controls="collapse<?php  echo $item['id'];?>">
 			        <a role="button" class="qiehuan">
 			          <?php  echo $item['tag_name'];?>
 			        </a>
-			        <div style="float:right;font-color:red;">
+			        <div style="float:right;">
 			      		<span class="glyphicon glyphicon-chevron-down"></span>
 			        </div>
 			    </div> 
@@ -191,315 +205,239 @@
 				$(this).next().children().addClass('glyphicon-chevron-down');
 			}
 		})
-
-
-
 	</script>
-
+	<?php  } ?>
 
 
 	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
 	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
 	<div class="panel panel-content main-panel-content <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>panel-content-plugin<?php  } ?>">
+		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account'))) { ?>
 		<div class="content-head panel-heading main-panel-heading" style="margin-left:300px;">
-			<?php  if(($_GPC['c'] != 'cloud' && !empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi', 'service','delay'))) || defined('IN_MODULE')) { ?>
-				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-module', TEMPLATE_INCLUDEPATH)) : (include template('common/header-module', TEMPLATE_INCLUDEPATH));?>
-			<?php  } else { ?>
-				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-' . FRAME, TEMPLATE_INCLUDEPATH)) : (include template('common/header-' . FRAME, TEMPLATE_INCLUDEPATH));?>
-			<?php  } ?>
-		</div>
-	<div class="panel-body clearfix main-panel-body <?php  if(!empty($_W['setting']['copyright']['leftmenufixed'])) { ?>menu-fixed<?php  } ?>">
-		<div class="left-menu" style="position:fixed;left:0;top:57px;">
-			<?php  if(empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>
-			<div class="left-menu-content" style="height:100%">
-				<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
-				
-				<?php  if(FRAME == 'store' && !($_W['isfounder'] && !user_is_vice_founder()) && !empty($frame_section['founder'])) { ?>
-				<?php  continue;?>
-				<?php  } ?>
-				
-				
-
-				<?php  if(!isset($frame_section['is_display']) || !empty($frame_section['is_display'])) { ?>
-				<div class="panel panel-menu">
-					<?php  if($frame_section['title']) { ?>
-					<div class="panel-heading">
-						<span class="no-collapse"><?php  echo $frame_section['title'];?><i class="wi wi-appsetting pull-right setting"></i></span>
-					</div>
-					<?php  } ?>
-					<ul class="list-group">
-						<?php  if(is_array($frame_section['menu'])) { foreach($frame_section['menu'] as $menu_id => $menu) { ?>
-							<?php  if(!empty($menu['is_display'])) { ?>
-								<?php  if($menu_id == 'platform_module_more') { ?>
-									<!-- <li class="list-group-item list-group-more">
-										<a href="<?php  echo $menu['url']?>"><span class="label label-more">更多应用</span></a>
-									</li> -->
-								<?php  } else { ?>
-									<?php  if((in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER)) && $menu_id == 'front_download' || $menu_id != 'front_download') && !($menu_id == 'platform_menu' && $_W['account']['level'] == ACCOUNT_SUBSCRIPTION)) { ?>
-									<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-										<a href="<?php  echo $menu['url'];?>" class="text-over" <?php  if($frame_section_id == 'platform_module') { ?>target="_blank"<?php  } ?>>
-										<?php  if($menu['icon']) { ?>
-											<?php  if($frame_section_id == 'platform_module') { ?>
-												<img src="<?php  echo $menu['icon'];?>"/>
-											<?php  } else { ?>
-												<i class="<?php  echo $menu['icon'];?>"></i>
-											<?php  } ?>
-										<?php  } ?>
-										<?php  echo $menu['title'];?>
-										</a>
-									</li>
-									<?php  } ?>
-								<?php  } ?>
-							<?php  } ?>
-						<?php  } } ?>
-					</ul>
-				</div>
-				<?php  } ?>
-				<?php  } } ?>
-			</div>
-			<?php  } else { ?>
-				<div class="plugin-menu clearfix">
-					<div class="plugin-menu-main pull-left">
-						<ul class="list-group">
-							<li class="list-group-item<?php  if($_W['current_module']['name'] == $frames['section']['platform_module_menu']['plugin_menu']['main_module']) { ?> active<?php  } ?>">
-								<a href="<?php  echo url('home/welcome/ext', array('m' => $frames['section']['platform_module_menu']['plugin_menu']['main_module'], 'version_id' => intval($_GPC['version_id'])))?>">
-									<i class="wi wi-main-apply"></i>
-									<div>主应用</div>
-								</a>
-							</li>
-							<li class="list-group-item">
-								<div>插件</div>
-							</li>
-							<?php  if(is_array($frames['section']['platform_module_menu']['plugin_menu']['menu'])) { foreach($frames['section']['platform_module_menu']['plugin_menu']['menu'] as $plugin_name => $plugin) { ?>
-							<li class="list-group-item<?php  if($_W['current_module']['name'] == $plugin_name) { ?> active<?php  } ?>">
-								<a href="<?php  echo url('home/welcome/ext', array('m' => $plugin_name, 'version_id' => intval($_GPC['version_id'])))?>">
-									<img src="<?php  echo $plugin['icon'];?>" alt="" class="img-icon" />
-									<div><?php  echo $plugin['title'];?></div>
-								</a>
-							</li>
-							<?php  } } ?>
-						</ul>
-						<?php  unset($plugin_name);?>
-						<?php  unset($plugin);?>
-					</div>
-					<div class="plugin-menu-sub pull-left">
-						<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
-						<?php  if(!isset($frame_section['is_display']) || !empty($frame_section['is_display'])) { ?>
-							<div class="panel panel-menu">
-								<?php  if($frame_section['title']) { ?>
-								<div class="panel-heading">
-									<span class="no-collapse"><?php  echo $frame_section['title'];?><i class="wi wi-appsetting pull-right setting"></i></span>
-								</div>
-								<?php  } ?>
-								<ul class="list-group panel-collapse">
-									<?php  if(is_array($frame_section['menu'])) { foreach($frame_section['menu'] as $menu_id => $menu) { ?>
-									<?php  if(!empty($menu['is_display'])) { ?>
-									<?php  if($menu_id == 'platform_module_more') { ?>
-									<li class="list-group-item list-group-more">
-										<a href="<?php  echo url('module/manage-account');?>"><span class="label label-more">更多应用</span></a>
-									</li>
-									<?php  } else { ?>
-									<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-										<a href="<?php  echo $menu['url'];?>" class="text-over" <?php  if($frame_section_id == 'platform_module') { ?>target="_blank"<?php  } ?>>
-										<?php  if($menu['icon']) { ?>
-											<?php  if($frame_section_id == 'platform_module') { ?>
-											<img src="<?php  echo $menu['icon'];?>"/>
-											<?php  } else { ?>
-											<i class="<?php  echo $menu['icon'];?>"></i>
-											<?php  } ?>
-										<?php  } ?>
-										<?php  echo $menu['title'];?>
-										</a>
-									</li>
-									<?php  } ?>
-									<?php  } ?>
-									<?php  } } ?>
-								</ul>
-							</div>
-						<?php  } ?>
-						<?php  } } ?>
-					</div>
-				</div>
-			<?php  } ?>
-		</div>
-		
-		<div class="right-content" style="margin-left:300px;">
-	<?php  } ?>
-<?php  } ?>
-
-
-
-
-<?php  } else { ?>
-
-
-
-
-
-<div class="main" style="margin-left:179px;width:calc( 100% - 200px);margin-top:56px;height:calc( 100% - 10px);">
-
-
-<?php  if(!defined('IN_MESSAGE')) { ?>
-<div class="container">
-	<!-- 判断如果是公众号才显示 系统和广告不显示 -->
-
-	<style>
-	.gundong{
-		height:100%;	
-		width:99%;
-		border:1px solid #eee;
-
-	}
-	.zuigao{
-		height:100%;
-		overflow:auto;
-		width:200px;
-	}
-	.zuigao::-webkit-scrollbar {
-	     width: 4px;    
-	     height: 4px;
-	}
-	.zuigao::-webkit-scrollbar-thumb {
-	     border-radius: 5px;
-	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	     background: rgba(0,0,0,0.2);
-	}
-	.zuigao::-webkit-scrollbar-track {
-	     -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
-	     border-radius: 0;
-	     background: rgba(0,0,0,0.1);
-	}
-
-	</style>
-
-	
-
-	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
-	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
-	<div class="panel panel-content main-panel-content <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>panel-content-plugin<?php  } ?>">
+		<?php  } else { ?>
 		<div class="content-head panel-heading main-panel-heading">
+		<?php  } ?>
 			<?php  if(($_GPC['c'] != 'cloud' && !empty($_GPC['m']) && !in_array($_GPC['m'], array('keyword', 'special', 'welcome', 'default', 'userapi', 'service','delay'))) || defined('IN_MODULE')) { ?>
 				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-module', TEMPLATE_INCLUDEPATH)) : (include template('common/header-module', TEMPLATE_INCLUDEPATH));?>
 			<?php  } else { ?>
 				<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header-' . FRAME, TEMPLATE_INCLUDEPATH)) : (include template('common/header-' . FRAME, TEMPLATE_INCLUDEPATH));?>
 			<?php  } ?>
 		</div>
-	<div class="panel-body clearfix main-panel-body <?php  if(!empty($_W['setting']['copyright']['leftmenufixed'])) { ?>menu-fixed<?php  } ?>">
-		<div class="left-menu" style="position:fixed;left:0;top:57px;">
-			<?php  if(empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>
-			<div class="left-menu-content" style="height:100%">
-				<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
-				
-				<?php  if(FRAME == 'store' && !($_W['isfounder'] && !user_is_vice_founder()) && !empty($frame_section['founder'])) { ?>
-				<?php  continue;?>
-				<?php  } ?>
-				
-				
 
-				<?php  if(!isset($frame_section['is_display']) || !empty($frame_section['is_display'])) { ?>
-				<div class="panel panel-menu">
-					<?php  if($frame_section['title']) { ?>
-					<div class="panel-heading">
-						<span class="no-collapse"><?php  echo $frame_section['title'];?><i class="wi wi-appsetting pull-right setting"></i></span>
-					</div>
-					<?php  } ?>
-					<ul class="list-group">
-						<?php  if(is_array($frame_section['menu'])) { foreach($frame_section['menu'] as $menu_id => $menu) { ?>
-							<?php  if(!empty($menu['is_display'])) { ?>
-								<?php  if($menu_id == 'platform_module_more') { ?>
-									<!-- <li class="list-group-item list-group-more">
-										<a href="<?php  echo $menu['url']?>"><span class="label label-more">更多应用</span></a>
-									</li> -->
-								<?php  } else { ?>
-									<?php  if((in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER)) && $menu_id == 'front_download' || $menu_id != 'front_download') && !($menu_id == 'platform_menu' && $_W['account']['level'] == ACCOUNT_SUBSCRIPTION)) { ?>
-									<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-										<a href="<?php  echo $menu['url'];?>" class="text-over" <?php  if($frame_section_id == 'platform_module') { ?>target="_blank"<?php  } ?>>
-										<?php  if($menu['icon']) { ?>
-											<?php  if($frame_section_id == 'platform_module') { ?>
-												<img src="<?php  echo $menu['icon'];?>"/>
-											<?php  } else { ?>
-												<i class="<?php  echo $menu['icon'];?>"></i>
-											<?php  } ?>
-										<?php  } ?>
-										<?php  echo $menu['title'];?>
-										</a>
-									</li>
-									<?php  } ?>
-								<?php  } ?>
-							<?php  } ?>
-						<?php  } } ?>
-					</ul>
-				</div>
-				<?php  } ?>
-				<?php  } } ?>
-			</div>
-			<?php  } else { ?>
-				<div class="plugin-menu clearfix">
-					<div class="plugin-menu-main pull-left">
-						<ul class="list-group">
-							<li class="list-group-item<?php  if($_W['current_module']['name'] == $frames['section']['platform_module_menu']['plugin_menu']['main_module']) { ?> active<?php  } ?>">
-								<a href="<?php  echo url('home/welcome/ext', array('m' => $frames['section']['platform_module_menu']['plugin_menu']['main_module'], 'version_id' => intval($_GPC['version_id'])))?>">
-									<i class="wi wi-main-apply"></i>
-									<div>主应用</div>
+
+	<div class="panel-body clearfix main-panel-body <?php  if(!empty($_W['setting']['copyright']['leftmenufixed'])) { ?>menu-fixed<?php  } ?>">
+		<div class="left-menu menu-self" style="position:fixed;left:0;top:57px;font-size:16px;" >
+			<div class="left-menu-content" style="height:100%;">
+
+				<div class="panel panel-menu" >
+					<ul class="list-group" id="left-accordion" role="tablist" aria-multiselectable="true">
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="<?php  echo url('account/manage');?>" class="text-over">
+								<i class="wi wi-wechat"></i>
+								公众号管理
+							</a>
+						</li>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="<?php  echo url('platform/material');?>" class="text-over">
+								<i class="wi wi-redact"></i>
+								素材管理
+							</a>
+						</li>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="<?php  echo url('article/news');?>" class="text-over">
+								<i class="wi wi-article"></i>
+								文章库
+							</a>
+						</li>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="<?php  echo url('platform/reply');?>" class="text-over">
+								<i class="wi wi-reply"></i>
+								自动回复
+							</a>
+						</li>
+					      <li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>" role="button" data-toggle="collapse" data-parent="#left-accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" role="tab" id="headingOne">
+							<a href="javascript:;" class="text-over">
+								<i class="wi wi-wechat"></i>
+								营销工具
+								<i class="glyphicon glyphicon-chevron-down" style="margin-left:30px;"></i>
+							</a>
+							</li>
+					        <ul id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+								<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+									<a href="javascript:;" class="text-over two-menu">
+										<i class="wi wi-wechat"></i>
+										随机链接
+									</a>
+								</li>
+								<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+									<a href="javascript:;" class="text-over two-menu">
+										<i class="wi wi-wechat"></i>
+										裂变活动
+									</a>
+								</li>
+								<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+									<a href="javascript:;" class="text-over two-menu">
+										<i class="wi wi-wechat"></i>
+										互动延时消息
+									</a>
+								</li>
+								<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+									<a href="javascript:;" class="text-over two-menu">
+										<i class="wi wi-wechat"></i>
+										参数二维码
+									</a>
+								</li>
+							</ul>
+
+
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="<?php  echo url('platform/menu/post');?>" class="text-over">
+								<i class="wi wi-custommenu"></i>
+								菜单配置
+							</a>
+						</li>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>" role="button" data-toggle="collapse" data-parent="#left-accordion" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" role="tab" id="headingTwo">
+							<a href="javascript:;" class="text-over">
+								<i class="wi wi-reply"></i>
+								消息管理
+								<i class="glyphicon glyphicon-chevron-down" style="margin-left:30px;"></i>
+							</a>
+						</li>
+						<ul id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									模板消息
 								</a>
 							</li>
-							<li class="list-group-item">
-								<div>插件</div>
-							</li>
-							<?php  if(is_array($frames['section']['platform_module_menu']['plugin_menu']['menu'])) { foreach($frames['section']['platform_module_menu']['plugin_menu']['menu'] as $plugin_name => $plugin) { ?>
-							<li class="list-group-item<?php  if($_W['current_module']['name'] == $plugin_name) { ?> active<?php  } ?>">
-								<a href="<?php  echo url('home/welcome/ext', array('m' => $plugin_name, 'version_id' => intval($_GPC['version_id'])))?>">
-									<img src="<?php  echo $plugin['icon'];?>" alt="" class="img-icon" />
-									<div><?php  echo $plugin['title'];?></div>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									客服消息
 								</a>
 							</li>
-							<?php  } } ?>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									群发消息
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									一次性订阅消息
+								</a>
+							</li>
 						</ul>
-						<?php  unset($plugin_name);?>
-						<?php  unset($plugin);?>
-					</div>
-					<div class="plugin-menu-sub pull-left">
-						<?php  if(is_array($frames['section'])) { foreach($frames['section'] as $frame_section_id => $frame_section) { ?>
-						<?php  if(!isset($frame_section['is_display']) || !empty($frame_section['is_display'])) { ?>
-							<div class="panel panel-menu">
-								<?php  if($frame_section['title']) { ?>
-								<div class="panel-heading">
-									<span class="no-collapse"><?php  echo $frame_section['title'];?><i class="wi wi-appsetting pull-right setting"></i></span>
-								</div>
-								<?php  } ?>
-								<ul class="list-group panel-collapse">
-									<?php  if(is_array($frame_section['menu'])) { foreach($frame_section['menu'] as $menu_id => $menu) { ?>
-									<?php  if(!empty($menu['is_display'])) { ?>
-									<?php  if($menu_id == 'platform_module_more') { ?>
-									<li class="list-group-item list-group-more">
-										<a href="<?php  echo url('module/manage-account');?>"><span class="label label-more">更多应用</span></a>
-									</li>
-									<?php  } else { ?>
-									<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-										<a href="<?php  echo $menu['url'];?>" class="text-over" <?php  if($frame_section_id == 'platform_module') { ?>target="_blank"<?php  } ?>>
-										<?php  if($menu['icon']) { ?>
-											<?php  if($frame_section_id == 'platform_module') { ?>
-											<img src="<?php  echo $menu['icon'];?>"/>
-											<?php  } else { ?>
-											<i class="<?php  echo $menu['icon'];?>"></i>
-											<?php  } ?>
-										<?php  } ?>
-										<?php  echo $menu['title'];?>
-										</a>
-									</li>
-									<?php  } ?>
-									<?php  } ?>
-									<?php  } } ?>
-								</ul>
-							</div>
-						<?php  } ?>
-						<?php  } } ?>
-					</div>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>" role="button" data-toggle="collapse" data-parent="#left-accordion" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree" role="tab" id="headingThree">
+							<a href="javascript:;" class="text-over">
+								<i class="wi wi-pc"></i>
+								广告管理
+								<i class="glyphicon glyphicon-chevron-down" style="margin-left:30px;"></i>
+							</a>
+						</li>
+						<ul id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									广告代售管理
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									广告订单列表
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									投放计划管理
+								</a>
+							</li>
+						</ul>
+
+
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="<?php  echo url('mc/fans');?>" class="text-over">
+								<i class="wi wi-fansmanage"></i>
+								粉丝管理
+							</a>
+						</li>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<a href="javascript" class="text-over">
+								<i class="wi wi-user"></i>
+								团队管理
+							</a>
+						</li>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>" role="button" data-toggle="collapse" data-parent="#left-accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour" role="tab" id="headingFour">
+							<a href="javascript:;" class="text-over">
+								<i class="wi wi-user-group"></i>
+								数据管理
+								<i class="glyphicon glyphicon-chevron-down" style="margin-left:30px;"></i>
+							</a>
+						</li>
+						<ul id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									粉丝数据
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									图文数据
+								</a>
+							</li>
+						</ul>
+						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>" role="button" data-toggle="collapse" data-parent="#left-accordion" href="#collapseFive" aria-expanded="true" aria-controls="collapseFive" role="tab" id="headingFive">
+							<a href="javascript:;" class="text-over">
+								<i class="wi wi-update"></i>
+								分销管理
+								<i class="glyphicon glyphicon-chevron-down" style="margin-left:30px;"></i>
+							</a>
+						</li>
+						<ul id="collapseFive" class="collapse" role="tabpanel" aria-labelledby="headingFive">
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									分销列表
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									订单管理
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="javascript:;" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									收益中心
+								</a>
+							</li>
+						</ul>
+					</ul>
+
+
+
 				</div>
-			<?php  } ?>
+			</div>
 		</div>
-		
+
+
+
+
+		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account'))) { ?>
+		<div class="right-content" style="margin-left:300px;">
+		<?php  } else { ?>
 		<div class="right-content">
+		<?php  } ?>
 	<?php  } ?>
 <?php  } ?>
-<?php  } ?>
+
+
+
+
+
