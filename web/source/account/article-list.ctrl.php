@@ -142,7 +142,8 @@ function http_post_json($url, $jsonStr)
 
 function weChatList()
 {
-    $weChatList = pdo_getall('account_wechats');
+    $conditionModel = array("styleid =" => 0);
+    $weChatList = pdo_getall('account_wechats',$conditionModel);
     return $weChatList;
 }
 
