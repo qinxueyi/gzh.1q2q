@@ -14,7 +14,6 @@ $_W['page']['title'] = '公众号列表 - 公众号';
 
 $state = permission_account_user_role($_W['uid'], $_W['uniacid']);
 $account_info = permission_user_account_num();
-
 if($do == 'switch') {
 	$uniacid = intval($_GPC['uniacid']);
 	$role = permission_account_user_role($_W['uid'], $uniacid);
