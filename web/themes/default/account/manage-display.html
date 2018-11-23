@@ -41,11 +41,10 @@
 </div>
 <table class="table we7-table table-hover vertical-middle table-manage" id="js-system-account-display" ng-controller="SystemAccountDisplay" ng-cloak>
 	<col width="120px" />
-	<col/>
+	<col width="220px"/>
 	<col width="200px"/>
-	<col width="100px"/>
 	<col width="260px" />
-	<tr>
+	<!-- <tr>
 		<th colspan="5" class="text-left filter">
 			<div class="dropdown dropdown-toggle we7-dropdown">
 				<a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -69,11 +68,19 @@
 				</ul>
 			</div>
 		</th>
+	</tr> -->
+	<tr style="height:10px;">
+		<span style="font-size:10px;">标签筛选:</span>
+		{loop $tag1 $index $item}
+			<a href="{php echo url('account/manage',array('tag_id'=>$item['id']))}" style="font-size:10px;margin-left:10px;">{$item['tag_name']}</a>
+		{/loop}
 	</tr>
 	<tr>
 		<th colspan="2" class="text-left">帐号</th>
-		<th>有效期</th>
-		<th>短信数(条)</th>
+		<th>微信号</th>
+		<th>二维码</th>
+		<th>粉丝数</th>
+		<th>标签</th>
 		<th class="text-right">操作</th>
 	</tr>
 	<tr class="color-gray" ng-repeat="list in lists">
@@ -96,9 +103,11 @@
 			<span class="color-green" ng-if="list.isconnect == 1"><i class="wi wi-right-sign"></i>已接入</span>
 		</td>
 		<td>
-			<p ng-bind="list.end"></p>
+			<p ng-bind="list.account"></p>
 		</td>
-		<td><p ng-bind="list.sms"></p></td>
+		<td><img ng-src="{{list.qrcode}}" style="width:70px;"></td>
+		<td><p class="color-dark" ng-bind="list.fans_total"></td>
+		<td><p class="color-dark" ng-bind="list.tag"></td>
 		<td class="vertical-middle table-manage-td">
 			<div class="link-group">
 				<a ng-href="{{links.switch}}uniacid={{list.uniacid}}">进入公众号</a>
@@ -109,9 +118,9 @@
 			{if $role_type}
 			<div class="manage-option text-right">
 				<a href="{{links.post}}&acid={{list.acid}}&uniacid={{list.uniacid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">基础信息</a>
-				<a href="{{links.post}}&do=sms&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">短信信息</a>
-				<a href="{{links.postUser}}&do=edit&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}">使用者管理</a>
-				<a href="{{links.post}}&do=modules_tpl&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}">可用应用模板/模块</a>
+				<!-- <a href="{{links.post}}&do=sms&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">短信信息</a> -->
+				<!-- <a href="{{links.postUser}}&do=edit&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}">使用者管理</a> -->
+				<!-- <a href="{{links.post}}&do=modules_tpl&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}">可用应用模板/模块</a> -->
 				<a ng-href="{{links.del}}&acid={{list.acid}}&uniacid={{list.uniacid}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'" onclick="if(!confirm('确认放入回收站吗？')) return false;" class="del">停用</a>
 			</div>
 			{/if}

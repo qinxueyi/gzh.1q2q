@@ -165,18 +165,23 @@
 			<!-- 折叠菜单 begin -->
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:250px;margin:auto;margin-top:20px;">
 			<?php  if(is_array($_W['tag'])) { foreach($_W['tag'] as $index => $item) { ?>
-			  <div class="panel panel-default">
+			  <div class="panel panel-default" style="border:0px;">
 			    <div class="panel-heading" role="tab" id="heading<?php  echo $item['id'];?>" style="background-color:white;cursor:pointer;" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php  echo $item['id'];?>" aria-expanded="true" aria-controls="collapse<?php  echo $item['id'];?>">
 			        <a role="button" class="qiehuan">
-			          <?php  echo $item['tag_name'];?>
+			          <?php  echo $item['tag_name'];?>(<?php  echo count($item['account'])?>)
 			        </a>
 			        <div style="float:right;">
 			      		<span class="glyphicon glyphicon-chevron-down"></span>
 			        </div>
-			    </div> 
-			    <div id="collapse<?php  echo $item['id'];?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php  echo $item['id'];?>">
+			    </div>
+			    <style type="text/css">
+			    	.acti{
+			    		background-color:#EEF9FF;
+			    	}
+				</style>
+			    <div id="collapse<?php  echo $item['id'];?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php  echo $item['id'];?>" >
 			    	<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
-				      <div class="panel-body">
+				      <div class="panel-body <?php  if($_W['uniacid'] == $item1['uniacid']) { ?> acti <?php  } ?>" >
 				        <a href="<?php  echo url($href,array('uniacid'=>$item1['uniacid']))?>"><?php  echo $item1['name'];?></a>
 				        <?php  if($item1['level'] == 1 || $item1['level'] == 3) { ?>
 				        <span class="label label-primary">订阅号</span>
@@ -247,6 +252,7 @@
 							<a href="<?php  echo url('article/news');?>" class="text-over">
 								<i class="wi wi-article"></i>
 								文章库
+								<span style="color:red">x</span>
 							</a>
 						</li>
 						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
@@ -267,16 +273,18 @@
 									<a href="javascript:;" class="text-over two-menu">
 										<i class="wi wi-wechat"></i>
 										随机链接
+										<span style="color:red">x</span>
 									</a>
 								</li>
 								<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 									<a href="javascript:;" class="text-over two-menu">
 										<i class="wi wi-wechat"></i>
 										裂变活动
+										<span style="color:red">x</span>
 									</a>
 								</li>
 								<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-									<a href="javascript:;" class="text-over two-menu">
+									<a href="<?php  echo url('platform/reply',array('m'=>'delay'));?>" class="text-over two-menu">
 										<i class="wi wi-wechat"></i>
 										互动延时消息
 									</a>
@@ -285,6 +293,7 @@
 									<a href="javascript:;" class="text-over two-menu">
 										<i class="wi wi-wechat"></i>
 										参数二维码
+										<span style="color:red">x</span>
 									</a>
 								</li>
 							</ul>
@@ -308,24 +317,28 @@
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									模板消息
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									客服消息
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									群发消息
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									一次性订阅消息
+									<span style="color:red">x</span>
 								</a>
 							</li>
 						</ul>
@@ -341,18 +354,21 @@
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									广告代售管理
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									广告订单列表
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									投放计划管理
+									<span style="color:red">x</span>
 								</a>
 							</li>
 						</ul>
@@ -368,6 +384,7 @@
 							<a href="javascript" class="text-over">
 								<i class="wi wi-user"></i>
 								团队管理
+								<span style="color:red">x</span>
 							</a>
 						</li>
 						<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>" role="button" data-toggle="collapse" data-parent="#left-accordion" href="#collapseFour" aria-expanded="true" aria-controls="collapseFour" role="tab" id="headingFour">
@@ -379,13 +396,13 @@
 						</li>
 						<ul id="collapseFour" class="collapse" role="tabpanel" aria-labelledby="headingFour">
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-								<a href="javascript:;" class="text-over two-menu">
+								<a href="<?php  echo url('account/fan-list');?>" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									粉丝数据
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-								<a href="javascript:;" class="text-over two-menu">
+								<a href="<?php  echo url('account/article-list');?>" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									图文数据
 								</a>
@@ -403,18 +420,21 @@
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									分销列表
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									订单管理
+									<span style="color:red">x</span>
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="javascript:;" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									收益中心
+									<span style="color:red">x</span>
 								</a>
 							</li>
 						</ul>

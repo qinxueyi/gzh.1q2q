@@ -5,6 +5,7 @@
  */
 defined('IN_IA') or exit('Access Denied');
 
+
 load()->model('user');
 
 $dos = array('rank', 'display', 'switch');
@@ -88,9 +89,6 @@ if ($do == 'display') {
 		}else{
 			$account['tag'] = '暂无标签';
 		}
-		// echo "<pre>";
-		// var_dump($account['tag']);
-		// echo "</pre>";
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
 		$account['fans_total'] = pdo_getcolumn("mc_mapping_fans", array('uniacid' => $account['uniacid'], 'acid' => $account['acid'], 'follow' => 1), 'count(*)');
 		uni_update_week_stat();

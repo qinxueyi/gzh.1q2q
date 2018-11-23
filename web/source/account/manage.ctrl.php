@@ -58,11 +58,40 @@ if ($do == 'display') {
 	} else {
 		$list = $account_table->searchAccountList();
 	}
+	if (isset($_GPC['tag_id'])) {
+
+		$tag_id = $_GPC['tag_id'];
+		$list = $account_table->searchWithTag($tag_id);
+	}
+	$tag1 = pdo_getall('account_tag');
 
 	foreach($list as &$account) {
 		$account = uni_fetch($account['uniacid']);
 		$account['end'] = $account['endtime'] == 0 ? '永久' : date('Y-m-d', $account['starttime']) . '~'. date('Y-m-d', $account['endtime']);
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
+		$account_tag_id = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']),'tag_id');
+		if ($account_tag_id) {
+			$tag_array = explode(',',$account_tag_id['tag_id']);
+			foreach ($tag_array as $k => $v) {
+				$tag_name[] = pdo_get('account_tag',array('id'=>$v));
+			}
+			$account['tag'] = $account_tag_id['tag_id'];
+		}else{
+			$account['tag'] = '暂无标签';
+		}
+		$account['fans_total'] = pdo_getcolumn("mc_mapping_fans", array('uniacid' => $account['uniacid'], 'acid' => $account['acid'], 'follow' => 1), 'count(*)');
+		uni_update_week_stat();
+		$yesterday = date('Ymd', strtotime('-1 days'));
+		$yesterday_stat = pdo_get('stat_fans', array('date' => $yesterday, 'uniacid' => $account['uniacid']));
+		$yesterday_stat['new'] = intval($yesterday_stat['new']);
+		$yesterday_stat['cancel'] = intval($yesterday_stat['cancel']);
+		$yesterday_stat['jing_num'] = intval($yesterday_stat['new']) - intval($yesterday_stat['cancel']);
+		$yesterday_stat['cumulate'] = intval($yesterday_stat['cumulate']);
+			$today_stat = pdo_get('stat_fans', array('date' => date('Ymd'), 'uniacid' => $account['uniacid']));
+		$today_stat['new'] = intval($today_stat['new']);
+		$today_stat['cancel'] = intval($today_stat['cancel']);
+		$today_stat['jing_num'] = $today_stat['new'] - $today_stat['cancel'];
+		$account['cumulate'] = intval($today_stat['jing_num']) + $yesterday_stat['cumulate'];
 	}
 	$total = $account_table->getLastQueryTotal();
 	$pager = pagination($total, $pindex, $psize);
