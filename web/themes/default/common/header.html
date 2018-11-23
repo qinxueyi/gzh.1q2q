@@ -213,8 +213,8 @@
 	</script>
 	{/if}
 
-
-	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽">{if $_GPC['main-lg']}正常{else}宽屏{/if}</a>
+	
+	<!-- <a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽">{if $_GPC['main-lg']}正常{else}宽屏{/if}</a> -->
 	{if in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))}
 	<div class="panel panel-content main-panel-content {if !empty($frames['section']['platform_module_menu']['plugin_menu'])}panel-content-plugin{/if}">
 		{if in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account'))}

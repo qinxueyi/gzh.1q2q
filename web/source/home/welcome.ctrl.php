@@ -4,6 +4,7 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
+
 load()->model('welcome');
 load()->model('cloud');
 load()->func('communication');
@@ -19,7 +20,7 @@ load()->model('visit');
 
 $dos = array('platform', 'system', 'ext', 'get_fans_kpi', 'get_last_modules', 'get_system_upgrade', 'get_upgrade_modules', 'get_module_statistics', 'get_ads', 'get_not_installed_modules', 'system_home', 'set_top', 'add_welcome');
 $do = in_array($do, $dos) ? $do : 'platform';
-
+$_GPC['main-lg'] = 1;
 if ($do == 'get_not_installed_modules') {
     $data = array();
     $not_installed_modules = module_get_all_unistalled('uninstalled', false);

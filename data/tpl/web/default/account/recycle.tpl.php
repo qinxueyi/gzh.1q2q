@@ -28,8 +28,8 @@
 	<col width="150px" />
 	<tr>
 		<th colspan="2" class="text-left">公众号</th>
-		<th>有效期</th>
-		<th>短信数(条)</th>
+		<!-- <th>有效期</th> -->
+		<!-- <th>短信数(条)</th> -->
 		<th class="text-right">操作</th>
 	</tr>
 	<tr class="color-gray" ng-repeat="list in del_accounts">
@@ -45,10 +45,10 @@
 			<span class="color-red" ng-if="list.isconnect == 0" data-toggle="tooltip" data-placement="right" title="公众号接入状态显示“未接入”解决方案：进入微信公众平台，依次选择: 开发者中心 -> 修改配置，然后将对应公众号在平台的url和token复制到微信公众平台对应的选项，公众平台会自动进行检测"><i class="wi wi-error-sign"></i>未接入</span>
 			<span class="color-green" ng-if="list.isconnect == 1"><i class="wi wi-right-sign"></i>已接入</span>
 		</td>
-		<td>
+		<!-- <td>
 			<p ng-bind="list.setmeal.timelimit"></p>
 		</td>
-		<td><p ng-bind="list.sms"></p></td>
+		<td><p ng-bind="list.sms"></p></td> -->
 		<td class="vertical-middle">
 			<div class="link-group">
 				<a ng-href="{{links.postRecover}}&acid={{list.acid}}&uniacid={{list.uniacid}}">恢复</a>

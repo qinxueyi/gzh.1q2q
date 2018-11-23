@@ -213,8 +213,8 @@
 	</script>
 	<?php  } ?>
 
-
-	<a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a>
+	
+	<!-- <a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a> -->
 	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
 	<div class="panel panel-content main-panel-content <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>panel-content-plugin<?php  } ?>">
 		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account'))) { ?>
