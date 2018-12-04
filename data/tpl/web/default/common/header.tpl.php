@@ -28,7 +28,7 @@
 								<a href="<?php  echo url('user/profile');?>" target="_blank"><i class="wi wi-account color-gray"></i> 我的账号</a>
 							</li>
 							<li class="divider"></li>
-							<?php  if(permission_check_account_user('see_system_upgrade')) { ?><li><a href="<?php  echo url('cloud/upgrade');?>" target="_blank"><i class="wi wi-update color-gray"></i> 自动更新</a></li><?php  } ?>
+							<!-- <?php  if(permission_check_account_user('see_system_upgrade')) { ?><li><a href="<?php  echo url('cloud/upgrade');?>" target="_blank"><i class="wi wi-update color-gray"></i> 自动更新</a></li><?php  } ?> -->
 							<li><a href="<?php  echo url('system/updatecache');?>" target="_blank"><i class="wi wi-cache color-gray"></i> 更新缓存</a></li>
 							<li class="divider"></li>
 							<li>
@@ -104,7 +104,7 @@
 <?php  if(!defined('IN_MESSAGE')) { ?>
 
 <div class="container">
-	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) && !in_array($_GPC['c'], array('account','home'))) { ?>
+	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) && !in_array($_GPC['c'], array('account','home','system'))) { ?>
 	<style>
 	.gundong{
 		height:100%;	
@@ -221,7 +221,7 @@
 	<!-- <a href="javascript:;" class="js-big-main button-to-big color-gray" title="加宽"><?php  if($_GPC['main-lg']) { ?>正常<?php  } else { ?>宽屏<?php  } ?></a> -->
 	<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show'))) { ?>
 	<div class="panel panel-content main-panel-content <?php  if(!empty($frames['section']['platform_module_menu']['plugin_menu'])) { ?>panel-content-plugin<?php  } ?>">
-		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account','home'))) { ?>
+		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account','home','system'))) { ?>
 		<div class="content-head panel-heading main-panel-heading" style="margin-left:300px;">
 		<?php  } else { ?>
 		<div class="content-head panel-heading main-panel-heading">
@@ -453,7 +453,7 @@
 
 
 
-		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account','home'))) { ?>
+		<?php  if(in_array(FRAME, array('account', 'system', 'advertisement', 'wxapp', 'site', 'store', 'webapp', 'phoneapp')) && !in_array($_GPC['a'], array('news-show', 'notice-show')) &&!in_array($_GPC['c'], array('account','home','system'))) { ?>
 		<div class="right-content" style="margin-left:300px;">
 		<?php  } else { ?>
 		<div class="right-content">
