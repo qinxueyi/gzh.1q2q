@@ -50,7 +50,6 @@ load()->func('file');
 
 $dos = array('display', 'sync', 'delete', 'send');
 $do = in_array($do, $dos) ? $do : 'display';
-
 $_W['page']['title'] = '永久素材-微信素材';
 
 if ($do == 'send') {

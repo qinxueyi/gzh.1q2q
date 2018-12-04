@@ -4,7 +4,9 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
-
+if ($action != 'display') {
+	define('FRAME', 'system');
+}
 $account_api = WeAccount::create();
 if (is_error($account_api)) {
 	itoast('', url('account/display'));

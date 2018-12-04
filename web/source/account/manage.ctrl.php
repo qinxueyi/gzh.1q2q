@@ -4,7 +4,6 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
-
 load()->func('file');
 load()->model('user');
 load()->model('message');
@@ -14,7 +13,7 @@ $do = in_array($_GPC['do'], $dos)? $do : 'display';
 
 $_W['page']['title'] = $account_typename . '列表 - ' . $account_typename;
 $account_info = permission_user_account_num();
-	$role_type = in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER, ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_MANAGER));
+$role_type = in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER, ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_MANAGER));
 
 
 
@@ -63,8 +62,6 @@ if ($do == 'display') {
 		$tag_id = $_GPC['tag_id'];
 		$list = $account_table->searchWithTag($tag_id);
 	}
-	$tag1 = pdo_getall('account_tag');
-
 	foreach($list as &$account) {
 		$account = uni_fetch($account['uniacid']);
 		$account['end'] = $account['endtime'] == 0 ? '永久' : date('Y-m-d', $account['starttime']) . '~'. date('Y-m-d', $account['endtime']);
@@ -102,12 +99,12 @@ if ($do == 'delete') {
 	$acid = intval($_GPC['acid']);
 	$uid = $_W['uid'];
 	$type = intval($_GPC['type']);
-		$state = permission_account_user_role($uid, $uniacid);
-	
-		if (!in_array($state, array(ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER))) {
-			itoast('无权限操作！', url('account/manage'), 'error');
-		}
-	
+	$state = permission_account_user_role($uid, $uniacid);
+
+	if (!in_array($state, array(ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER))) {
+		itoast('无权限操作！', url('account/manage'), 'error');
+	}
+
 
 	
 

@@ -1,5 +1,4 @@
 <?php
-
 define('IN_IA', true);
 define('STARTTIME', microtime());
 define('IA_ROOT', str_replace("\\", '/', dirname(dirname(__FILE__))));

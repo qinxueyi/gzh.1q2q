@@ -10,7 +10,6 @@
 	
 </ul>
 <div class="clearfix we7-margin-bottom">
-	
 		<?php  if(!$_W['isfounder'] && !empty($account_info['uniacid_limit']) || user_is_vice_founder()) { ?>
 		<div class="alert alert-warning hidden">
 			温馨提示：
