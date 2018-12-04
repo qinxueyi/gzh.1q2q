@@ -294,6 +294,46 @@
 <div class="alert we7-page-alert">
 	<i class="wi wi-info-sign"></i>文字格式a链接格式为&lt; a href=&quot; 此处填写链接地址(加上)&quot;&gt;此处填写内容&lt;/ a&gt;
 </div>
+<form id="reply-form" class="form-horizontal form" action="{php echo url('platform/reply/post', array('m' => $m))}" method="post" enctype="multipart/form-data" id="delay-form">
+	<div class="col-sm-12 form-inline" style="margin-bottom:10px;">
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">延迟推送时间 :</label>
+		    <input type="text" class="form-control" name="delay-hour" style="width: 70px">
+		</div>
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">时</label>
+		    <input type="text" class="form-control" name="delay-minute" style="width: 70px">
+		</div>
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">分</label>
+		    <input type="text" class="form-control" name="delay-second" style="width: 70px">
+		</div>
+		<div class="form-group">
+		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
+		</div>
+	</div>
+
+	<div class="col-sm-12">
+		{if $m ==  'userapi'}
+		{php echo module_build_form('userapi', $rid)}
+		{elseif in_array($m, $sysmods)}
+		{php echo module_build_form('core', $rid, array('basic'=> false,'news'=> false,'image'=> false,'voice'=> false,'video'=> false))}
+		{else}
+		{php echo module_build_form($m, $rid)}
+		{/if}
+	</div>
+	<input type="hidden" name="token" value="{$_W['token']}">
+	<div>
+		<nav class="navbar navbar-wxapp-bottom navbar-fixed-bottom" role="navigation">
+			<div class="container">
+				<div class="pager">
+					<input type="submit" name="submit" value="发布" class="reply-form-submit btn btn-primary">
+					<!-- <span value="发布" class="btn btn-primary" ng-click="submitForm()">发布</span> -->
+				</div>
+			</div>
+		</nav>
+	</div>
+</form>
 <div class="panel-body col-sm-12">
 	<table class="table we7-table table-hover vertical-middle table-manage">
 		<tr>
@@ -359,7 +399,7 @@
 		{/loop}
 	</table>
 </div>
-<hr>
+<!-- <hr>
 <span><b>添加延迟推送</b></span>
 <br>
 <br>
@@ -429,12 +469,12 @@
 			<div class="container">
 				<div class="pager">
 					<input type="submit" name="submit" value="发布" class="reply-form-submit btn btn-primary">
-					<!-- <span value="发布" class="btn btn-primary" ng-click="submitForm()">发布</span> -->
+					<span value="发布" class="btn btn-primary" ng-click="submitForm()">发布</span>
 				</div>
 			</div>
 		</nav>
 	</div>
-</form>
+</form> -->
 <script>
 require(['underscore'], function() {
 	angular.module('replyFormApp').value('config', {

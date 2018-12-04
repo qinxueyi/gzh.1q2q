@@ -10,7 +10,6 @@ load()->model('message');
 $dos = array('display', 'delete');
 $do = in_array($_GPC['do'], $dos)? $do : 'display';
 
-
 $_W['page']['title'] = $account_typename . '列表 - ' . $account_typename;
 $account_info = permission_user_account_num();
 $role_type = in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER, ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_MANAGER));
@@ -62,8 +61,9 @@ if ($do == 'display') {
 		$tag_id = $_GPC['tag_id'];
 		$list = $account_table->searchWithTag($tag_id);
 	}
+	$tag1 = pdo_getall('account_tag');
 	foreach($list as &$account) {
-		$account = uni_fetch($account['uniacid']);
+	    $account = uni_fetch($account['uniacid']);
 		$account['end'] = $account['endtime'] == 0 ? '永久' : date('Y-m-d', $account['starttime']) . '~'. date('Y-m-d', $account['endtime']);
 		$account['role'] = permission_account_user_role($_W['uid'], $account['uniacid']);
 		$account_tag_id = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']),'tag_id');
@@ -84,7 +84,7 @@ if ($do == 'display') {
 		$yesterday_stat['cancel'] = intval($yesterday_stat['cancel']);
 		$yesterday_stat['jing_num'] = intval($yesterday_stat['new']) - intval($yesterday_stat['cancel']);
 		$yesterday_stat['cumulate'] = intval($yesterday_stat['cumulate']);
-			$today_stat = pdo_get('stat_fans', array('date' => date('Ymd'), 'uniacid' => $account['uniacid']));
+		$today_stat = pdo_get('stat_fans', array('date' => date('Ymd'), 'uniacid' => $account['uniacid']));
 		$today_stat['new'] = intval($today_stat['new']);
 		$today_stat['cancel'] = intval($today_stat['cancel']);
 		$today_stat['jing_num'] = $today_stat['new'] - $today_stat['cancel'];

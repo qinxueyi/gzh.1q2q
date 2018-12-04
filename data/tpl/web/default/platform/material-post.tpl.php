@@ -1,4 +1,16 @@
 <?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
+
+<style>
+.appmsg-edit-item.title .form-control {
+    font-size: 15px;
+    height: 36px;
+    line-height: 31px;
+    border: 1px solid #e7e7eb!important;
+	border-radius: 0;
+    width: calc(100% - 30px);
+    margin: auto;
+}
+</style>
 <div class="" ng-module="materialApp" ng-controller="materialAdd" id="main" ng-cloak>
 	<div class="penel we7-panel panel-special">
 		<div class="panel-heading">
