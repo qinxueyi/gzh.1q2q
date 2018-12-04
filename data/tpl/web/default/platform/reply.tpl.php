@@ -298,15 +298,15 @@
 	<div class="col-sm-12 form-inline" style="margin-bottom:10px;">
 		<div class="form-group">
 		    <label for="exampleInputName2" style="font-weight:400;">延迟推送时间 :</label>
-		    <input type="text" class="form-control" name="delay-hour" style="width: 70px">
+		    <input type="text" class="form-control" name="delay-hour" style="width: 70px" onkeyup="this.value=this.value.replace(/\D/g,'')">
 		</div>
 		<div class="form-group">
 		    <label for="exampleInputName2" style="font-weight:400;">时</label>
-		    <input type="text" class="form-control" name="delay-minute" style="width: 70px">
+		    <input type="text" class="form-control" name="delay-minute" style="width: 70px" onkeyup="this.value=this.value.replace(/\D/g,'')">
 		</div>
 		<div class="form-group">
 		    <label for="exampleInputName2" style="font-weight:400;">分</label>
-		    <input type="text" class="form-control" name="delay-second" style="width: 70px">
+		    <input type="text" class="form-control" name="delay-second" style="width: 70px" onkeyup="this.value=this.value.replace(/\D/g,'')">
 		</div>
 		<div class="form-group">
 		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
