@@ -312,7 +312,39 @@
 		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
 		</div>
 	</div>
-
+		<script type="text/javascript">
+		$(function() {
+			function time(hour){
+				if(hour == 48){
+					$("input[name='delay-minute']").val(0);	
+					$("input[name='delay-second']").val(0);
+				}
+			}
+			$("input[name='delay-hour']").keyup(function(event){
+				var hour = $("input[name='delay-hour']").val();
+				if(hour>48){
+					$("input[name='delay-hour']").val(48);
+				} 
+				time(hour);
+			});	
+			$("input[name='delay-minute']").keyup(function(event){
+				var hour = $("input[name='delay-hour']").val();
+				var minute = $("input[name='delay-minute']").val();
+				if(minute>59){
+					$("input[name='delay-minute']").val(59);
+				}
+				time(hour);
+			});	
+			$("input[name='delay-second']").keyup(function(event){
+				var hour = $("input[name='delay-hour']").val();
+				var second = $("input[name='delay-second']").val();
+				if(second>59){
+					$("input[name='delay-second']").val(59);
+				}
+				time(hour);	
+			});
+		});
+	</script>
 	<div class="col-sm-12">
 		{if $m ==  'userapi'}
 		{php echo module_build_form('userapi', $rid)}
@@ -399,82 +431,7 @@
 		{/loop}
 	</table>
 </div>
-<!-- <hr>
-<span><b>添加延迟推送</b></span>
-<br>
-<br>
-<form id="reply-form" class="form-horizontal form" action="{php echo url('platform/reply/post', array('m' => $m))}" method="post" enctype="multipart/form-data" id="delay-form">
-	<div class="col-sm-12 form-inline" style="margin-bottom:10px;">
-		<div class="form-group">
-		    <label for="exampleInputName2" style="font-weight:400;">延迟推送时间 :</label>
-		    <input type="text" class="form-control" name="delay-hour" style="width: 70px"  onkeyup="this.value=this.value.replace(/\D/g,'')">
-		</div>
-		<div class="form-group">
-		    <label for="exampleInputName2" style="font-weight:400;">时</label>
-		    <input type="text" class="form-control" name="delay-minute" style="width: 70px"  onkeyup="this.value=this.value.replace(/\D/g,'')">
-		</div>
-		<div class="form-group">
-		    <label for="exampleInputName2" style="font-weight:400;">分</label>
-		    <input type="text" class="form-control" name="delay-second" style="width: 70px" onkeyup="this.value=this.value.replace(/\D/g,'')">
-		</div>
-		<div class="form-group">
-		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
-		</div>
-	</div>
-	<script type="text/javascript">
-		$(function() {
-			function time(hour){
-				if(hour == 48){
-					$("input[name='delay-minute']").val(0);	
-					$("input[name='delay-second']").val(0);
-				}
-			}
-			$("input[name='delay-hour']").keyup(function(event){
-				var hour = $("input[name='delay-hour']").val();
-				if(hour>48){
-					$("input[name='delay-hour']").val(48);
-				} 
-				time(hour);
-			});	
-			$("input[name='delay-minute']").keyup(function(event){
-				var hour = $("input[name='delay-hour']").val();
-				var minute = $("input[name='delay-minute']").val();
-				if(minute>59){
-					$("input[name='delay-minute']").val(59);
-				}
-				time(hour);
-			});	
-			$("input[name='delay-second']").keyup(function(event){
-				var hour = $("input[name='delay-hour']").val();
-				var second = $("input[name='delay-second']").val();
-				if(second>59){
-					$("input[name='delay-second']").val(59);
-				}
-				time(hour);	
-			});
-		});
-	</script>
-	<div class="col-sm-12">
-		{if $m ==  'userapi'}
-		{php echo module_build_form('userapi', $rid)}
-		{elseif in_array($m, $sysmods)}
-		{php echo module_build_form('core', $rid, array('basic'=> false,'news'=> false,'image'=> false,'voice'=> false,'video'=> false))}
-		{else}
-		{php echo module_build_form($m, $rid)}
-		{/if}
-	</div>
-	<input type="hidden" name="token" value="{$_W['token']}">
-	<div>
-		<nav class="navbar navbar-wxapp-bottom navbar-fixed-bottom" role="navigation">
-			<div class="container">
-				<div class="pager">
-					<input type="submit" name="submit" value="发布" class="reply-form-submit btn btn-primary">
-					<span value="发布" class="btn btn-primary" ng-click="submitForm()">发布</span>
-				</div>
-			</div>
-		</nav>
-	</div>
-</form> -->
+
 <script>
 require(['underscore'], function() {
 	angular.module('replyFormApp').value('config', {

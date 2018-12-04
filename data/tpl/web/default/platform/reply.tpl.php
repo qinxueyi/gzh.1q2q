@@ -312,7 +312,39 @@
 		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
 		</div>
 	</div>
-
+		<script type="text/javascript">
+		$(function() {
+			function time(hour){
+				if(hour == 48){
+					$("input[name='delay-minute']").val(0);	
+					$("input[name='delay-second']").val(0);
+				}
+			}
+			$("input[name='delay-hour']").keyup(function(event){
+				var hour = $("input[name='delay-hour']").val();
+				if(hour>48){
+					$("input[name='delay-hour']").val(48);
+				} 
+				time(hour);
+			});	
+			$("input[name='delay-minute']").keyup(function(event){
+				var hour = $("input[name='delay-hour']").val();
+				var minute = $("input[name='delay-minute']").val();
+				if(minute>59){
+					$("input[name='delay-minute']").val(59);
+				}
+				time(hour);
+			});	
+			$("input[name='delay-second']").keyup(function(event){
+				var hour = $("input[name='delay-hour']").val();
+				var second = $("input[name='delay-second']").val();
+				if(second>59){
+					$("input[name='delay-second']").val(59);
+				}
+				time(hour);	
+			});
+		});
+	</script>
 	<div class="col-sm-12">
 		<?php  if($m ==  'userapi') { ?>
 		<?php  echo module_build_form('userapi', $rid)?>
