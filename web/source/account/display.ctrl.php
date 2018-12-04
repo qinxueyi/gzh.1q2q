@@ -5,7 +5,6 @@
  */
 defined('IN_IA') or exit('Access Denied');
 
-
 load()->model('user');
 
 $dos = array('rank', 'display', 'switch');

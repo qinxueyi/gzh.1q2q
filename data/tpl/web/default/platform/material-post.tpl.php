@@ -1,4 +1,4 @@
-{template 'common/header'}
+<?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
 <style>
 .appmsg-edit-item.title .form-control {
     font-size: 15px;
@@ -14,12 +14,12 @@
 	<div class="penel we7-panel panel-special">
 		<div class="panel-heading">
 			<ol class="breadcrumb we7-breadcrumb">
-				<a href="{php echo url('platform/material')}"><i class="wi wi-back-circle"></i> </a>
+				<a href="<?php  echo url('platform/material')?>"><i class="wi wi-back-circle"></i> </a>
 				<li>
-					<a href="{php echo url('platform/material')}">素材库</a>
+					<a href="<?php  echo url('platform/material')?>">素材库</a>
 				</li>
 				<li>
-					{if !empty($news_list)}编辑{else}新建{/if}图文素材
+					<?php  if(!empty($news_list)) { ?>编辑<?php  } else { ?>新建<?php  } ?>图文素材
 				</li>
 			</ol>
 		</div>
@@ -72,7 +72,7 @@
 						<!-- 阅读原文链接 -->
 						<div we7-linker we7-my-url="materialList[activeIndex].content_source_url"></div>
 						<!--正文-->
-						<div class="editor-area" ng-my-upurl="{php echo url('utility/file/upload')}" ng-my-editor ng-my-value="materialList[activeIndex].content" >
+						<div class="editor-area" ng-my-upurl="<?php  echo url('utility/file/upload')?>" ng-my-editor ng-my-value="materialList[activeIndex].content" >
 							<textarea ></textarea>
 						</div>
 					</div>
@@ -147,25 +147,25 @@
 <script>
 	require(['underscore', 'fileUploader'], function() {
 		angular.module('materialApp').value('material', {
-			'materialList' : {php echo json_encode($news_list)},
-			'type' : '{$type}',
-			'news_rid' : '{$reply_news_id}',
-			'operate' : {if !empty($newsid)}'edit'{else}'add'{/if},
-			'model' : {if !empty($attachment['model'])}'{$attachment['model']}'{else}''{/if},
-			'url' : "{php echo url('platform/material-post/tomedia')}",
-			'newsUpload_url' : "{php echo url('platform/material-post/addnews')}",
-			'msg_url' : "{php echo url('platform/material/display')}",
-			'upload_thumb_url' : "{php echo url('platform/material-post/thumb_upload')}",
-			'upload_iamge_url' : "{php echo url('platform/material-post/image_upload')}",
-			'replace_url' : "{php echo url('platform/material-post/replace_image_url')}",
-			'num_limit' : "{$upload_limit['num']}",
-			'image_limit' : "{$upload_limit['image']}",
-			'voice_limit' : "{$upload_limit['voice']}",
-			'video_limit' : "{$upload_limit['video']}",
-			'new_type' : "{$new_type}"
+			'materialList' : <?php  echo json_encode($news_list)?>,
+			'type' : '<?php  echo $type;?>',
+			'news_rid' : '<?php  echo $reply_news_id;?>',
+			'operate' : <?php  if(!empty($newsid)) { ?>'edit'<?php  } else { ?>'add'<?php  } ?>,
+			'model' : <?php  if(!empty($attachment['model'])) { ?>'<?php  echo $attachment['model'];?>'<?php  } else { ?>''<?php  } ?>,
+			'url' : "<?php  echo url('platform/material-post/tomedia')?>",
+			'newsUpload_url' : "<?php  echo url('platform/material-post/addnews')?>",
+			'msg_url' : "<?php  echo url('platform/material/display')?>",
+			'upload_thumb_url' : "<?php  echo url('platform/material-post/thumb_upload')?>",
+			'upload_iamge_url' : "<?php  echo url('platform/material-post/image_upload')?>",
+			'replace_url' : "<?php  echo url('platform/material-post/replace_image_url')?>",
+			'num_limit' : "<?php  echo $upload_limit['num'];?>",
+			'image_limit' : "<?php  echo $upload_limit['image'];?>",
+			'voice_limit' : "<?php  echo $upload_limit['voice'];?>",
+			'video_limit' : "<?php  echo $upload_limit['video'];?>",
+			'new_type' : "<?php  echo $new_type;?>"
 		});
 		angular.bootstrap($('#main'), ['materialApp']);
 	});
 	$('[data-toggle="tooltip"]').tooltip();
 </script>
-{template 'common/footer'}
+<?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/footer', TEMPLATE_INCLUDEPATH)) : (include template('common/footer', TEMPLATE_INCLUDEPATH));?>

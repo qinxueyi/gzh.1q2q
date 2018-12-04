@@ -1,5 +1,5 @@
 <?php defined('IN_IA') or exit('Access Denied');?></div>
-	<div class="container-fluid footer text-center" role="footer">	
+	<!-- <div class="container-fluid footer text-center" role="footer">	
 		<div class="friend-link">
 			<?php  if(empty($_W['setting']['copyright']['footerright'])) { ?>
 				<a href="http://www.we7.cc">微信开发</a>
@@ -23,6 +23,6 @@
 	</div>
 	
 		<script type="text/javascript" src="<?php  echo $_W['siteroot'];?>web/index.php?c=utility&a=visit&do=showjs&type=<?php echo FRAME;?>"></script>
-	
+	 -->
 </body>
 </html>

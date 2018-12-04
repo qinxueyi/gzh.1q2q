@@ -74,18 +74,22 @@
 </script>
 <?php  } ?>
 <style type="text/css">
-	.skin-default{
+	/* .skin-default{
 		background-color:#424957;
-	}
-	.menu-self *{
+	} */
+	/* .menu-self *{
 		background-color:#424957!important;
-	}
+	} */
+.menu-self{
+	height:calc(100% - 10px);
+	background-color:#4A5264!important;
+}
 	.text-over{
 		color:#D2D4D8!important;
 		background-color:#4A5264!important;
 		width:210px;
 	}
-	.text-over i{
+	/* .text-over i{
 		background-color:#4A5264!important;
 	}
 	.two-menu{
@@ -93,7 +97,7 @@
 	}
 	.two-menu i{
 		background-color:#3C424E!important;
-	}
+	} */
 </style>
 
 <div class="main" style="margin-left:179px;width:calc( 100% - 200px);margin-top:56px;height:calc( 100% - 10px);">

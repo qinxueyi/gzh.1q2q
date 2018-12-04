@@ -22,7 +22,7 @@ if ($_GPC['uniacid']) {
 	uni_account_save_switch($uniacid);
 	uni_account_switch($uniacid);
 }else{
-	$account = pdo_get('account',array('isdeleted'=>0));
+    $account = pdo_get('account',array('isdeleted'=>0));
 	$uniacid = $account['uniacid'];
 	$_W['uniacid'] = $uniacid;
 	$_W['account'] = uni_fetch($uniacid);
@@ -104,7 +104,7 @@ if ($do == 'display') {
 	$page_index = max(1, intval($_GPC['page']));
 	$page_size = 24;
 	$search = addslashes($_GPC['title']);
-
+	
 	if ($type == 'news') {
 		$material_news_list = material_news_list($server, $search, array('page_index' => $page_index, 'page_size' => $page_size));
 	} else {

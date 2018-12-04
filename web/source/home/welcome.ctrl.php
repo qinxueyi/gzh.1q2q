@@ -211,10 +211,10 @@ if ($do == 'platform') {
     $yesterday_stat['jing_num'] = intval($yesterday_stat['new']) - intval($yesterday_stat['cancel']);
     $yesterday_stat['cumulate'] = intval($yesterday_stat['cumulate']);
     $today_stat = pdo_get('stat_fans', array('date' => date('Ymd'), 'uniacid' => $_W['uniacid']));
-    $today_stat['new'] = intval($today_stat['new']);
-    $today_stat['cancel'] = intval($today_stat['cancel']);
-    $today_stat['jing_num'] = $today_stat['new'] - $today_stat['cancel'];
-    $today_stat['cumulate'] = intval($today_stat['jing_num']) + $yesterday_stat['cumulate'];
+    $today_stat['new'] = intval($today_stat['new']);//新增关注
+    $today_stat['cancel'] = intval($today_stat['cancel']);//取消关注人数
+    $today_stat['jing_num'] = $today_stat['new'] - $today_stat['cancel'];//净增关注
+    $today_stat['cumulate'] = intval($today_stat['jing_num']) + $yesterday_stat['cumulate'];//总关注人数
     if ($today_stat['cumulate'] < 0) {
         $today_stat['cumulate'] = 0;
     }
