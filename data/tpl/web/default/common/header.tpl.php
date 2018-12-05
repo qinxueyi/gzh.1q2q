@@ -141,7 +141,7 @@
 				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
 				    </span>
 				</div>
-			</form> -->
+			</form>-->
 				<?php  
 					load()->model('user');
 					$account_table = table('account');
@@ -186,7 +186,7 @@
 			    <div id="collapse<?php  echo $item['id'];?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php  echo $item['id'];?>" >
 			    	<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
 				      <div class="panel-body <?php  if($_W['uniacid'] == $item1['uniacid']) { ?> acti <?php  } ?>" >
-				        <a href="<?php  echo url($href,array('uniacid'=>$item1['uniacid']))?>"><?php  echo $item1['name'];?></a>
+				        <a href="<?php  echo url('account/display',array('do'=>'switch','uniacid'=>$item1['uniacid'],'ls'=>'hui'))?>"><?php  echo $item1['name'];?></a>
 				        <?php  if($item1['level'] == 1 || $item1['level'] == 3) { ?>
 				        <span class="label label-primary">订阅号</span>
 				        <?php  } ?>

@@ -38,51 +38,46 @@ function getAccessToken($appId, $appSecRet)
 function getUserInfo($model)
 {   //获取accessToken
     $date = date("Y-m-d", strtotime("-1 day"));
-    $accessToken = file_get_contents("http://gzh.1q2q.com/getAccessToken.php?uniacid=" . $model['uniacid']);
-    $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));
-    $getAddReduceFanUrl = "https://api.weixin.qq.com/datacube/getusersummary?access_token=" . $accessToken;
-    //获取用户增减数据
-    $getAddReduceFan = http_post_json($getAddReduceFanUrl, $json);
-    //获取累计用户数据
-    $getAddUpFanUrl = "https://api.weixin.qq.com/datacube/getusercumulate?access_token=" . $accessToken;
-    $getAddUpFan = http_post_json($getAddUpFanUrl, $json);
-    print_r($getAddReduceFan);
-    print_r($getAddUpFan);
-    $fan = array();
-    $fan['statistics_date'] = $date;
-    $fan['uniacid'] = $model["uniacid"];//公众号id
-    $fan['user_source'] = $getAddReduceFan["user_source"];//用户渠道
-    $fan['sum_fan'] = $getAddUpFan['list'][0]['cumulate_user'];//总粉丝
-    $fan['add_fan'] = 0;//新增粉丝
-    $fan['cancel_fan'] = 0;//取关粉丝
-    $fan['auto_fan'] = 0;//净增粉丝
-    $fan['cancel_fan_rate'];//取关率
-    $fan['active_fan'] = 0; //活跃粉丝
-    $fan['active_rate']; //活跃度
-    $activeEvent = pdo_get('active_event', array('uniacid =' => $model["uniacid"], 'statistics_date =' => $date));
-    if (!empty($activeEvent)) {
-        $fan['active_fan'] = $activeEvent['active_fan_sum'];
-        $activeRateRound = round($fan['active_fan'] / $fan['sum_fan'], 2) * 100;
-        $fan['active_rate'] = $activeRateRound . "%";
+    $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . $model['uniacid']);
+    if($accessToken){
+        $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));
+        $getAddReduceFanUrl = "https://api.weixin.qq.com/datacube/getusersummary?access_token=" . $accessToken;
+        //获取用户增减数据
+        $getAddReduceFan = http_post_json($getAddReduceFanUrl, $json);
+        //获取累计用户数据
+        $getAddUpFanUrl = "https://api.weixin.qq.com/datacube/getusercumulate?access_token=" . $accessToken;
+        $getAddUpFan = http_post_json($getAddUpFanUrl, $json);
+        $fan = array();
+        $fan['statistics_date'] = $date;
+        $fan['uniacid'] = $model["uniacid"];//公众号id
+        $fan['user_source'] = $getAddReduceFan["user_source"];//用户渠道
+        $fan['sum_fan'] = $getAddUpFan['list'][0]['cumulate_user'];//总粉丝
+        $fan['add_fan'] = 0;//新增粉丝
+        $fan['cancel_fan'] = 0;//取关粉丝
+        $fan['auto_fan'] = 0;//净增粉丝
+        $fan['cancel_fan_rate'];//取关率
+        $fan['active_fan'] = 0; //活跃粉丝
+        $fan['active_rate']; //活跃度
+        $activeEvent = pdo_get('active_event', array('uniacid =' => $model["uniacid"], 'statistics_date =' => $date));
+        if (!empty($activeEvent)) {
+            $fan['active_fan'] = $activeEvent['active_fan_sum'];
+            $activeRateRound = round($fan['active_fan'] / $fan['sum_fan'], 2) * 100;
+            $fan['active_rate'] = $activeRateRound . "%";
+        }
+        foreach ($getAddReduceFan["list"] as $item) {
+            $fan['add_fan'] = $fan['add_fan'] + $item['new_user'];
+            $fan['cancel_fan'] = $fan['cancel_fan'] + $item['cancel_user'];
+        }
+        $round = round($fan['cancel_fan'] / $fan['add_fan'], 2) * 100;
+        $fan['cancel_fan_rate'] = $round . "%";
+        $fan['auto_fan'] = $fan['add_fan'] - $fan['cancel_fan'];  //计算净增粉丝
+        if(pdo_get('vipcn_fan',array('uniacid'=>$model["uniacid"],'statistics_date'=>$date))){
+            pdo_update('vipcn_fan',$fan,array('uniacid'=>$model["uniacid"],'statistics_date'=>$date));
+        }else{
+            $str = pdo_insert('vipcn_fan', $fan);
+        }
+        return $str;
     }
-    foreach ($getAddReduceFan["list"] as $item) {
-        $fan['add_fan'] = $fan['add_fan'] + $item['new_user'];
-        $fan['cancel_fan'] = $fan['cancel_fan'] + $item['cancel_user'];
-    }
-    $round = round($fan['cancel_fan'] / $fan['add_fan'], 2) * 100;
-    $fan['cancel_fan_rate'] = $round . "%";
-    $fan['auto_fan'] = $fan['add_fan'] - $fan['cancel_fan'];  //计算净增粉丝
-
-//
-//    $arr['statistics_date'] = '2018-10-15';
-//    $arr['uniacid'] = 3;
-//    $arr['sum_fan'] = '20384';
-//    $arr['add_fan'] = '1';
-//    $arr['cancel_fan'] = '44';
-//    $arr['cancel_fan_cate'] = '100%';
-//    $arr['auto_fan'] = '-43';
-    $str = pdo_insert('vipcn_fan', $fan);
-    return $str;
 }
 
 /**

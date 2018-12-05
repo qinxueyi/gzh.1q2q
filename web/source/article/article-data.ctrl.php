@@ -18,10 +18,20 @@ if($_W['isajax'] == true){
     }else {
         $psize = 10;
     }
-    $sql = 'SELECT * FROM '.tablename('article_list').' WHERE id>0 ORDER BY id DESC ';
+    $sql = 'SELECT * FROM '.tablename('article_list').' WHERE id>0';
+    $sql2 = 'SELECT count(id) FROM '.tablename('article_list').' WHERE id>0';
+    if($_GPC['date']){
+        $sql .= " and statistics_date = '{$_GPC['date']}'";
+        $sql2 .= " and statistics_date = '{$_GPC['date']}'";
+    }
+    if($_GPC['position']){
+        $sql .= ' and position ='.$_GPC['position'];
+        $sql2 .= ' and position ='.$_GPC['position'];
+    }
+    $sql .= " ORDER BY id DESC ";
+    $total = pdo_fetchcolumn($sql2);
     $sql .= " limit " . ($pindex - 1) * $psize . ',' . $psize;
     $list = pdo_fetchall($sql);
-    $total = pdo_fetchcolumn('SELECT COUNT(id) FROM '.tablename('article_list').' WHERE id>0');
     $data = getdata($list,$total);
     echo json_encode($data);
     exit;

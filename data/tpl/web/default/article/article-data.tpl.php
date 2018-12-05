@@ -56,7 +56,7 @@ layui.use(['table','laydate','form'], function(){
 	var form = layui.form;
 	var table = layui.table;
 	laydate.render({elem: '#test31',theme: 'grid'});
-	  table.render({
+	dicTable = table.render({
 	    elem: '#test'
 	    ,url:'./index.php?c=article&a=article-data'
 	    ,toolbar: true
@@ -76,7 +76,6 @@ layui.use(['table','laydate','form'], function(){
 	      statusCode: 200 //重新规定成功的状态码为 200，table 组件默认为 0
 	    }
 	  ,type:'post'
-	  ,id: 'testReload'
 	    ,parseData: function(res){ //将原始数据解析成 table 组件所规定的数据
 	      return {
 	        "code": res.code, //解析接口状态
@@ -91,14 +90,15 @@ layui.use(['table','laydate','form'], function(){
 	  })
 	  
 	  $('#sousuo').on('click', function(){
-		  var date = $('input[name=statistics_date]');
+		  var datetime = $('input[name=statistics_date]').val();
 	      var position = $('#position').val();
 	      //执行重载
-	      table.reload('testReload', {
-	    	  where: {
-	        	date: date,
+	      dicTable.reload({
+	    	  page:{curr:1},
+	    	  where:{
+	        	date:datetime,
 	        	position: position,
-	        }
+	          }
 	      });
 	  });
 	});

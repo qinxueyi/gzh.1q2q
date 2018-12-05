@@ -4,7 +4,7 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
-if ($_GPC['uniacid']) {
+/* if ($_GPC['uniacid']) {
 	$uniacid = intval($_GPC['uniacid']);
 	$_W['uniacid'] = $uniacid;
 	$_W['account'] = uni_fetch($uniacid);
@@ -39,7 +39,7 @@ if ($_GPC['uniacid']) {
 	}
 	uni_account_save_switch($uniacid);
 	uni_account_switch($uniacid);
-}
+} */
 
 load()->model('reply');
 load()->model('module');

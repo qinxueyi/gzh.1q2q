@@ -34,6 +34,10 @@ if($do == 'switch') {
 	} else {
 		$url = url('home/welcome/ext', array('m' => $module_name, 'version_id' => $version_id));
 	}
+	if($_GPC['ls'] == 'hui'){
+	    header('location:'.getenv("HTTP_REFERER"));
+	    exit;
+	}
 	uni_account_switch($uniacid, $url);
 }
 
