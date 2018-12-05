@@ -95,6 +95,7 @@ if ($do == 'display') {
 	$select_sql = "SELECT %s FROM " .tablename('mc_mapping_fans')." AS f LEFT JOIN ".tablename('mc_fans_tag_mapping')." AS m ON m.`fanid` = f.`fanid` " . $condition ." %s";
 	$fans_list_sql = sprintf($select_sql, "f.* ", " GROUP BY f.`fanid`" . $orderby . " LIMIT " .($pageindex - 1) * $pagesize.",".$pagesize);
 	$fans_list = pdo_fetchall($fans_list_sql, $param);
+	//var_dump($fans_list_sql);exit;
 	if (!empty($fans_list)) {
 		foreach ($fans_list as &$v) {
 			$v['tag_show'] = mc_show_tag($v['groupid']);
@@ -138,6 +139,7 @@ if ($do == 'display') {
 	$total = pdo_fetchcolumn($total_sql, $param);
 	$pager = pagination($total, $pageindex, $pagesize);
 	$fans['total'] = pdo_getcolumn("mc_mapping_fans", array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid'], 'follow' => 1), 'count(*)');
+	//var_dump($fans_list);
 }
 
 
@@ -287,7 +289,7 @@ if ($do == 'download_fans') {
 			foreach($wechat_fans as $openid) {
 				if (empty($system_fans) || empty($system_fans[$openid])) {
 					$salt = random(8);
-					$fansQueryInfo = fansQueryInfo($openid);
+					$fansQueryInfo = $account_api->fansQueryInfo($openid);
 					$add_fans_sql .= "('{$_W['acid']}', '{$_W['uniacid']}', 0, '{$openid}', '{$salt}', 1, 0, '',{$fansQueryInfo['sex']})";
 				}
 			}
