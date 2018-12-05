@@ -6,7 +6,7 @@
 
 defined('IN_IA') or exit('Access Denied');
 set_time_limit(60);
-if ($_GPC['uniacid']) {
+/* if ($_GPC['uniacid']) {
 	$uniacid = intval($_GPC['uniacid']);
 	$_W['uniacid'] = $uniacid;
 	$_W['account'] = uni_fetch($uniacid);
@@ -41,7 +41,7 @@ if ($_GPC['uniacid']) {
 	}
 	uni_account_save_switch($uniacid);
 	uni_account_switch($uniacid);
-}
+} */
 
 
 load()->model('mc');
