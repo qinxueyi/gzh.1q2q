@@ -206,5 +206,4 @@ if ($do == 'sync') {
     }
     iajax(0, '更新成功！', '');
 }
-
 template('platform/material');

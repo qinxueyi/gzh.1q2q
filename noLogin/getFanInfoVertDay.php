@@ -51,6 +51,7 @@ function getUserInfo($model)
     $fan = array();
     $fan['statistics_date'] = $date;
     $fan['uniacid'] = $model["uniacid"];//公众号id
+    $fan['user_source'] = $getAddReduceFan["user_source"];//用户渠道
     $fan['sum_fan'] = $getAddUpFan['list'][0]['cumulate_user'];//总粉丝
     $fan['add_fan'] = 0;//新增粉丝
     $fan['cancel_fan'] = 0;//取关粉丝

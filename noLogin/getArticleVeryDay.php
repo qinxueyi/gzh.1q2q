@@ -34,31 +34,44 @@ function getAccessToken($appId, $appSecRet)
 function getArticleList($model)
 {
     //获取accessToken
-    $accessToken = file_get_contents("http://gzh.1q2q.com/getAccessToken.php?uniacid=" . $model['uniacid']);
-    $date = date("Y-m-d", strtotime("-1 day"));
-    $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));
-    $getArticleListUrl = "https://api.weixin.qq.com/datacube/getarticlesummary?access_token=" . $accessToken;
-    $data = http_post_json($getArticleListUrl, $json);
-    print_r($data);
-    if (!empty($data)) {
-        foreach ($data['list'] as $value) {
-            $articleModel = array();
-            $articleModel['statistics_date'] = $date;
-            $articleModel['uniacid'] = $model["uniacid"];//公众号id
-            $articleModel['title'] = $value["title"];
-            $articleModel['position'] = substr($value['msgid'], -1); //位置
-            $articleModel['reader_num'] = $value['int_page_read_count']; //阅读数
-            $round = round($value['int_page_read_count'] / $model['cumulate_user'], 2) * 100;
-            $articleModel['reader_rate'] = $round . "%"; //阅读率
-            $articleModel['original_reader_num'] = $value['ori_page_read_user'];//原文阅读数
-            $originalRound = round($value['ori_page_read_user'] / $model['cumulate_user'], 2) * 100;
-            $articleModel['original_reader_rate'] = $originalRound . "%"; //原文阅读率
-            $articleModel['fan_num'] = $model['cumulate_user'];
-            //保存数据
-            pdo_insert('article_list', $articleModel);
+    $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . $model['uniacid']);
+    if($accessToken){
+        $date = date("Y-m-d", strtotime("-1 day"));
+        $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));
+        $getArticleListUrl = "https://api.weixin.qq.com/datacube/getarticlesummary?access_token=" . $accessToken;
+        $data = http_post_json($getArticleListUrl, $json);
+        if (!empty($data)) {
+            $countuser = pdo_fetch(
+                'select * from ' . tablename('vipcn_fan') .'where uniacid = '.$model["uniacid"].' and sum_fan >0 order by id desc limit 1'
+            );
+            if($countuser){
+                foreach ($data['list'] as $value) {
+                    $articleModel = array();
+                    $articleModel['statistics_date'] = $date;
+                    $articleModel['msgid'] = $value['msgid'];
+                    $articleModel['uniacid'] = $model["uniacid"];//公众号id
+                    $articleModel['title'] = $value["title"];
+                    $articleModel['position'] = substr($value['msgid'], -1); //位置
+                    $articleModel['reader_num'] = $value['int_page_read_count']; //阅读数
+                    $round = round($value['int_page_read_count'] / $countuser['sum_fan'], 4) * 100;
+                    $articleModel['reader_rate'] = $round . "%"; //阅读率
+                    $articleModel['original_reader_num'] = $value['ori_page_read_user'];//原文阅读数
+                    $originalRound = round($value['ori_page_read_user'] / $countuser['sum_fan'], 4) * 100;
+                    $articleModel['original_reader_rate'] = $originalRound . "%"; //原文阅读率
+                    $articleModel['fan_num'] = $countuser['sum_fan'];
+                    $articleModel['share_user'] = $value['share_user'];//分享人数
+                    if(pdo_get('article_list',array('msgid'=>$value['msgid'],'statistics_date'=>$date,'uniacid'=>$model["uniacid"]))){
+                        //保存数据
+                        pdo_update('article_list', $articleModel,array('msgid'=>$value['msgid'],'statistics_date'=>$date,'uniacid'=>$model["uniacid"]));
+                    }else{
+                        //保存数据
+                        pdo_insert('article_list', $articleModel);
+                    }
+                }
+            }
         }
+        echo "success";  
     }
-    echo "success";  
 
 }
 
@@ -67,7 +80,7 @@ function getArticleList($model)
  */
 if ($do == "saveArticleList") {
     //查询所有公众号
-    $accountWeChatList = pdo_getall('account_wechats', array("styleid" => "0"));
+    $accountWeChatList = pdo_getall('account', array("isdeleted" => "0"));
     foreach ($accountWeChatList as $accountWeChat) {
         getArticleList($accountWeChat);
     }

@@ -150,9 +150,9 @@
 					foreach ($_W['tag'] as $k => $v) {
 						foreach ($account_list1 as $k1 => $v1) {
 							$account = uni_fetch($v1['uniacid']);
-							$tag = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
-							if($tag){
-								$tag_array = explode(',',$tag['tag_id']);
+							$tags = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
+							if($tags){
+								$tag_array = explode(',',$tags['tag_id']);
 								if(in_array($v['id'],$tag_array)){
 									$_W['tag'][$k]['account'][$k1]['name'] = $account['name'];
 									$_W['tag'][$k]['account'][$k1]['uniacid'] = $account['uniacid'];
@@ -409,6 +409,12 @@
 								<a href="{php echo url('account/article-list');}" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									图文数据
+								</a>
+							</li>
+							<li class="list-group-item {if $menu['active']}active{/if}">
+								<a href="{php echo url('article/article-data');}" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									文章数据报表
 								</a>
 							</li>
 						</ul>
