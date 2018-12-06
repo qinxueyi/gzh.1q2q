@@ -141,7 +141,7 @@
 				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
 				    </span>
 				</div>
-			</form> -->
+			</form>
 				<?php  
 					load()->model('user');
 					$account_table = table('account');
@@ -150,9 +150,9 @@
 					foreach ($_W['tag'] as $k => $v) {
 						foreach ($account_list1 as $k1 => $v1) {
 							$account = uni_fetch($v1['uniacid']);
-							$tag = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
-							if($tag){
-								$tag_array = explode(',',$tag['tag_id']);
+							$tags = pdo_get('account_tag_link',array('uniacid'=>$account['uniacid']));
+							if($tags){
+								$tag_array = explode(',',$tags['tag_id']);
 								if(in_array($v['id'],$tag_array)){
 									$_W['tag'][$k]['account'][$k1]['name'] = $account['name'];
 									$_W['tag'][$k]['account'][$k1]['uniacid'] = $account['uniacid'];
@@ -186,7 +186,7 @@
 			    <div id="collapse<?php  echo $item['id'];?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php  echo $item['id'];?>" >
 			    	<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
 				      <div class="panel-body <?php  if($_W['uniacid'] == $item1['uniacid']) { ?> acti <?php  } ?>" >
-				        <a href="<?php  echo url($href,array('uniacid'=>$item1['uniacid']))?>"><?php  echo $item1['name'];?></a>
+				        <a href="<?php  echo url('account/display',array('do'=>'switch','uniacid'=>$item1['uniacid'],'ls'=>'hui'))?>"><?php  echo $item1['name'];?></a>
 				        <?php  if($item1['level'] == 1 || $item1['level'] == 3) { ?>
 				        <span class="label label-primary">订阅号</span>
 				        <?php  } ?>
@@ -332,10 +332,10 @@
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-								<a href="javascript:;" class="text-over two-menu">
+								<a href="./index.php?c=message&a=material&" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									群发消息
-									<span style="color:red">x</span>
+									<!--<span style="color:red">x</span>-->
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
@@ -409,6 +409,12 @@
 								<a href="<?php  echo url('account/article-list');?>" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									图文数据
+								</a>
+							</li>
+							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+								<a href="<?php  echo url('article/article-data');?>" class="text-over two-menu">
+									<i class="wi wi-wechat"></i>
+									文章数据报表
 								</a>
 							</li>
 						</ul>

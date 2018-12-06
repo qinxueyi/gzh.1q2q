@@ -4,16 +4,16 @@
 </div>
 <ul class="we7-page-tab">
 	<li<?php  if($type == 'news') { ?> class="active"<?php  } ?>>
-	<a href="<?php  echo url('platform/material', array('type' => 'news'))?>">微信图文</a>
+	<a href="<?php  echo url('message/material', array('type' => 'news'))?>">微信图文</a>
 	</li>
 	<li<?php  if($type == 'image') { ?> class="active"<?php  } ?>>
-	<a href="<?php  echo url('platform/material', array('type' => 'image', 'server' => MATERIAL_WEXIN))?>">图片</a>
+	<a href="<?php  echo url('message/material', array('type' => 'image', 'server' => MATERIAL_WEXIN))?>">图片</a>
 	</li>
 	<li<?php  if($type == 'voice') { ?> class="active"<?php  } ?>>
-	<a href="<?php  echo url('platform/material', array('type' => 'voice', 'server' => MATERIAL_WEXIN))?>">语音</a>
+	<a href="<?php  echo url('message/material', array('type' => 'voice', 'server' => MATERIAL_WEXIN))?>">语音</a>
 	</li>
 	<li<?php  if($type == 'video') { ?> class="active"<?php  } ?>>
-	<a href="<?php  echo url('platform/material', array('type' => 'video', 'server' => MATERIAL_WEXIN))?>">视频</a>
+	<a href="<?php  echo url('message/material', array('type' => 'video', 'server' => MATERIAL_WEXIN))?>">视频</a>
 	</li>
 </ul>
 <div id="main" ng-controller="materialDisplay" ng-cloak>
@@ -24,7 +24,7 @@
 				<div class="info col-sm-6 we7-padding-none">
 					<div class="we7-form">
 						<div class="form-controls">
-							<form action="<?php  echo url('platform/material/list', array('type' => 'news', 'server' => $server))?>" method="post" >
+							<form action="<?php  echo url('message/material/list', array('type' => 'news', 'server' => $server))?>" method="post" >
 								<div class="input-group">
 									<input type="text" id="" name="title" class="form-control" size="40" value="<?php  echo $_GPC['title'];?>" placeholder="标题/作者/摘要">
 									<span class="input-group-btn">
@@ -79,9 +79,9 @@
 				</div>
 			</div>
 			<div class="btn-group we7-btn-group" style="top:15px;">
-				<a href="<?php  echo url('platform/material', array('type' => $type))?>" class="btn <?php  if($server != MATERIAL_WEXIN && $server != MATERIAL_LOCAL) { ?> active <?php  } ?>">全部</a>
-				<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
-				<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
+				<a href="<?php  echo url('message/material', array('type' => $type))?>" class="btn <?php  if($server != MATERIAL_WEXIN && $server != MATERIAL_LOCAL) { ?> active <?php  } ?>">全部</a>
+				<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
+				<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
 			</div>
 			<div class="material-appmsg-list">
 				<?php  if(is_array($material_list)) { foreach($material_list as $material) { ?>
@@ -89,7 +89,6 @@
 					<div class="appmsg-content">
 						<div class="appmsg-info">
 							<em class="appmsg-date"><?php  echo date('Y年m月d', $material['createtime'])?></em>
-							<span class="fuzhi" style="margin-left:10px;cursor:pointer;" data-url='<?php  echo $material["items"]["0"]["url"];?>'>复制链接</span>
 							<?php  if($material['model'] == 'local') { ?>
 							<i class="wi wi-local pull-right color-default" style="font-size: 20px;"></i>
 							<?php  } else { ?>
@@ -153,14 +152,14 @@
 							<?php  if($material['model'] == 'perm') { ?>
 								<li class="appmsg-opr-item">
 									<a href="javascript:;" class="" ng-click="checkGroup('news', <?php  echo $material['id'];?>)" data-toggle="tooltip" data-placement="bottom" title="群发"><i class="wi wi-send"></i></a>
-								</li>
+								 </li>
 							<?php  } else { ?>
 								<li class="appmsg-opr-item">
 									<a href="javascript:;" ng-click="newsToWechat(<?php  echo $material['id'];?>)" class="" data-toggle="tooltip" data-placement="bottom" title="转换为微信文章"><i class="wi wi-transform"></i></a>
 								</li>
 							<?php  } ?>
 							<li class="appmsg-opr-item">
-								<a href="<?php  echo url('platform/material-post/news', array('newsid' => $material['id']))?>" class="" data-toggle="tooltip" data-placement="bottom" title="编辑">&nbsp;<i class="wi wi-text"></i></a>
+								<a href="<?php  echo url('message/material-post/news', array('newsid' => $material['id']))?>" class="" data-toggle="tooltip" data-placement="bottom" title="编辑">&nbsp;<i class="wi wi-text"></i></a>
 							</li>
 							<li class="appmsg-opr-item">
 								<a class="" href="javascript:void(0);" ng-click="del_material('<?php  echo $type;?>', '<?php  echo $material['id'];?>', 'wechat')" data-toggle="tooltip" data-placement="bottom" title="删除">&nbsp;<i class="wi wi-delete2"></i></a>
@@ -186,8 +185,8 @@
 					<?php  } ?>
 				</div>
 				<div class="btn-group we7-btn-group">
-					<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
-					<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
+					<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
+					<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
 				</div>
 			</div>
 			<ul class="material-img-list clearfix">
@@ -243,8 +242,8 @@
 					<?php  } ?>
 				</div>
 				<div class="btn-group we7-btn-group">
-					<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
-					<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
+					<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
+					<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
 				</div>
 			</div>
 			<ul class="material-audio-list">
@@ -302,8 +301,8 @@
 					<?php  } ?>
 				</div>
 				<div class="btn-group we7-btn-group">
-					<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
-					<a href="<?php  echo url('platform/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
+					<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_WEXIN))?>" class="btn <?php  if($server == MATERIAL_WEXIN) { ?> active <?php  } ?>">微信</a>
+					<a href="<?php  echo url('message/material', array('type' => $type, 'server' => MATERIAL_LOCAL))?>" class="btn <?php  if($server == MATERIAL_LOCAL) { ?> active <?php  } ?>">服务器</a>
 				</div>
 			</div>
 			<ul class="material-img-list">
@@ -357,7 +356,75 @@
 						<option value="-1">全部粉丝</option>
 						<option ng-repeat="group in groups" value="{{ group.id }}">{{ group.name }}({{ group.count }})</option>
 					</select>
-				</div>
+                    <div style="margin-top:10px">
+                        <label>是否定时群发</label>
+                        <select lay-ignore id="time" name="is_delay">
+                            <option value="0">群发</option>
+                            <option value="1">定时群发</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 form-inline" style="margin-top:10px;display:none">
+                        <div class="form-group">
+                            <label for="exampleInputName2" style="font-weight:400;">延迟推送时间 :</label>
+                            <input type="text" class="form-control" name="delay-hour" style="width: 70px" id="hour" onkeyup="this.value=this.value.replace(/\D/g,'')" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputName2" style="font-weight:400;">时</label>
+                            <input type="text" class="form-control" name="delay-minute" style="width: 70px" id="minute" onkeyup="this.value=this.value.replace(/\D/g,'')" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputName2" style="font-weight:400;" >分</label>
+                            <!--<input type="text" class="form-control" name="delay-second" style="width: 70px" onkeyup="this.value=this.value.replace(/\D/g,'')">-->
+                        </div>
+                        <!--<div class="form-group">-->
+                            <!--<label for="exampleInputName2" style="font-weight:400;">秒</label>-->
+                        <!--</div>-->
+                    </div>
+                </div>
+
+                <script type="text/javascript">
+                    $(function() {
+                        $('#time').change(function(){
+                            var val=$('#time').val();
+                            if(val==1){
+                                $('.form-inline').show();
+                            }else{
+                                $('.form-inline').hide();
+                            }
+                        });
+                        function time(hour){
+                            if(hour == 120){
+                                $("input[name='delay-minute']").val(0);
+                                $("input[name='delay-second']").val(0);
+                            }
+                        }
+                        $("input[name='delay-hour']").keyup(function(event){
+                            var hour = $("input[name='delay-hour']").val();
+                            if(hour>120){
+                                $("input[name='delay-hour']").val(120);
+                            }
+                            time(hour);
+                        });
+                        $("input[name='delay-minute']").keyup(function(event){
+                            var hour = $("input[name='delay-hour']").val();
+                            var minute = $("input[name='delay-minute']").val();
+                            if(minute>59){
+                                $("input[name='delay-minute']").val(59);
+                            }
+                            time(hour);
+                        });
+//                        $("input[name='delay-second']").keyup(function(event){
+//                            var hour = $("input[name='delay-hour']").val();
+//                            var second = $("input[name='delay-second']").val();
+//                            if(second>59){
+//                                $("input[name='delay-second']").val(59);
+//                            }
+//                            time(hour);
+//                        });
+                    });
+                </script>
+
+
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="sendMaterial()">发送</button>
 				</div>
@@ -421,12 +488,12 @@
 	require(['jquery.wookmark', 'fileUploader'], function() {
 		//同步素材
 		angular.module('materialApp').value('config', {
-			'del_url' : "<?php  echo url('platform/material/delete')?>",
-			'sync_url' : "<?php  echo url('platform/material/sync')?>",
-			'send_url' : "<?php  echo url('platform/material/send')?>",
-			'create_new_url' : "<?php  echo url('platform/material-post')?>",
-			'trans_url' : "<?php  echo url('platform/material-post/upload_material')?>",
-			'postwechat_url' : "<?php  echo url('platform/material-post/upload_news')?>",
+			'del_url' : "<?php  echo url('message/material/delete')?>",
+			'sync_url' : "<?php  echo url('message/material/sync')?>",
+			'send_url' : "<?php  echo url('message/material/send')?>",
+			'create_new_url' : "<?php  echo url('message/material-post')?>",
+			'trans_url' : "<?php  echo url('message/material-post/upload_material')?>",
+			'postwechat_url' : "<?php  echo url('message/material-post/upload_news')?>",
 			'group' : <?php  echo json_encode($group)?>,
 			'syncNews' : "<?php  echo $_GPC['sync_news'];?>",
 		});
@@ -438,41 +505,6 @@
 			itemWidth: 289,
 			offset: 30
 		});
-	});
-	layui.use('layer', function(){
-		  var layer = layui.layer;
-		  $('.fuzhi').click(function(){
-				var url = $(this).attr('data-url');
-				copyToClipboard(url);
-			})
-			function copyToClipboard(text) {
-			   if(text.indexOf('-') !== -1) {
-			       let arr = text.split('-');
-			       text = arr[0] + arr[1];
-			   }
-			   var textArea = document.createElement("textarea");
-			     textArea.style.position = 'fixed';
-			     textArea.style.top = '0';
-			     textArea.style.left = '0';
-			     textArea.style.width = '2em';
-			     textArea.style.height = '2em';
-			     textArea.style.padding = '0';
-			     textArea.style.border = 'none';
-			     textArea.style.outline = 'none';
-			     textArea.style.boxShadow = 'none';
-			     textArea.style.background = 'transparent';
-			     textArea.value = text;
-			     document.body.appendChild(textArea);
-			     textArea.select();
-			     try {
-			       var successful = document.execCommand('copy');
-			       var msg = successful ? '成功复制到剪贴板' : '该浏览器不支持点击复制到剪贴板';
-			       layer.msg(msg,{time:800});
-			     } catch (err) {
-			       layer.msg('该浏览器不支持点击复制到剪贴板',{time:800});
-			     }
-			     document.body.removeChild(textArea);
-			}
 	});
 </script>
 <?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/footer', TEMPLATE_INCLUDEPATH)) : (include template('common/footer', TEMPLATE_INCLUDEPATH));?>

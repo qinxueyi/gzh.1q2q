@@ -21,13 +21,18 @@ load()->model('visit');
 $dos = array('platform', 'system', 'ext', 'get_fans_kpi', 'get_last_modules', 'get_system_upgrade', 'get_upgrade_modules', 'get_module_statistics', 'get_ads', 'get_not_installed_modules', 'system_home', 'set_top', 'add_welcome','get_user_statistics','getall_user_statistics');
 $do = in_array($do, $dos) ? $do : 'platform';
 
-    $account2 = pdo_get('account',array('isdeleted'=>0));
+    /* $account2 = pdo_get('account',array('isdeleted'=>0));
     $uniacid2 = $account2['uniacid'];
     $_W['uniacid'] = $uniacid2;
     $_W['account'] = uni_fetch($uniacid2);
     $role = permission_account_user_role($_W['uid'], $uniacid2);
     uni_account_save_switch($uniacid2);
+<<<<<<< HEAD
     uni_account_switch($uniacid2);
+=======
+    uni_account_switch($uniacid2); */
+    
+>>>>>>> b713aa6da474d7f54b7d4f843d4cb0b2ca8cbac5
 if ($do == 'get_not_installed_modules') {
     $data = array();
     $not_installed_modules = module_get_all_unistalled('uninstalled', false);

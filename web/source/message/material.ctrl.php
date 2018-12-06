@@ -51,7 +51,11 @@ load()->func('file');
 $dos = array('display', 'sync', 'delete', 'send');
 $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '永久素材-微信素材';
+
 if ($do == 'send') {
+    if ($_GPC['is_delay'] == 1) {
+        return dealy_send($_GPC, $_W);
+    }
     $group = intval($_GPC['group']);
     $type = trim($_GPC['type']);
     $id = intval($_GPC['id']);
@@ -94,8 +98,16 @@ if ($do == 'send') {
     pdo_insert('mc_mass_record', $record);
     iajax(0, '发送成功！', '');
 }
+
 //延迟群发，将数据保存在Redis
-if ($do == "delay_send") {
+/**
+ * @param $_GPC
+ * @param $_W
+ * @param $arr
+ * @return array
+ */
+function dealy_send($_GPC, $_W)
+{
     $redis = new Redis();
     $redis->connect("121.40.84.207", 6379);
     $redis->auth('weiying123');
@@ -103,9 +115,9 @@ if ($do == "delay_send") {
     $group = intval($_GPC['group']);
     $type = trim($_GPC['type']);
     $id = intval($_GPC['id']);
-    $uniacid = intval($_GPC['uniacid']);
-    $acid = intval($_W['acid']);
-    $delay_time = intval($_GPC['delay_time'])*1000;//单位毫秒
+    $uniacid = intval($_W['uniacid']);
+    $delay_time = intval($_GPC['hour'] * 3600 + $_GPC['minute'] * 60);
+    $delay_time = $delay_time * 1000;//单位毫秒
     $media = pdo_get('wechat_attachment', array('uniacid' => $uniacid, 'id' => $id));
     if (empty($media)) {
         iajax(1, '素材不存在', '');
@@ -120,9 +132,8 @@ if ($do == "delay_send") {
     $arr['delay_time'] = $delay_time;
     //存放类型Set
     $redis->sAdd('massTexting', json_encode($arr));
-    iajax(0, '操作成功！', '');
+    iajax(1, '操作成功！', '');
 }
-
 
 if ($do == 'display') {
     $type = in_array(trim($_GPC['type']), array('news', 'image', 'voice', 'video')) ? trim($_GPC['type']) : 'news';
@@ -205,5 +216,4 @@ if ($do == 'sync') {
     }
     iajax(0, '更新成功！', '');
 }
-//var_dump($material_list);exit;
-template('platform/material');
+template('message/material');

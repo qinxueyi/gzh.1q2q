@@ -56,13 +56,13 @@
            echo '<option value='.$weChat['uniacid'].'>'.$weChat['name'].'</option>';
         }
         ?>
-    </select>
+    </select><!-- 
     分组:
     <select name="selectAge" id="selectNum2">
         <option selected="selected"></option>
         <option value="1">18-21</option>
         <option value="2">22-25</option>
-    </select>
+    </select> -->
     <input type="text" id="article_time" class="articleTwo" readonly="readonly"/>
     <script>
         layui.use('laydate', function () {
@@ -90,7 +90,6 @@
 </script>
 <script>
     function search($isExport) {
-
         var table = layui.table;
         $uniacid = $("#selectWeChat").val(); //公众号Id
         $time = $("#article_time").val(); //time
@@ -103,18 +102,30 @@
         }
         table.render({
             elem: '#demo'
+
+       	    ,toolbar: true
+       	    ,title: '粉丝数据表'
+       	    ,totalRow: true
             , url: $url //数据接口
             , page: true //开启分页
-            , cols: [[ //表头
-                {field: 'name', title: '公众号名称', fixed: 'left'}
-                , {field: 'statistics_date', title: '统计日期'}
-                , {field: 'add_fan', title: '新增粉丝'}
-                , {field: 'cancel_fan', title: '取关粉丝'}
-                , {field: 'auto_fan', title: '净增粉丝'}
-                , {field: 'cancel_fan_rate', title: '取关率'}
-                , {field: 'sum_fan', title: '粉丝数'}
-                , {field: 'active_fan', title: '活跃粉丝'}
-                , {field: 'active_rate', title: '粉丝活跃度'}
+            , cols: [
+            	[
+            		{field: 'name', title: '公众号名称', fixed: 'left',totalRowText: '合计行',rowspan: 2}
+                    , {field: 'statistics_date', title: '统计日期',rowspan: 2}
+                    , {field: 'center', title: '粉丝数据',colspan: 5,align:'center'}
+                    , {field: 'auto_fan', title: '净增粉丝',totalRow: true, sort: true,rowspan: 2}
+                    , {field: 'cancel_fan_rate', title: '取关率',totalRow: true, sort: true,rowspan: 2}
+                    , {field: 'sex_nan_bili', title: '男粉比例',totalRow: true, sort: true,rowspan: 2}
+                    , {field: 'sex_nv_bili', title: '女粉比例',totalRow: true, sort: true,rowspan: 2}
+                    , {field: 'active_fan', title: '活跃粉丝',totalRow: true, sort: true,rowspan: 2}
+                    , {field: 'active_rate', title: '粉丝活跃度',totalRow: true, sort: true,rowspan: 2}
+            	],
+            	[ 
+                {field: 'add_fan', title: '新增粉丝',totalRow: true, sort: true}
+                , {field: 'cancel_fan', title: '取关粉丝',totalRow: true, sort: true}
+                , {field: 'sum_fan', title: '粉丝数',totalRow: true, sort: true}
+                , {field: 'sum_sex_nan', title: '男粉',totalRow: true, sort: true}
+                , {field: 'sum_sex_nv', title: '女粉',totalRow: true, sort: true}
             ]]
         });
     }
@@ -132,7 +143,5 @@
             $url += "&time=" + $time.substring(13);
         }
         window.location.href = $url;
-
     }
-
 </script>
