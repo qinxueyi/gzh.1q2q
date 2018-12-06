@@ -299,6 +299,7 @@ if ($do == 'download_fans') {
 				$result = pdo_query($add_fans_sql);
 			}
 			pdo_update('mc_mapping_fans', array('follow' => 1, 'uniacid' => $_W['uniacid'], 'acid' => $_W['acid']), array('openid' => $wechat_fans));
+			//var_dump($add_fans_sql);exit;
 		}
 		$return['total'] = $wechat_fans_list['total'];
 		$return['count'] = !empty($wechat_fans_list['fans']) ? $wechat_fans_count : 0;
@@ -338,7 +339,7 @@ if ($do == 'sync') {
 		$sync_fans = pdo_getall('mc_mapping_fans', array('openid' => $openids));
 		if (!empty($sync_fans)) {
 			foreach ($sync_fans as $fans) {
-				mc_init_fans_info($fans['openid'], $force_init_member);
+				varmc_init_fans_info($fans['openid'], $force_init_member);
 			}
 		}
 		iajax(0, 'success', '');

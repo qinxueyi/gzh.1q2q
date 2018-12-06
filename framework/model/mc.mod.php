@@ -1511,7 +1511,8 @@ function mc_init_fans_info($openid, $force_init_member = false){
 			'follow' => $fans['subscribe'],
 			'nickname' => strip_emoji(stripcslashes($fans['nickname'])),
 			'tag' => base64_encode(iserializer($fans)),
-			'unionid' => $fans['unionid'],
+		    'unionid' => $fans['unionid'],
+		    'sex' => $fans['sex'],
 			'groupid' => !empty($fans['tagid_list']) ? (','.join(',', $fans['tagid_list']).',') : '',
 		);
 		if ($force_init_member) {

@@ -18,8 +18,8 @@ if($_W['isajax'] == true){
     }else {
         $psize = 10;
     }
-    $sql = 'SELECT * FROM '.tablename('article_list').' WHERE id>0';
-    $sql2 = 'SELECT count(id) FROM '.tablename('article_list').' WHERE id>0';
+    $sql = 'SELECT * FROM '.tablename('article_list').' WHERE uniacid = '.$_W['uniacid'].'';
+    $sql2 = 'SELECT count(id) FROM '.tablename('article_list').' WHERE uniacid = '.$_W['uniacid'].'';
     if($_GPC['date']){
         $sql .= " and statistics_date = '{$_GPC['date']}'";
         $sql2 .= " and statistics_date = '{$_GPC['date']}'";
