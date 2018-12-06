@@ -55,13 +55,13 @@ function getUserInfo($model)
     $fan['active_rate']; //活跃度
     $activeEvent = pdo_get('active_event', array('uniacid =' => $model["uniacid"], 'statistics_date =' => $date));
     $fan['active_fan'] = $activeEvent['active_fan_sum'];
-    $activeRateRound = round($fan['active_fan'] / $fan['sum_fan'], 2) * 100;
+    $activeRateRound = round($fan['active_fan'] / $fan['sum_fan'], 4) * 100;
     $fan['active_rate'] = $activeRateRound . "%";
     foreach ($getAddReduceFan["list"] as $item) {
         $fan['add_fan'] = $fan['add_fan'] + $item['new_user'];
         $fan['cancel_fan'] = $fan['cancel_fan'] + $item['cancel_user'];
     }
-    $round = round($fan['cancel_fan'] / $fan['add_fan'], 2) * 100;
+    $round = round($fan['cancel_fan'] / $fan['add_fan'], 4) * 100;
     $fan['cancel_fan_rate'] = $round . "%";
     $fan['auto_fan'] = $fan['add_fan'] - $fan['cancel_fan'];  //计算净增粉丝
     print_r($fan);
@@ -103,9 +103,17 @@ if ($do == "selectList") {
     if (!empty($_GET['uniacid'])) {
         $sql .= " and  fan.uniacid = " . $_GET['uniacid'];
     }
+    $sql .= " order by fan.id desc";
     //获取数据
     $result = pdo_fetchall($sql);
-
+    
+    foreach ($result as &$val){
+        $val['statistics_date'] = date('Y-m-d',strtotime($val['statistics_date']));
+        if($val['sum_fan']){
+            $val['sex_nan_bili'] = round($val['sum_sex_nan']/$val['sum_fan'],4) * 100;//男粉比例
+            $val['sex_nv_bili'] = round($val['sum_sex_nv']/$val['sum_fan'],4) * 100;//男粉比例
+        }
+    }
     //分页
     if (empty($_GET['limit']) || !is_numeric($_GET['limit'])) {
         $_GET['limit'] = 10;

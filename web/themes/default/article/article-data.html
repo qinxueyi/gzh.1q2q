@@ -16,6 +16,10 @@ select.we7-select, select {
 .layui-form-item .layui-inline {
     margin-right: 0;
 }
+.right-content{
+	padding:5px;
+	width: calc(100% - 300px);
+}
 </style>
 <div class="demoTable layui-form">
   <div class="layui-form-item">
@@ -60,7 +64,7 @@ layui.use(['table','laydate','form'], function(){
 	    elem: '#test'
 	    ,url:'./index.php?c=article&a=article-data'
 	    ,toolbar: true
-	    ,title: '用户数据表'
+	    ,title: '文章数据表'
 	    ,totalRow: true
 	    ,cols: [[
 	      {field:'id', title:'ID',width:80,  totalRowText: '合计行'}
