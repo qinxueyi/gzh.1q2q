@@ -332,10 +332,10 @@
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
-								<a href="javascript:;" class="text-over two-menu">
+								<a href="./index.php?c=message&a=material&" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									群发消息
-									<span style="color:red">x</span>
+									<!--<span style="color:red">x</span>-->
 								</a>
 							</li>
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
