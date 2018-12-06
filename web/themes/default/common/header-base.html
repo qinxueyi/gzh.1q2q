@@ -13,6 +13,7 @@
 	<link rel="stylesheet" href="/layui/css/layui.css" media="all">
 	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 	<script src="/layui/layui.js"></script>
+	<script type="text/javascript" src="./resource/js/lib/echarts.min.js"></script>
 	<!--<script src="/layui/laydate/laydate.js"></script> &lt;!&ndash; 改成你的路径 &ndash;&gt;-->
 	<script type="text/javascript">
         if(navigator.appName == 'Microsoft Internet Explorer'){
@@ -45,6 +46,7 @@
 	<script type="text/javascript" src="./resource/js/app/util.js?v=20180321"></script>
 	<script type="text/javascript" src="./resource/js/app/common.min.js?v=20180321"></script>
 	<script type="text/javascript" src="./resource/js/require.js?v=20180321"></script>
+
 
 </head>
 <body>

@@ -18,7 +18,7 @@ load()->model('account');
 load()->model('message');
 load()->model('visit');
 
-$dos = array('platform', 'system', 'ext', 'get_fans_kpi', 'get_last_modules', 'get_system_upgrade', 'get_upgrade_modules', 'get_module_statistics', 'get_ads', 'get_not_installed_modules', 'system_home', 'set_top', 'add_welcome');
+$dos = array('platform', 'system', 'ext', 'get_fans_kpi', 'get_last_modules', 'get_system_upgrade', 'get_upgrade_modules', 'get_module_statistics', 'get_ads', 'get_not_installed_modules', 'system_home', 'set_top', 'add_welcome','get_user_statistics','getall_user_statistics');
 $do = in_array($do, $dos) ? $do : 'platform';
 
     $account2 = pdo_get('account',array('isdeleted'=>0));
@@ -28,7 +28,6 @@ $do = in_array($do, $dos) ? $do : 'platform';
     $role = permission_account_user_role($_W['uid'], $uniacid2);
     uni_account_save_switch($uniacid2);
     uni_account_switch($uniacid2);
-
 if ($do == 'get_not_installed_modules') {
     $data = array();
     $not_installed_modules = module_get_all_unistalled('uninstalled', false);
@@ -206,10 +205,10 @@ if ($do == 'platform') {
     uni_update_week_stat();
     $yesterday = date('Ymd', strtotime('-1 days'));
     $yesterday_stat = pdo_get('stat_fans', array('date' => $yesterday, 'uniacid' => $_W['uniacid']));
-    $yesterday_stat['new'] = intval($yesterday_stat['new']);
-    $yesterday_stat['cancel'] = intval($yesterday_stat['cancel']);
-    $yesterday_stat['jing_num'] = intval($yesterday_stat['new']) - intval($yesterday_stat['cancel']);
-    $yesterday_stat['cumulate'] = intval($yesterday_stat['cumulate']);
+    $yesterday_stat['new'] = intval($yesterday_stat['new']);//昨天新关注
+    $yesterday_stat['cancel'] = intval($yesterday_stat['cancel']);//昨天取消
+    $yesterday_stat['jing_num'] = intval($yesterday_stat['new']) - intval($yesterday_stat['cancel']);//昨天净增关注
+    $yesterday_stat['cumulate'] = intval($yesterday_stat['cumulate']);//昨天总关注人数
     $today_stat = pdo_get('stat_fans', array('date' => date('Ymd'), 'uniacid' => $_W['uniacid']));
     $today_stat['new'] = intval($today_stat['new']);//新增关注
     $today_stat['cancel'] = intval($today_stat['cancel']);//取消关注人数
@@ -218,7 +217,46 @@ if ($do == 'platform') {
     if ($today_stat['cumulate'] < 0) {
         $today_stat['cumulate'] = 0;
     }
-    iajax(0, array('yesterday' => $yesterday_stat, 'today' => $today_stat), '');
+    $yday = date('Y-m-d', strtotime('-1 days'));//昨天
+    $yyday = date('Y-m-d', strtotime('-2 days'));//前天
+    $today_article = pdo_getall('article_list', array('statistics_date' => $yday, 'uniacid' => $_W['uniacid']));
+    // 获取昨天的统计文章
+    if(!$today_article){
+        $todayArticle['reader_num'] =0;
+        $todayArticle['share_user'] = 0;
+        $todayArticle['original_reader_rate'] = 0;
+    }else{
+        foreach ($today_article as $key => $value) {
+            $todayArticle['reader_num'] += $value['reader_num'];
+            $todayArticle['share_user'] += $value['share_user'];
+            $original_reader_rate += (float)$value['original_reader_rate'];
+            $todayArticle['original_reader_rate'] = $original_reader_rate.'%';
+        }   
+    }
+
+    $yesterday_article = pdo_getall('article_list', array('statistics_date' => $yyday, 'uniacid' => $_W['uniacid'])); // 获取前天的统计文章
+    if($yesterday_article){
+        foreach ($yesterday_article as $key => $value) {
+            $yesterdayArticle['reader_num'] += $value['reader_num'];
+            $yesterdayArticle['share_user'] += $value['share_user'];
+            $original_reader += (float)$value['original_reader_rate'];
+            $yesterdayArticle['original_reader_rate'] = $original_reader.'%';
+        }  
+    }else{
+        $yesterdayArticle['reader_num'] = 0;
+        $yesterdayArticle['share_user'] = 0;
+        $yesterdayArticle['original_reader_rate'] = 0;  
+    }
+
+    // iajax(0, array('yesterday' => $yesterday_stat, 'today' => $today_stat), '');
+    iajax(0, 
+        array(
+            'yesterday' => $yesterday_stat, 
+            'today' => $today_stat,
+            'todayArticle'=>$todayArticle,
+            'yesterdayArticle'=>$yesterdayArticle
+        ),
+         '');
 } elseif ($do == 'get_last_modules') {
     $last_modules = welcome_get_last_modules();
     if (is_error($last_modules)) {
@@ -254,7 +292,92 @@ if ($do == 'platform') {
     } else {
         iajax(0, $ads);
     }
-}
+}elseif($do=='get_user_statistics'){
+    $week = $_GPC['week'];
+    $mouth = $_GPC['mouth'];
+    $section = $_GPC['section'];
+    if(!empty($week)){
+        $timeArray = getDateFromRange($week,date('Y-m-d'));
+    }
+    if(!empty($mouth)){
+        $timeArray = getDateFromRange($mouth,date('Y-m-d'));
+    }
+    if(!empty($section)){
+        $time = explode(' ', $section);
+        $timeArray = getDateFromRange($time[0],$time[2]);
+    }
+    if($timeArray){
+        foreach ($timeArray as $key => $value) {
+            $times[] = date('Ymd', strtotime(str_replace("'",' ',$value)));
+        }
+        $timeStr = (string)implode(',', $timeArray);
+        $time = implode(',', $times);
+        $sql = 'SELECT `new`,`date` FROM '. tablename('stat_fans') . " WHERE `date` IN (". $time.") AND `uniacid`=".$_W['uniacid'];   
+        $stat = pdo_fetchall($sql);
+        $sqlt = 'SELECT `share_user`,`statistics_date` FROM '. tablename('article_list') . " WHERE `statistics_date` IN (".$timeStr.") AND `uniacid`=".$_W['uniacid']; 
+        $article = pdo_fetchall($sqlt);
+        if($stat || $article){
+            $data = array();
+            foreach ($timeArray as $s => $t) {
+                $timeO = str_replace("'",'',$t);
+                foreach ($article as $k => $v) {
+                    if($v['statistics_date'] == $timeO){
+                        $data['article'][$timeO]+=(int)$v['share_user'];
+                    }else{
+                        $data['article'][$timeO]+=0; 
+                    }
+                }
+                foreach ($stat as $key => $value) {
+                    if(date('Y-m-d', strtotime($value['date'])) == $timeO){
+                        $data['stat'][$timeO]+=(int)$value['new'];
+                    }else{
+                        $data['stat'][$timeO]+=0; 
+                    } 
+                }
+            }
+            iajax(0,array('key'=>array_keys($data['stat']),'stat'=>array_values($data['stat']),'article'=>array_values($data['article'])));
+        }
+
+    }else{
+         iajax(1, '缺少参数');
+    }
+   
+}elseif($do=='getall_user_statistics'){
+    $userStatistics = json_decode($_GPC['getall_user_statistics']);
+    if(!$userStatistics){
+        $sql = 'SELECT `subscribe_scene`,count(fanid) as num FROM '. tablename('mc_mapping_fans') . " WHERE `uniacid`=".$_W['uniacid']." GROUP BY subscribe_scene"; 
+        $userStatistics = pdo_fetchall($sql); 
+        $data = array();
+        foreach ($userStatistics as $key => $value) {
+            switch ($value['subscribe_scene']) {
+                case 'ADD_SCENE_SEARCH':
+                    array_push($data,array('value'=>$value['num'],'name'=>'公众号搜索'));
+                    break;                
+                case 'ADD_SCENE_QR_CODE':
+                    array_push($data,array('value'=>$value['num'],'name'=>'扫码二维码'));
+                    break;                
+                case 'ADD_SCENE_PROFILE_ITEM':
+                    array_push($data,array('value'=>$value['num'],'name'=>'图文右上角菜单'));
+                    break;                
+                case 'ADD_SCENEPROFILE LINK':
+                    array_push($data,array('value'=>$value['num'],'name'=>'图文页公众号名称'));
+                    break;                
+                case 'ADD_SCENE_PROFILE_CARD':
+                    array_push($data,array('value'=>$value['num'],'name'=>'名片分享'));
+                    break;                
+                case 'ADD_SCENE_PAID':
+                   array_push($data,array('value'=>$value['num'],'name'=>'支付后关注'));
+                    break;                
+                case 'ADD_SCENE_OTHERS':
+                    array_push($data,array('value'=>$value['num'],'name'=>'其他合计'));
+                    break;    
+            }
+         }
+        isetcookie('getall_user_statistics', json_encode($data), $expire = 600, $httponly = false);
+        $userStatistics = $data;
+    }
+    iajax(0, $userStatistics);
+}   
 
 if ($do == 'system_home') {
     $user_info = user_single($_W['uid']);
@@ -311,3 +434,23 @@ if ($do == 'add_welcome') {
 // 	$list = array_slice($array,0,$num);
 // 	return $list;
 // }
+
+/**
+ * 获取指定日期段内每一天的日期
+ * @param  Date  $startdate 开始日期
+ * @param  Date  $enddate   结束日期
+ * @return Array
+ */
+function getDateFromRange($startdate, $enddate){
+    $stimestamp = strtotime($startdate);
+    $etimestamp = strtotime($enddate);
+    // 计算日期段内有多少天
+    $days = ($etimestamp-$stimestamp)/86400+1;
+    // 保存每天日期
+    $date = array();
+
+    for($i=0; $i<$days; $i++){
+        $date[] = "'".date('Y-m-d', $stimestamp+(86400*$i))."'";
+    }
+    return $date;
+}
