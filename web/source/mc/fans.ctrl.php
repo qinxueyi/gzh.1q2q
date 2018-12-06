@@ -281,16 +281,16 @@ if ($do == 'download_fans') {
 
 	if (!is_error($wechat_fans_list)) {
 		$wechat_fans_count = count($wechat_fans_list['fans']);
-		$total_page = ceil($wechat_fans_count / 500);
+		$total_page = ceil($wechat_fans_count / 100);
 		for ($i = 0; $i < $total_page; $i++) {
-			$wechat_fans = array_slice($wechat_fans_list['fans'], $i * 500, 500);
+			$wechat_fans = array_slice($wechat_fans_list['fans'], $i * 100, 100);
 			$system_fans = pdo_getall('mc_mapping_fans', array('openid' => $wechat_fans), array(), 'openid');
 			$add_fans_sql = '';
 			foreach($wechat_fans as $openid) {
 				if (empty($system_fans) || empty($system_fans[$openid])) {
 					$salt = random(8);
 					$fansQueryInfo = $account_api->fansQueryInfo($openid);
-					$add_fans_sql .= "('{$_W['acid']}', '{$_W['uniacid']}', 0, '{$openid}', '{$salt}', 1, 0, '',{$fansQueryInfo['sex']})";
+					$add_fans_sql .= "('{$_W['acid']}', '{$_W['uniacid']}', 0, '{$openid}', '{$salt}', 1, 0, '',{$fansQueryInfo['sex']}),";
 				}
 			}
 			if (!empty($add_fans_sql)) {

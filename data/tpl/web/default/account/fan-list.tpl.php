@@ -1,4 +1,4 @@
-{template 'common/header'}
+<?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
 <style type="text/css">
 
     .select {
@@ -49,7 +49,7 @@
     选择公众号:
     <select name="uniacid" id="selectWeChat" class="select">
         <option select="select"></option>
-        <?php
+        <?php 
 
            $weChatList=weChatList();
            foreach ($weChatList as $weChat){
