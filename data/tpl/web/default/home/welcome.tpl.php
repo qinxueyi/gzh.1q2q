@@ -166,7 +166,7 @@
 							'rgb(204,146,238)',
 							'rgb(181,237,126)',
 							'rgb(58,223,247)',
-							'rgb(57,224,24)'
+							'rgb(57,224,24)',
 							];
 				var option1 = {
 				    tooltip : {
@@ -184,7 +184,8 @@
 				        	{name:'名片分享',icon:'circle'},
 				        	{name:'支付后关注',icon:'circle'},
 				        	{name:'其他合计',icon:'circle'},
-				        	{name:'公众号迁移',icon:'circle'}
+				        	{name:'公众号迁移',icon:'circle'},
+				        	{name:'暂无数据',icon:'circle'}
 				        	]
 				    },
 				    toolbox: {
@@ -303,13 +304,16 @@
 			});
 			$.post("<?php  echo url('home/welcome')?>", {'do' : 'getall_user_statistics',}, function(data) {
 					data = $.parseJSON(data);
-					console.log(data);
 					if(data.message.errno==0){
-						chart.annular(data.message.message);
+						if(data.message.message != false){
+							chart.annular(data.message.message);
+						}else{
+							chart.annular([{value:1, name:'暂无数据'}]);
+						}
+						
 					}
 				});	
-			$('#week_seven').click();
-			
+			$('#week_seven').click();	
 		</script>
 		<p class="clear"></p>
 		<div class="panel we7-panel notice notice-tab">
