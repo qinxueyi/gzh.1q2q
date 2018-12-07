@@ -199,7 +199,8 @@
 								<?php  if(empty($fan['uid'])) { ?>
 								<a href="javascript:;" class="color-default" data-toggle="modal" data-target="#register_member" ng-click="registerMember('<?php  echo $fan['openid'];?>')">注册为会员</a>
 								<?php  } ?>
-								<a  href="<?php  echo url('mc/chats', array('openid' => $fan['openid']))?>" target="_blank" class="color-default">
+								<!-- <a  href="<?php  echo url('mc/chats', array('openid' => $fan['openid']))?>" target="_blank" class="color-default"> -->
+								<a  href="<?php  echo url('mc/notice', array('fanid' => $fan['fanid']))?>" target="_blank" class="color-default">
 									发送消息<span class="wi wi-angle-right"></span>
 								</a>
 							</div>

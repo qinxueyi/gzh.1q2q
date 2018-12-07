@@ -12,12 +12,18 @@ if($do == 'keyword') {
 	if($_W['isajax']) {
 		$condition = '';
 		$key_word = trim($_GPC['key_word']);
-		if(!empty($key_word)) {
-			$condition = " AND content LIKE '%{$key_word}%' AND (module = 'news' OR module = 'cover')";
-		} else {
-			$condition = " AND (module = 'news' OR module = 'cover')";
+		
+		$ids = pdo_fetchall('SELECT id FROM '. tablename('rule'). ' where containtype LIKE "%news%" and uniacid = '.$_W['uniacid']);
+		$ls = array();
+		foreach ($ids as $i){
+		    $ls[] = $i['id'];
 		}
-
+		$ids = '('.implode(',', $ls).')';
+		if(!empty($key_word)) {
+		    $condition = " AND content LIKE '%{$key_word}%' AND (module = 'news' OR module = 'cover') OR rid in ".$ids;
+		} else {
+		    $condition = " AND (module = 'news' OR module = 'cover') OR rid in ".$ids;
+		}
 		$data = pdo_fetchall('SELECT content, module, rid FROM ' . tablename('rule_keyword') . " WHERE uniacid = :uniacid AND status != 0 " . $condition . ' ORDER BY uniacid DESC,displayorder DESC LIMIT 100', array(':uniacid' => $_W['uniacid']));
 		$exit_da = array();
 		if(!empty($data)) {
@@ -72,7 +78,7 @@ if($do == 'post') {
 		}
 		$idata = array('rid' => $rid, 'name' => $rule['name'], 'module' => $rule['module']);
 		$module = $rule['module'];
-		$reply = pdo_fetchall('SELECT * FROM ' . tablename($module . '_reply') . ' WHERE rid = :rid', array(':rid' => $rid));
+		$reply = pdo_fetchall('SELECT * FROM ' . tablename('news_reply') . ' WHERE rid = :rid', array(':rid' => $rid));
 		if($module == 'cover') {
 			$idata['do'] = $reply[0]['do'];
 			$idata['cmodule'] = $reply[0]['module'];
