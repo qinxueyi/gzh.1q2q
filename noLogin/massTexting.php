@@ -53,7 +53,11 @@ $record = array(
     'type' => 0,
     'sendtime' => TIMESTAMP,
     'createtime' => TIMESTAMP,
+    'send_status' => "SUCCESS"
 );
+if ($result['errno'] == -1) {
+    $record['send_status'] = "FAIL";
+}
 pdo_insert('mc_mass_record', $record);
 //iajax(0, '发送成功！', '');
 
