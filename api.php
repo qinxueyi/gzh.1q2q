@@ -10,7 +10,6 @@ load()->model('visit');
 load()->app('common');
 load()->classs('wesession');
 $hash = $_GPC['hash'];
-// require_once './wxApi.php';
 if (!empty($hash)) {
     $id = pdo_fetchcolumn("SELECT acid FROM " . tablename('account') . " WHERE hash = :hash", array(':hash' => $hash));
 }
@@ -40,6 +39,8 @@ if (empty($_W['account'])) {
 if (empty($_W['account']['token'])) {
     exit('initial missing token');
 }
+
+
 $_W['debug'] = intval($_GPC['debug']);
 $_W['acid'] = $_W['account']['acid'];
 $_W['uniacid'] = $_W['account']['uniacid'];
@@ -52,6 +53,7 @@ $_W['attachurl'] = attachment_set_attach_url();
 visit_update_today('web', 'we7_api');
 
 $engine = new WeEngine();
+
 if (!empty($_W['setting']['copyright']['status'])) {
     $engine->died('抱歉，站点已关闭，关闭原因：' . $_W['setting']['copyright']['reason']);
 }
@@ -65,13 +67,9 @@ if ($_W['isajax'] && $_W['ispost'] && $_GPC['flag'] == 1) {
 if ($_W['isajax'] && $_W['ispost'] && $_GPC['flag'] == 2) {
     $engine->decrypt();
 }
-
 load()->func('compat.biz');
 $_W['isajax'] = false;
 $engine->start();
-
-
-
 
 class WeEngine
 {
@@ -156,6 +154,7 @@ class WeEngine
         if (!$this->account->checkSign()) {
             exit('Check Sign Fail.');
         }
+        
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
             $row = array();
             $row['isconnect'] = 1;
@@ -164,6 +163,7 @@ class WeEngine
             exit(htmlspecialchars($_GET['echostr']));
         }
         if (strtolower($_SERVER['REQUEST_METHOD']) == 'post') {
+            
             $postStr = file_get_contents('php://input');
             if (!empty($_GET['encrypt_type']) && $_GET['encrypt_type'] == 'aes') {
                 $postStr = $this->account->decryptMsg($postStr);
@@ -200,6 +200,7 @@ class WeEngine
 
             $hitKeyword = array();
             $response = array();
+            //$this->addrecord($message);//另加
             foreach ($pars as $par) {
                 if (empty($par['module'])) {
                     continue;
@@ -283,6 +284,33 @@ class WeEngine
         }
         WeUtility::logging('waring', 'Request Failed');
         exit('Request Failed');
+    }
+    
+    /**
+    * 标题
+    * @user snake
+    * @time 2018年12月7日 下午5:03:29}
+    * @param key
+    * @return array/json
+    */
+    private function addrecord($massage) {
+        global $_W;
+        if(!$massage){
+            return false;
+        }
+        $allow = array('text', 'image', 'location', 'link', 'trace');
+        if(!in_array($massage['msgtype'], $allow)) {
+            return false;
+        }
+        pdo_insert('mc_chats_record',array(
+            'uniacid' => $_W['uniacid'],
+            'acid' => $_W['acid'],
+            'flag' => 2,
+            'openid' => $massage['fromusername'],
+            'msgtype' => $massage['msgtype'],
+            'content' => $massage['content'],
+            'createtime' => TIMESTAMP,
+        ));
     }
 
     private function isValidResponse($response)

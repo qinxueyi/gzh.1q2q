@@ -27,6 +27,11 @@ function getAccessToken($appId, $appSecRet)
     return $access_token;
 }
 
+function dump($var){
+    echo "<pre>";
+    var_dump($var);
+    echo "<pre>";
+}
 /**
  * 获取图文群发每日数据
  */
@@ -34,18 +39,19 @@ function getAccessToken($appId, $appSecRet)
 function getArticleList($model)
 {
     //获取accessToken
-    $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . $model['uniacid']);
+    $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . 7);
     if($accessToken){
         $date = date("Y-m-d", strtotime("-1 day"));
         $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));
         $getArticleListUrl = "https://api.weixin.qq.com/datacube/getarticlesummary?access_token=" . $accessToken;
         $data = http_post_json($getArticleListUrl, $json);
-        if (!empty($data)) {
-            $countuser = pdo_fetch(
-                'select * from ' . tablename('vipcn_fan') .'where uniacid = '.$model["uniacid"].' and sum_fan >0 order by id desc limit 1'
-            );
-            if($countuser){
-                foreach ($data['list'] as $value) {
+        
+        
+        $getArticleListUrls = "https://api.weixin.qq.com/datacube/getarticletotal?access_token=" . $accessToken;
+        $datas = http_post_json($getArticleListUrls, $json);
+        $target_user = $datas['list']['0']['details']['0']['target_user'];
+        if (!empty($data) && $target_user) {
+                foreach ($data['list'] as $k=>$value) {
                     $articleModel = array();
                     $articleModel['statistics_date'] = $date;
                     $articleModel['msgid'] = $value['msgid'];
@@ -53,12 +59,12 @@ function getArticleList($model)
                     $articleModel['title'] = $value["title"];
                     $articleModel['position'] = substr($value['msgid'], -1); //位置
                     $articleModel['reader_num'] = $value['int_page_read_count']; //阅读数
-                    $round = round($value['int_page_read_count'] / $countuser['sum_fan'], 4) * 100;
+                    $round = round($value['int_page_read_count'] / $target_user, 4) * 100;
                     $articleModel['reader_rate'] = $round . "%"; //阅读率
                     $articleModel['original_reader_num'] = $value['ori_page_read_user'];//原文阅读数
-                    $originalRound = round($value['ori_page_read_user'] / $countuser['sum_fan'], 4) * 100;
+                    $originalRound = round($value['ori_page_read_user'] / $target_user, 4) * 100;
                     $articleModel['original_reader_rate'] = $originalRound . "%"; //原文阅读率
-                    $articleModel['fan_num'] = $countuser['sum_fan'];
+                    $articleModel['fan_num'] = $target_user;
                     $articleModel['share_user'] = $value['share_user'];//分享人数
                     if(pdo_get('article_list',array('msgid'=>$value['msgid'],'statistics_date'=>$date,'uniacid'=>$model["uniacid"]))){
                         //保存数据
@@ -68,9 +74,7 @@ function getArticleList($model)
                         pdo_insert('article_list', $articleModel);
                     }
                 }
-            }
         }
-        echo "success";  
     }
 
 }

@@ -115,6 +115,9 @@ function getPushMessage($receiveData, $limit = true)
         $eventList = pdo_getall("event_list", $conditionModel);
     }
     foreach ($eventList as $k => $value) {
+        if ($value['time'] == 0) {
+            $value['time'] = 10;//10毫秒
+        }
         $value['openId'] = $openId;
         $value['begin_time'] = time();
         $eventList[$k] = $value;
