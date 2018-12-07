@@ -11,7 +11,8 @@ $redis->connect("121.40.84.207", 6379);
 $redis->auth('weiying123');
 //取出set需要发送的数据
 $massTextList = $redis->sMembers('massTexting');
-if (!$massTextList) {
+if (!empty($massTextList)) {
+    //需要发送data
     $massTextModelList = array();
     foreach ($massTextList as $value) {
         //转为数组
@@ -30,8 +31,8 @@ if (!$massTextList) {
         }
     }
     //发送数据
-    if (!empty($sendMessage)) {
-        $param['data'] = serialize($sendMessage);
+    if (!empty($massTextModelList)) {
+        $param['data'] = serialize($massTextModelList);
         sendUserMessage("http://1q2q.chaotuozhe.com:9502", $param);
     }
 
