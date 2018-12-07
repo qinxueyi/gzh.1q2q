@@ -26,7 +26,7 @@ if (!$massTextList) {
             }
             $massTextModelList[] = $setSendMessage;
             //移除set存放的数据
-            $redis->srem('pushMessage', $value);
+            $redis->srem('massTexting', $value);
         }
     }
     //发送数据
