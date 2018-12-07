@@ -17,7 +17,7 @@ $http->on('request', function ($request, $response) {
     if (!empty($data)) {
         foreach ($data as $value) {
             swoole_timer_after($value['time'], function () use ($value) {
-                $accessToken = file_get_contents("http://gzh.1q2q.com/getAccessToken.php?uniacid=" . $value['uniacid']);
+                $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . $value['uniacid']);
                 //print_r($accessToken);
                 //print_r($value);
                 $sendArr['touser'] = $value['openId'];

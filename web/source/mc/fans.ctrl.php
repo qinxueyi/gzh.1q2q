@@ -339,7 +339,7 @@ if ($do == 'sync') {
 		$sync_fans = pdo_getall('mc_mapping_fans', array('openid' => $openids));
 		if (!empty($sync_fans)) {
 			foreach ($sync_fans as $fans) {
-				varmc_init_fans_info($fans['openid'], $force_init_member);
+				mc_init_fans_info($fans['openid'], $force_init_member);
 			}
 		}
 		iajax(0, 'success', '');
