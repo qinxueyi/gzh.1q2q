@@ -20,12 +20,13 @@ $type = trim($_GPC['type']);
 $id = intval($_GPC['id']);
 $uniacid = intval($_GPC['uniacid']);
 $acid = intval($_GPC['acid']);
-$media_id = intval($_GPC['media']);
+$media_id = $_GPC['media_id'];
 $result = fansSendAll($group, $type, $media_id, $uniacid);
-
+print_r($result);
 if (is_error($result)) {
     // iajax(1, $result['message'], '');
-    return $result;
+    // echo $result;
+    return;
 }
 $groups = pdo_get('mc_fans_groups', array('uniacid' => $uniacid, 'acid' => $acid));
 if (!empty($groups)) {
