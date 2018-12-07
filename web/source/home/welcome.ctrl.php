@@ -346,7 +346,9 @@ if ($do == 'platform') {
 }elseif($do=='getall_user_statistics'){
     $userStatistics = json_decode($_GPC['getall_user_statistics']);
     if(!$userStatistics){
-        $sql = 'SELECT `subscribe_scene`,count(fanid) as num FROM '. tablename('mc_mapping_fans') . " WHERE `uniacid`=".$_W['uniacid']." GROUP BY subscribe_scene"; 
+        $start_time = strtotime(date("Y-m-d",strtotime("-1 day")));
+        $end_time = strtotime(date("Y-m-d",strtotime("0 day")));
+        $sql = 'SELECT `subscribe_scene`,count(fanid) as num FROM '. tablename('mc_mapping_fans') . " WHERE `followtime` >=".$start_time." AND `followtime` <=".$end_time." AND `uniacid`=".$_W['uniacid']." GROUP BY subscribe_scene"; 
         $userStatistics = pdo_fetchall($sql); 
         $data = array();
         foreach ($userStatistics as $key => $value) {
@@ -371,7 +373,10 @@ if ($do == 'platform') {
                     break;                
                 case 'ADD_SCENE_OTHERS':
                     array_push($data,array('value'=>$value['num'],'name'=>'其他合计'));
-                    break;    
+                    break;                
+                case 'ADD_SCENE_ACCOUNT_MIGRATION':
+                    array_push($data,array('value'=>$value['num'],'name'=>'公众号迁移'));
+                    break;                    
             }
          }
         isetcookie('getall_user_statistics', json_encode($data), $expire = 600, $httponly = false);

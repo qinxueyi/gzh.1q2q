@@ -88,6 +88,7 @@
             	<div id="speedChartMain" style="width: 750px; height: 300px;"></div>
         	</div>
         	<div style="float:right">
+        		<span>新增数据来源</span><br>
         		<div class="chartbox" id="pie" style="width:500px;height:300px;"></div>
         	</div>
         	
@@ -164,7 +165,9 @@
 							'rgb(71,198,140)',
 							'rgb(204,146,238)',
 							'rgb(181,237,126)',
-							'rgb(58,223,247)'];
+							'rgb(58,223,247)',
+							'rgb(57,224,24)'
+							];
 				var option1 = {
 				    tooltip : {
 				        trigger: 'item',
@@ -180,7 +183,9 @@
 				        	{name:'图文页公众号名称',icon:'circle'},
 				        	{name:'名片分享',icon:'circle'},
 				        	{name:'支付后关注',icon:'circle'},
-				        	{name:'其他合计',icon:'circle'}]
+				        	{name:'其他合计',icon:'circle'},
+				        	{name:'公众号迁移',icon:'circle'}
+				        	]
 				    },
 				    toolbox: {
 				        show : true,
