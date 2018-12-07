@@ -206,7 +206,7 @@
 				    calculable : true,
 				    series : [
 				        {
-				            name:'食物分类',
+				            name:'用户来源',
 				            type:'pie',
 				            radius : ['50%', '70%'],
 				            itemStyle : {
