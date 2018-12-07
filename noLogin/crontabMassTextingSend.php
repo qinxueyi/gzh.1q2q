@@ -22,7 +22,7 @@ if (!$massTextList) {
         if ($setSendMessage['delay_time'] - $consumeTime < 300000) {
             $setSendMessage['time'] = $setSendMessage['delay_time'] - $consumeTime;
             if (($setSendMessage['delay_time'] - $consumeTime) < 0) {
-                $setSendMessage['time'] = 0;
+                $setSendMessage['time'] = 10;
             }
             $massTextModelList[] = $setSendMessage;
             //移除set存放的数据
