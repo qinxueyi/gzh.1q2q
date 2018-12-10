@@ -83,9 +83,9 @@ if (empty($interaction_type)) {
     return false;
 }
 
-$myfile = fopen("receptionMessage.txt", "w") or die("Unable to open file!");
-fwrite($myfile, $receiveData['Event'] . $interaction_type['type']);
-fclose($myfile);
+//$myfile = fopen("receptionMessage.txt", "w") or die("Unable to open file!");
+//fwrite($myfile, $receiveData['Event'] . $interaction_type['type']);
+//fclose($myfile);
 if ($receiveData['Event'] == $interaction_type['type']) {
 
 
