@@ -40,7 +40,15 @@ if (!$msgType) {
     insertOrUpdateActiveFanList($accountWeChats);
 }
 
-
+$MsgType = array("text", "image", "voice", "video", "shortvideo", "location", "link");
+//接受普通消息
+if (in_array($receiveData, $MsgType)) {
+    $receiveData['Event'] = "receptionMessage";
+}
+//接受二维码
+if (!empty($receiveData['EventKey'])) {
+    $receiveData['Event'] = "scanCode";
+}
 /**
  * @param $accountWeChats
  * 活跃粉丝表统计
@@ -65,11 +73,17 @@ function insertOrUpdateActiveFanList($accountWeChats)
     }
 }
 
-//☆ 如果是关注 则insert ConcernList
+//☆
 //☆ 延迟推送
-if ($receiveData['Event'] == "subscribe") {
-    //插入记录表
-    insertConcern($receiveData);
+$interaction_type = pdo_get('interaction_type', array('uniacid' => $receiveData['uniacid']));
+if (empty($interaction_type)) {
+    return false;
+}
+if ($receiveData['Event'] == $interaction_type['type']) {
+    // 如果是关注 则insert ConcernList
+    if ($receiveData['Event'] == "subscribe") {
+        insertConcern($receiveData);
+    }
     //将大于24H客服消息放入Redis
     $pushMessageListByExceedDay = getPushMessage($receiveData, false);
     if (!empty($pushMessageListByExceedDay)) {
@@ -78,9 +92,8 @@ if ($receiveData['Event'] == "subscribe") {
     //异步延迟推送<24H
     $pushMessageList = getPushMessage($receiveData, true);
     $param['data'] = serialize($pushMessageList);
-    sendUserMessage("http://gzh.1q2q.com:9501", $param);
+    sendUserMessage("http://1q2q.chaotuozhe.com:9501", $param);
 }
-
 
 /**
  * 将超过24H客服消息保存在Redis
