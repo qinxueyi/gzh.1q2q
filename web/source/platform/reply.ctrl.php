@@ -475,6 +475,7 @@ if ($do == 'post') {
 //			}
             //$data['content'] = urldecode(json_encode(array('content'=>urlencode($res))));
             $content['content'] = $content;
+            $data['content']=json_encode(array('content'=>urlencode($content)));
         } elseif ($_GPC['reply']['reply_news']) {
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
             $contents = json_decode('[' . $contents . ']', true);
