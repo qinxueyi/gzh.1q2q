@@ -453,7 +453,13 @@ if ($do == 'post') {
 		$res['type'] = $_GPC['type'];
 		$res['uniacid'] = $data['uniacid'];
 		$res['acid'] = $_W['acid'];
-		$res = pdo_insert('interaction_type',$res);
+
+		$result = pdo_get('interaction_type',array('uniacid'=>$_W['uniacid'],'acid'=>$_W['acid']));
+		if($result){
+			$result = pdo_update('interaction_type', array('type'=>$res['type']), array('uniacid'=>$_W['uniacid'],'acid'=>$_W['acid']));
+		}else{
+			$res = pdo_insert('interaction_type',$res);	
+		}
 		//判断数据类型
 		if ($_GPC['reply']['reply_basic']) {//text类型
 			$data['msgtype'] = 'text';
