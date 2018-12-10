@@ -467,15 +467,20 @@ if ($do == 'post') {
             $contents = explode(',', $contents);
             $get_content = array_rand($contents, 1);
             $content = trim($contents[$get_content], '\"');
-//			$preg = preg_match_all("/\[U\+[A-Za-z0-9]+\]/",$content,$arr);
-//			foreach ($arr[0] as $k => $v) {
-//				$str = emoji($v);
-//				$res = preg_replace("/\[U\+[A-Za-z0-9]+\]/",$str,$content,1);
-//				$content = $res;
-//			}
-            //$data['content'] = urldecode(json_encode(array('content'=>urlencode($res))));
-            $content['content'] = $content;
-            $data['content']=json_encode(array('content'=>urlencode($content)));
+            $preg = preg_match_all("/\[U\+[A-Za-z0-9]+\]/", $content, $arr);
+            foreach ($arr[0] as $k => $v) {
+                $str = emoji($v);
+                $res = preg_replace("/\[U\+[A-Za-z0-9]+\]/", $str, $content, 1);
+                $content = $res;
+            }
+            if (!strpos($_GPC['reply']['reply_basic'], '[U+'))
+            {
+                $data['content'] = urldecode(json_encode(array('content' => urlencode($_GPC['reply']['reply_basic']))));
+            }else{
+                $data['content'] = urldecode(json_encode(array('content' => urlencode($res))));
+            }
+//            $content['content'] = $content;
+//            $data['content']=json_encode(array('content'=>urlencode($_GPC['reply']['reply_basic'])));
         } elseif ($_GPC['reply']['reply_news']) {
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
             $contents = json_decode('[' . $contents . ']', true);
