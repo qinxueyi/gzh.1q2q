@@ -316,7 +316,7 @@
 			<select name="type" lay-verify="" value="{$result['type']}">
 			  <option value="subscribe" {if $result['type'] == 'subscribe'}selected{/if}>关注</option>
 			  <option value="receptionMessage" {if $result['type'] == 'receptionMessage'}selected{/if}>消息（含关键字）</option>
-			  <option value="Event" {if $result['type'] == 'Event'}selected{/if}>菜单点击</option>
+			  <option value="CLICK" {if $result['type'] == 'Event'}selected{/if}>菜单点击</option>
 			  <option value="scanCode" {if $result['type'] == 'scanCode'}selected{/if}>参数二维码</option>
 			</select>    
 		</div>
