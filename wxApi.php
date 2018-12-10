@@ -82,7 +82,13 @@ $interaction_type = pdo_get('interaction_type', array('uniacid' => $receiveData[
 if (empty($interaction_type)) {
     return false;
 }
+
+//$myfile = fopen("receptionMessage.txt", "w") or die("Unable to open file!");
+//fwrite($myfile, $receiveData['Event'] . $interaction_type['type']);
+//fclose($myfile);
 if ($receiveData['Event'] == $interaction_type['type']) {
+
+
     // 如果是关注 则insert ConcernList
     if ($receiveData['Event'] == "subscribe") {
         insertConcern($receiveData);
