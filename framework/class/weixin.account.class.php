@@ -541,7 +541,7 @@ class WeiXinAccount extends WeAccount {
 	}
 	
 	public function getAccessToken() {
-		$cachekey = "accesstoken:{$this->account['acid']}";
+	    $cachekey = "accesstoken:{$this->account['acid']}";
 		$cache = cache_load($cachekey);
 		if (!empty($cache) && !empty($cache['token']) && $cache['expire'] > TIMESTAMP) {
 			$this->account['access_token'] = $cache;
@@ -747,7 +747,8 @@ class WeiXinAccount extends WeAccount {
 
 	
 	public function fansTagFetchAll() {
-		$token = $this->getAccessToken();
+	    $token = $this->getAccessToken();
+	    //return $token;
 		if(is_error($token)){
 			return $token;
 		}

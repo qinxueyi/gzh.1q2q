@@ -608,7 +608,6 @@ function mc_fans_groups($force_update = false) {
 	global $_W;
 
 	$results = pdo_getcolumn('mc_fans_groups', array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']), 'groups');
-    
 	if(!empty($results) && !$force_update) {
 		$results = iunserializer($results);
 		return $results;
@@ -618,6 +617,7 @@ function mc_fans_groups($force_update = false) {
 		return array();
 	}
 	$tags = $account_api->fansTagFetchAll();
+	//return $tags;
 	if (is_error($tags)) {
 		itoast($tags['message'], '', 'error');
 	}

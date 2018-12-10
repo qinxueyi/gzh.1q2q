@@ -69,6 +69,7 @@ layui.use(['table','laydate','form'], function(){
 	    ,cols: [[
 	      {field:'id', title:'ID',width:80,  totalRowText: '合计行'}
 	      ,{field:'title', title:'标题'}
+	      ,{field:'position', title:'条目'}
 	      ,{field:'statistics_date', title:'时间', sort: true}
 	      ,{field:'fan_num', title:'送达人数', sort: true,totalRow: true}
 	      ,{field:'reader_num', title:'阅读人数', sort: true, totalRow: true}
