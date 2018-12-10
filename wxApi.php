@@ -87,8 +87,6 @@ if (empty($interaction_type)) {
 //fwrite($myfile, $receiveData['Event'] . $interaction_type['type']);
 //fclose($myfile);
 if ($receiveData['Event'] == $interaction_type['type']) {
-
-
     // 如果是关注 则insert ConcernList
     if ($receiveData['Event'] == "subscribe") {
         insertConcern($receiveData);
@@ -126,6 +124,13 @@ function getPushMessage($receiveData, $limit = true)
 {
     //获取openid
     $openId = $receiveData['FromUserName'];
+    $ims_mc_mapping_fans = pdo_get('mc_mapping_fans', array('openid' => $openId));
+    if (empty($ims_mc_mapping_fans)) {
+        $nickName = "";
+    } else {
+        $nickName = $ims_mc_mapping_fans['nickname'];
+    }
+
     $conditionModel = array("uniacid =" => $receiveData['uniacid'], "status =" => 1);
     //小于24H
     if ($limit) {
@@ -142,6 +147,9 @@ function getPushMessage($receiveData, $limit = true)
         }
         $value['openId'] = $openId;
         $value['begin_time'] = time();
+        //替换为粉丝nickname
+        $rep_str = '${name}';
+        $value['content'] = str_replace($rep_str, $nickName, $value['content']);
         $eventList[$k] = $value;
     }
     return $eventList;
