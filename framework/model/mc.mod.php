@@ -617,6 +617,7 @@ function mc_fans_groups($force_update = false) {
 		return array();
 	}
 	$tags = $account_api->fansTagFetchAll();
+	//return $tags;
 	if (is_error($tags)) {
 		itoast($tags['message'], '', 'error');
 	}
