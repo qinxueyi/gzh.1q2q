@@ -141,7 +141,7 @@
 				        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-search"></span></button>
 				    </span>
 				</div>
-			</form>
+			</form>-->
 				<?php  
 					load()->model('user');
 					$account_table = table('account');
@@ -161,10 +161,6 @@
 							}
 						}
 					}
-					$c = $_GPC['c'];
-					$a = $_GPC['a'];
-					$do = $_GPC['do'];
-					$href = "$c/$a/$do";
 				?>
 			<!-- 折叠菜单 begin -->
 			<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="width:250px;margin:auto;margin-top:20px;">

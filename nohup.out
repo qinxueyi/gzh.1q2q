@@ -47,3 +47,466 @@ Array
 Array
 (
 )
+Array
+(
+    [0] => Array
+        (
+            [id] => 68
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [1] => Array
+        (
+            [id] => 69
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [2] => Array
+        (
+            [id] => 70
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [3] => Array
+        (
+            [id] => 71
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [4] => Array
+        (
+            [id] => 72
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [5] => Array
+        (
+            [id] => 73
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [6] => Array
+        (
+            [id] => 74
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+    [7] => Array
+        (
+            [id] => 76
+            [uniacid] => 4
+            [time] => 10
+            [content] => {"content":null}
+            [msgtype] => text
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422530
+        )
+
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [NhyV05303924]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":"text","text":{"content":null}}Array
+(
+    [errcode] => 44004
+    [errmsg] => empty content hint: [LJR6DA0531shc2]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [oV0P9a05313943]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [ht4mxa05313947]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [gS3790532a394]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [05324119]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [5AwWKa0532a394]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [8iDP05334128]
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 68
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [1] => Array
+        (
+            [id] => 69
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [2] => Array
+        (
+            [id] => 70
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [3] => Array
+        (
+            [id] => 71
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [4] => Array
+        (
+            [id] => 72
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [5] => Array
+        (
+            [id] => 73
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [6] => Array
+        (
+            [id] => 74
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+    [7] => Array
+        (
+            [id] => 77
+            [uniacid] => 4
+            [time] => 10
+            [content] => {"content":null}
+            [msgtype] => text
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl04HXxscmJdtSBloTdZ2brjM
+            [begin_time] => 1544422594
+        )
+
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [h08oaa05943942]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":"text","text":{"content":null}}Array
+(
+    [errcode] => 44004
+    [errmsg] => empty content hint: [2CxFIA05944116]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [uSFmea05943934]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [o8ZyIA05953947]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [4GjVwa05951295]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [5016vA05954113]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [E2kcCa05954123]
+)
+{"touser":"oNfBl04HXxscmJdtSBloTdZ2brjM","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [qR3WUa05963951]
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 68
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [1] => Array
+        (
+            [id] => 69
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [2] => Array
+        (
+            [id] => 70
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [3] => Array
+        (
+            [id] => 71
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [4] => Array
+        (
+            [id] => 72
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [5] => Array
+        (
+            [id] => 73
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [6] => Array
+        (
+            [id] => 74
+            [uniacid] => 4
+            [time] => 10
+            [content] => 
+            [msgtype] => 
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+    [7] => Array
+        (
+            [id] => 77
+            [uniacid] => 4
+            [time] => 10
+            [content] => {"content":null}
+            [msgtype] => text
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422838
+        )
+
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [GJ.dJa08393952]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":null}}Array
+(
+    [errcode] => 44004
+    [errmsg] => empty content hint: [H5Dqqa0839shb1]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [pbgYtA08398648]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [rGoKka08404105]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [OLV5sa0840shc1]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [qbL7eA08404127]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [b52SEA0840shc2]
+)
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":null,"":null}Array
+(
+    [errcode] => 40008
+    [errmsg] => invalid message type hint: [Jq8GhA08414105]
+)
+Array
+(
+    [0] => Array
+        (
+            [id] => 77
+            [uniacid] => 4
+            [time] => 10
+            [content] => {"content":11}
+            [msgtype] => text
+            [cumulative_time] => 
+            [status] => 1
+            [openId] => oNfBl00SZZWPBvPrHS9qkU5_rARg
+            [begin_time] => 1544422980
+        )
+
+)
+[2018-12-10 14:23:00 *18625.1]	NOTICE	swFactoryProcess_finish (ERROR 1004): send 166 byte failed, because connection[fd=18] is closed.
+{"touser":"oNfBl00SZZWPBvPrHS9qkU5_rARg","msgtype":"text","text":{"content":11}}Array
+(
+    [errcode] => 0
+    [errmsg] => ok
+)

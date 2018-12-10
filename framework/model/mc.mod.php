@@ -608,7 +608,7 @@ function mc_fans_groups($force_update = false) {
 	global $_W;
 
 	$results = pdo_getcolumn('mc_fans_groups', array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']), 'groups');
-    
+	return $results;
 	if(!empty($results) && !$force_update) {
 		$results = iunserializer($results);
 		return $results;

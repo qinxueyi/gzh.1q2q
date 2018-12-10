@@ -128,6 +128,7 @@ if ($do == 'display') {
     $type = in_array(trim($_GPC['type']), array('news', 'image', 'voice', 'video')) ? trim($_GPC['type']) : 'news';
     $server = in_array(trim($_GPC['server']), array(MATERIAL_LOCAL, MATERIAL_WEXIN)) ? trim($_GPC['server']) : '';
     $group = mc_fans_groups(true);
+    var_dump($group);exit;
     $page_index = max(1, intval($_GPC['page']));
     $page_size = 24;
     $search = addslashes($_GPC['title']);
