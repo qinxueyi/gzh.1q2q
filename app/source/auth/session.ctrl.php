@@ -90,6 +90,7 @@ if ($do == 'openid') {
 		'tag' => base64_encode(iserializer(array(
 			'subscribe' => 1,
 			'openid' => $userinfo['openId'],
+			'subscribe_scene'=>$userinfo['subscribe_scene'],
 			'nickname' => $userinfo['nickName'],
 			'sex' => $userinfo['gender'],
 			'language' => $userinfo['language'],

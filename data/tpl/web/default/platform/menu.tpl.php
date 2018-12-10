@@ -40,6 +40,7 @@
 			<tr>
 				<th class="text-left">菜单组名</th>
 				<th class="text-left">显示对象</th>
+				<th class="text-left">选择公众号</th>
 				<th>
 					是否在微信生效
 					<?php  if($type == MENU_CURRENTSELF) { ?><div class="color-gray">(只能生效一个默认菜单)</div><?php  } ?>
@@ -72,19 +73,75 @@
 					所有粉丝
 					<?php  } ?>
 				</td>
-				<td>
-					<?php  if($da['type'] == MENU_CURRENTSELF) { ?>
-					<?php  if($da['status'] == STATUS_OFF) { ?>
-					<a href="javascript:;" class="js-switch-<?php  echo $da['id'];?> color-default" data-id="<?php  echo $da['id'];?>" data-status="<?php  echo $da['status'];?>" ng-click="changeStatus(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">点击生效</a>
-					<?php  } ?>
-					<?php  } else { ?>
-					<label style="margin: 0; vertical-align: middle;">
-						<input name="js-checkbox-<?php  echo $da['id'];?>" id="" class="form-control" type="checkbox"  style="display: none;" data-id="<?php  echo $da['id'];?>" data-status="<?php  echo $da['status'];?>" ng-click="changeStatus(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">
-						<div class="switch js-switch-<?php  echo $da['id'];?> <?php  if(intval($da['status'] == STATUS_ON)) { ?>switchOn<?php  } ?>"></div>
-					<?php  } ?>
-					</label>
-				</td>
-				<td>
+				<td class="text-left">
+				<div class="wxSelect" style="display:none">
+					<?php  if(is_array($_W['tag'])) { foreach($_W['tag'] as $index => $item) { ?>
+				    	<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
+					        	<li style="margin:10px 10px;float:left" class="checkOut">
+							      <input type="checkbox" name="wxSelect[]" value="<?php  echo $item1['uniacid'];?>">&nbsp&nbsp<label><?php  echo $item1['name'];?></label>
+					        	</li>
+				    	<?php  } } ?>
+				  	<?php  } } ?>
+				</div>
+				<a href="javascript:;" onclick="wxSelect(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">选择</a>
+				<script type="text/javascript">
+					function wxSelect(id,status,type){
+						$.post("<?php  echo url('platform/menu/account')?>", {'accountId' : id},function(data) {
+							data = $.parseJSON(data);
+							if(data.message.errno == 0){
+									$.each($('.wxSelect').find('input'),function(index,value){
+										if(data.message.message.indexOf(value.value) != -1){
+											$(this).attr("checked",true);
+										}
+									});
+									layui.use('layer', function(){
+										var layer = layui.layer;
+									    layer.open({
+									       	type: 1,
+									       	title:'请选择微信公众号',
+										  	area: ['630px', '360px'], //宽高
+										  	scrollbar: true,
+										  	content:$('.wxSelect').html(),
+										  	btn: ['确定'],
+										  	yes: function(index, layero){
+										 		    //按钮【按钮一】的回调
+										 		    var val = new Array();
+										 		   $.each(layero.find('input'),function(index,value){
+										 		   		if($(this).is(':checked')){
+										 		   			val.push($(this).val());
+										 		   		}
+
+										 		   });
+										 		   	$.post("<?php  echo url('platform/menu/editAccount')?>", {'menuId' : id,'account':val},function(data) {
+										 		   		
+
+										 		   	});
+										 			layer.closeAll();
+											}
+									    });
+
+									}); 
+
+							}
+							
+
+						});	
+					}
+				</script>
+			</td>
+			<td>
+				<?php  if($da['type'] == MENU_CURRENTSELF) { ?>
+				<?php  if($da['status'] == STATUS_OFF) { ?>
+				<a href="javascript:;" class="js-switch-<?php  echo $da['id'];?> color-default" data-id="<?php  echo $da['id'];?>" data-status="<?php  echo $da['status'];?>" ng-click="changeStatus(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">点击生效</a>
+				<?php  } ?>
+				<?php  } else { ?>
+				<label style="margin: 0; vertical-align: middle;">
+					<input name="js-checkbox-<?php  echo $da['id'];?>" id="" class="form-control" type="checkbox"  style="display: none;" data-id="<?php  echo $da['id'];?>" data-status="<?php  echo $da['status'];?>" ng-click="changeStatus(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">
+					<div class="switch js-switch-<?php  echo $da['id'];?> <?php  if(intval($da['status'] == STATUS_ON)) { ?>switchOn<?php  } ?>"></div>
+				<?php  } ?>
+				</label>
+			</td>
+			<td>
 					<div class="link-group">
 						<?php  if($da['type'] == MENU_CURRENTSELF) { ?>
 						<a href="<?php  echo url('platform/menu/post', array('id' => $da['id'], 'type'=> 1));?>">编辑</a>
@@ -141,6 +198,9 @@
 					<div class="form-controls col-sm-8">
 						<input type="text" style="width: 600px" class="form-control" ng-model="context.group.title" ng-disabled="context.group.disabled">
 						<span class="help-block">给菜单组起个名字吧！以便查找</span>
+					</div>
+					<div>
+
 					</div>
 				</div>
 				<?php  if($type != 1) { ?>

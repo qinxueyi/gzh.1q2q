@@ -45,13 +45,64 @@ defined('IN_IA') or exit('Access Denied');
 load()->model('mc');
 load()->model('menu');
 
-$dos = array('display', 'delete', 'refresh', 'post', 'push', 'copy', 'current_menu');
+$dos = array('display', 'delete', 'refresh', 'post', 'push', 'copy', 'current_menu','account','editAccount');
 $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '公众号 - 自定义菜单';
 
 if($_W['isajax']) {
 	if(!empty($_GPC['method'])) {
 		$do = $_GPC['method'];
+	}
+}
+
+if($do == 'account'){
+	if($_W['ispost']){
+		$id = $_GPC['accountId'];
+		  $sql = 'SELECT `uniacid` FROM '. tablename('uni_account_menus') . " WHERE  `id` = ".$id." AND `isdeleted`= 0 GROUP BY uniacid"; 
+        $result = pdo_fetchall($sql);
+        if($result){
+        	$data = array();
+			foreach ($result as $k => $v) {
+				array_push($data,$v['uniacid']);
+			}
+			 iajax(0, $data);
+        }
+	}
+}
+
+
+if($do == 'editAccount'){
+	if($_W['ispost']){
+		$menuid = $_GPC['menuId'];
+		$accountId = $_GPC['account'];
+		if($menuid && is_array($account)){
+			foreach ($account as $key => $value) {
+				$res = pdo_get('uni_account_menus',array('id' => $menuid, 'uniacid' => $value),'id');
+				if($res){
+					 pdo_update('uni_account_menus',array('status'=>1),array('uniacid' => $value));
+					 pdo_update('uni_account_menus',array('status'=>0),array('id' => $menuid, 'uniacid' => $value));
+				}else{
+					$insert = array(
+						'uniacid' => $value,
+						'menuid' => $result,
+						'title' => $res['title'],
+						'type' => $res['type'],
+						'sex' => intval($res['sex']),
+						'group_id' => $res['group_id'], 
+						'client_platform_type' => intval($res['client_platform_type']),
+						'area' => $res,
+						'data' => base64_encode(iserializer($menu)),
+						'status' => STATUS_ON,
+						'createtime' => TIMESTAMP,
+					);
+
+					pdo_insert('uni_account_menus', $insert);
+				}
+				
+			}
+		}else{
+			iajax(0, '缺少参数');
+		}
 	}
 }
 

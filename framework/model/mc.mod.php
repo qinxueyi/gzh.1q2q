@@ -168,7 +168,6 @@ function mc_fansinfo($openidOruid, $acid = 0, $uniacid = 0){
 		$fans_table->searchWithAcid($acid);
 	}
 	$fan = $fans_table->fansInfo($openid);
-
 	if (!empty($fan)) {
 		if (!empty($fan['tag']) && is_string($fan['tag'])) {
 			if (is_base64($fan['tag'])) {
@@ -268,6 +267,7 @@ function mc_oauth_account_userinfo($url = '') {
 				$record['acid'] = $_W['acid'];
 				$record['uniacid'] = $_W['uniacid'];
 				$record['unionid'] = $userinfo['unionid'];
+				$record['subscribe_scene']=$userinfo['subscribe_scene'];
 				pdo_insert('mc_mapping_fans', $record);
 			}
 

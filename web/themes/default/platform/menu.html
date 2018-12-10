@@ -40,6 +40,7 @@
 			<tr>
 				<th class="text-left">菜单组名</th>
 				<th class="text-left">显示对象</th>
+				<th class="text-left">选择公众号</th>
 				<th>
 					是否在微信生效
 					{if $type == MENU_CURRENTSELF}<div class="color-gray">(只能生效一个默认菜单)</div>{/if}
@@ -72,19 +73,75 @@
 					所有粉丝
 					{/if}
 				</td>
-				<td>
-					{if $da['type'] == MENU_CURRENTSELF}
-					{if $da['status'] == STATUS_OFF}
-					<a href="javascript:;" class="js-switch-{$da['id']} color-default" data-id="{$da['id']}" data-status="{$da['status']}" ng-click="changeStatus({$da['id']}, {$da['status']}, {$da['type']})">点击生效</a>
-					{/if}
-					{else}
-					<label style="margin: 0; vertical-align: middle;">
-						<input name="js-checkbox-{$da['id']}" id="" class="form-control" type="checkbox"  style="display: none;" data-id="{$da['id']}" data-status="{$da['status']}" ng-click="changeStatus({$da['id']}, {$da['status']}, {$da['type']})">
-						<div class="switch js-switch-{$da['id']} {if intval($da['status'] == STATUS_ON)}switchOn{/if}"></div>
-					{/if}
-					</label>
-				</td>
-				<td>
+				<td class="text-left">
+				<div class="wxSelect" style="display:none">
+					{loop $_W['tag'] $index $item}
+				    	{loop $item['account'] $index1 $item1}
+					        	<li style="margin:10px 10px;float:left" class="checkOut">
+							      <input type="checkbox" name="wxSelect[]" value="{$item1['uniacid']}">&nbsp&nbsp<label>{$item1['name']}</label>
+					        	</li>
+				    	{/loop}
+				  	{/loop}
+				</div>
+				<a href="javascript:;" onclick="wxSelect({$da['id']}, {$da['status']}, {$da['type']})">选择</a>
+				<script type="text/javascript">
+					function wxSelect(id,status,type){
+						$.post("{php echo url('platform/menu/account')}", {'accountId' : id},function(data) {
+							data = $.parseJSON(data);
+							if(data.message.errno == 0){
+									$.each($('.wxSelect').find('input'),function(index,value){
+										if(data.message.message.indexOf(value.value) != -1){
+											$(this).attr("checked",true);
+										}
+									});
+									layui.use('layer', function(){
+										var layer = layui.layer;
+									    layer.open({
+									       	type: 1,
+									       	title:'请选择微信公众号',
+										  	area: ['630px', '360px'], //宽高
+										  	scrollbar: true,
+										  	content:$('.wxSelect').html(),
+										  	btn: ['确定'],
+										  	yes: function(index, layero){
+										 		    //按钮【按钮一】的回调
+										 		    var val = new Array();
+										 		   $.each(layero.find('input'),function(index,value){
+										 		   		if($(this).is(':checked')){
+										 		   			val.push($(this).val());
+										 		   		}
+
+										 		   });
+										 		   	$.post("{php echo url('platform/menu/editAccount')}", {'menuId' : id,'account':val},function(data) {
+										 		   		
+
+										 		   	});
+										 			layer.closeAll();
+											}
+									    });
+
+									}); 
+
+							}
+							
+
+						});	
+					}
+				</script>
+			</td>
+			<td>
+				{if $da['type'] == MENU_CURRENTSELF}
+				{if $da['status'] == STATUS_OFF}
+				<a href="javascript:;" class="js-switch-{$da['id']} color-default" data-id="{$da['id']}" data-status="{$da['status']}" ng-click="changeStatus({$da['id']}, {$da['status']}, {$da['type']})">点击生效</a>
+				{/if}
+				{else}
+				<label style="margin: 0; vertical-align: middle;">
+					<input name="js-checkbox-{$da['id']}" id="" class="form-control" type="checkbox"  style="display: none;" data-id="{$da['id']}" data-status="{$da['status']}" ng-click="changeStatus({$da['id']}, {$da['status']}, {$da['type']})">
+					<div class="switch js-switch-{$da['id']} {if intval($da['status'] == STATUS_ON)}switchOn{/if}"></div>
+				{/if}
+				</label>
+			</td>
+			<td>
 					<div class="link-group">
 						{if $da['type'] == MENU_CURRENTSELF}
 						<a href="{php echo url('platform/menu/post', array('id' => $da['id'], 'type'=> 1));}">编辑</a>
@@ -141,6 +198,9 @@
 					<div class="form-controls col-sm-8">
 						<input type="text" style="width: 600px" class="form-control" ng-model="context.group.title" ng-disabled="context.group.disabled">
 						<span class="help-block">给菜单组起个名字吧！以便查找</span>
+					</div>
+					<div>
+
 					</div>
 				</div>
 				{if $type != 1}

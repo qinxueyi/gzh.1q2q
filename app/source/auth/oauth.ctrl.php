@@ -210,6 +210,7 @@ if ($scope == 'userinfo' || $scope == 'snsapi_userinfo') {
 				'salt' => random(8),
 				'updatetime' => TIMESTAMP,
 				'nickname' => $userinfo['nickname'],
+				'subscribe_scene'=>$userinfo['subscribe_scene'],
 				'follow' => 0,
 				'followtime' => 0,
 				'unfollowtime' => 0,
