@@ -311,6 +311,16 @@
 		<div class="form-group">
 		    <label for="exampleInputName2" style="font-weight:400;">秒</label>
 		</div>
+		<div class="form-group" style="margin-left:50px">
+			 <label for="exampleInputName2" style="font-weight:400;">互动类型 ：</label>
+			<select name="type" lay-verify="" value="<?php  echo $result['type'];?>">
+			  <option value="subscribe" <?php  if($result['type'] == 'subscribe') { ?>selected<?php  } ?>>关注</option>
+			  <option value="receptionMessage" <?php  if($result['type'] == 'receptionMessage') { ?>selected<?php  } ?>>消息（含关键字）</option>
+			  <option value="Event" <?php  if($result['type'] == 'Event') { ?>selected<?php  } ?>>菜单点击</option>
+			  <option value="scanCode" <?php  if($result['type'] == 'scanCode') { ?>selected<?php  } ?>>参数二维码</option>
+			</select>    
+		</div>
+
 	</div>
 		<script type="text/javascript">
 		$(function() {

@@ -48,7 +48,6 @@ load()->model('material');
 $dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status','getAccessToken','delete_event','status');
 $do = in_array($do, $dos) ? $do : 'display';
 
-
 $m = empty($_GPC['m']) ? 'keyword' : trim($_GPC['m']);
 if (in_array($m, array('keyword', 'special', 'welcome', 'default', 'apply', 'service', 'userapi','delay'))) {
 	permission_check_account_user('platform_reply');
@@ -137,7 +136,7 @@ if ($do == 'display') {
 					if (!empty($entries)) {
 						$item['options'] = $entries['rule'];
 					}
-										if (!in_array($item['module'], array("basic", "news", "images", "voice", "video", "music", "wxcard", "reply"))) {
+					if (!in_array($item['module'], array("basic", "news", "images", "voice", "video", "music", "wxcard", "reply"))) {
 						$item['module_info'] = module_fetch($item['module']);
 					}
 				}
@@ -199,6 +198,7 @@ if ($do == 'display') {
 
 	if ($m == 'delay') {//延迟推送
 		$data = pdo_getall('event_list',array('uniacid'=>$_W['uniacid']));
+		$result = pdo_get('interaction_type',array('uniacid'=>$_W['uniacid'],'acid'=>$_W['acid']));
 		foreach ($data as $k => $v) {
 			$data[$k]['time'] = changeTime($v['time']/1000);//转换时间
 			if ($v['msgtype'] == 'text') {//文本类型
@@ -448,9 +448,12 @@ if ($do == 'post') {
 	}
 
 	if ($m == 'delay') {//延迟推送
-
 		$data['time'] = (intval($_GPC['delay-hour']) * 3600 + intval($_GPC['delay-minute']) *60 + intval($_GPC['delay-second']))*1000;
 		$data['uniacid'] = $_GPC['__uniacid'];
+		$res['type'] = $_GPC['type'];
+		$res['uniacid'] = $data['uniacid'];
+		$res['acid'] = $_W['acid'];
+		$res = pdo_insert('interaction_type',$res);
 		//判断数据类型
 		if ($_GPC['reply']['reply_basic']) {//text类型
 			$data['msgtype'] = 'text';
