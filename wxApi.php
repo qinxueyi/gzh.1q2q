@@ -42,9 +42,12 @@ if (!$msgType) {
 
 $MsgType = array("text", "image", "voice", "video", "shortvideo", "location", "link");
 //接受普通消息
-if (in_array($receiveData, $MsgType)) {
+if (in_array($receiveData['MsgType'], $MsgType)) {
     $receiveData['Event'] = "receptionMessage";
 }
+//$myfile = fopen("receptionMessage.txt", "w") or die("Unable to open file!");
+//fwrite($myfile, json_encode($receiveData));
+//fclose($myfile);
 //接受二维码
 if (!empty($receiveData['EventKey'])) {
     $receiveData['Event'] = "scanCode";
