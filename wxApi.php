@@ -150,7 +150,7 @@ function getPushMessage($receiveData, $limit = true)
         //替换为粉丝nickname
         $rep_str = '${name}';
         $value['content'] = str_replace($rep_str, $nickName, $value['content']);
-        $eventList[$k] = $value;
+        $eventList[$k] =  $value;
     }
     return $eventList;
 //    $myfile = fopen("a.txt", "w") or die("Unable to open file!");
