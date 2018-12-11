@@ -89,42 +89,43 @@
 						$.post("{php echo url('platform/menu/account')}", {'accountId' : id},function(data) {
 							data = $.parseJSON(data);
 							if(data.message.errno == 0){
-									$.each($('.wxSelect').find('input'),function(index,value){
-										if(data.message.message.indexOf(value.value) != -1){
-											$(this).attr("checked",true);
+								$.each($('.wxSelect').find('input'),function(index,value){
+									if(data.message.message.indexOf(value.value) != -1){
+										$(this).attr("checked",true);
+									}
+								});
+								layui.use('layer', function(){
+									var layer = layui.layer;
+								    layer.open({
+								       	type: 1,
+								       	title:'请选择微信公众号',
+									  	area: ['630px', '360px'], //宽高
+									  	scrollbar: true,
+									  	content:$('.wxSelect').html(),
+									  	btn: ['确定'],
+									  	yes: function(index, layero){
+									 		//按钮【按钮一】的回调
+									 		var val = new Array();
+									 		$.each(layero.find('input'),function(index,value){
+									 		   	if($(this).is(':checked')){
+									 		   		val.push($(this).val());
+									 		   	}
+									 		});
+									 		$.post("{php echo url('platform/menu/editAccount')}", {'menuId' : id,'account':val},function(data) {
+									 		   	data = $.parseJSON(data);
+							 		   			if(data.message.errno==0){
+							 		   				util.message(data.message.message, '', 'success');	
+							 		   			}else{
+							 		   				util.message(data.message.message, '', 'error');
+							 		   			}
+									 		});
+									 		layer.closeAll();
+									 		location.href = location.href;
 										}
-									});
-									layui.use('layer', function(){
-										var layer = layui.layer;
-									    layer.open({
-									       	type: 1,
-									       	title:'请选择微信公众号',
-										  	area: ['630px', '360px'], //宽高
-										  	scrollbar: true,
-										  	content:$('.wxSelect').html(),
-										  	btn: ['确定'],
-										  	yes: function(index, layero){
-										 		    //按钮【按钮一】的回调
-										 		    var val = new Array();
-										 		   $.each(layero.find('input'),function(index,value){
-										 		   		if($(this).is(':checked')){
-										 		   			val.push($(this).val());
-										 		   		}
+								    });
 
-										 		   });
-										 		   	$.post("{php echo url('platform/menu/editAccount')}", {'menuId' : id,'account':val},function(data) {
-										 		   		
-
-										 		   	});
-										 			layer.closeAll();
-											}
-									    });
-
-									}); 
-
+								}); 
 							}
-							
-
 						});	
 					}
 				</script>
