@@ -461,7 +461,7 @@ if ($do == 'post') {
             $res = pdo_insert('interaction_type', $res);
         }
         //判断数据类型
-        if ($_GPC['reply']['reply_basic']) {//text类型
+        if ($_GPC['reply']['reply_basic']) {  //text类型
             $data['msgtype'] = 'text';
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_basic']);
             $contents = explode(',', $contents);
@@ -479,8 +479,15 @@ if ($do == 'post') {
             }else{
                 $data['content'] = urldecode(json_encode(array('content' => urlencode($res))));
             }
-//            $content['content'] = $content;
-//            $data['content']=json_encode(array('content'=>urlencode($_GPC['reply']['reply_basic'])));
+
+            $str = trim(trim($data['content'],'}'),'{');
+            $arr = explode(':',$str);
+
+            $str  = substr($str,strpos($str,":"));
+            $new = substr($str , 2 );
+            $newStr = mb_substr($new ,6, -7 );
+            $newnewstr = '"content":'.$newStr;
+            $data['content'] = '{'.$newnewstr.'}';
         } elseif ($_GPC['reply']['reply_news']) {
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
             $contents = json_decode('[' . $contents . ']', true);
@@ -511,13 +518,14 @@ if ($do == 'post') {
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_voice']);
             $contents = explode(',', $contents);
             $get_content = array_rand($contents, 1);
-            $content = trim($contents[$get_content], '\"');
+            $content = trim($contents[$get_content], "\"");
             $data['content'] = json_encode(array('media_id' => $content));
 
         } elseif ($_GPC['reply']['reply_video']) {//vedio类型
             $data['msgtype'] = 'video';
 
         }
+
         $res = pdo_insert('event_list', $data);
         if ($res) {
             itoast('发布成功!', referer(), 'success');
@@ -526,6 +534,7 @@ if ($do == 'post') {
     }
 
 }
+
 
 if ($do == 'delete') {
     $rids = $_GPC['rid'];
