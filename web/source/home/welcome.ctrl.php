@@ -317,27 +317,36 @@ if ($do == 'platform') {
         $stat = pdo_fetchall($sql);
         $sqlt = 'SELECT `share_user`,`statistics_date` FROM '. tablename('article_list') . " WHERE `statistics_date` IN (".$timeStr.") AND `uniacid`=".$_W['uniacid']; 
         $article = pdo_fetchall($sqlt);
-        if($stat || $article){
-            $data = array();
-            foreach ($timeArray as $s => $t) {
-                $timeO = str_replace("'",'',$t);
+
+        $data = array();
+        foreach ($timeArray as $s => $t) {
+            $timeO = str_replace("'",'',$t);
+            if($article){
                 foreach ($article as $k => $v) {
                     if($v['statistics_date'] == $timeO){
                         $data['article'][$timeO]+=(int)$v['share_user'];
                     }else{
                         $data['article'][$timeO]+=0; 
                     }
-                }
+                }   
+            }else{
+                $data['article'][$timeO] =0;
+            }
+            if($stat){
                 foreach ($stat as $key => $value) {
                     if(date('Y-m-d', strtotime($value['date'])) == $timeO){
                         $data['stat'][$timeO]+=(int)$value['new'];
                     }else{
                         $data['stat'][$timeO]+=0; 
                     } 
-                }
+                }    
+            }else{
+                $data['stat'][$timeO] =0;
             }
-            iajax(0,array('key'=>array_keys($data['stat']),'stat'=>array_values($data['stat']),'article'=>array_values($data['article'])));
+
         }
+        iajax(0,array('key'=>array_keys($data['stat']),'stat'=>array_values($data['stat']),'article'=>array_values($data['article'])));
+
 
     }else{
          iajax(1, '缺少参数');

@@ -4,6 +4,7 @@
 		<div class="panel we7-panel account-stat">
 			<div class="panel-heading">
 				今日关键指标/昨日关键指标
+				<button style="float:right;" class="layui-btn layui-btn-normal layui-btn-xs"><a href="<?php  echo url('home/welcome/system')?>" style="color:rgb(255,255,255)">统计数据</a></button> 
 			</div>
 			<div class="panel-body we7-padding-vertical">
 				<div class="col-sm-3 text-center">

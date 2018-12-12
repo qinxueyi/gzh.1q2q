@@ -44,7 +44,6 @@ defined('IN_IA') or exit('Access Denied');
 
 load()->model('mc');
 load()->model('menu');
-
 $dos = array('display', 'delete', 'refresh', 'post', 'push', 'copy', 'current_menu','account','editAccount');
 $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '公众号 - 自定义菜单';
@@ -70,35 +69,107 @@ if($do == 'account'){
 	}
 }
 
-
 if($do == 'editAccount'){
 	if($_W['ispost']){
-		$menuid = $_GPC['menuId'];
+		$menu_Id = $_GPC['menuId'];
 		$accountId = $_GPC['account'];
-		if($menuid && is_array($account)){
-			foreach ($account as $key => $value) {
-				$res = pdo_get('uni_account_menus',array('id' => $menuid, 'uniacid' => $value),'id');
-				if($res){
-					 pdo_update('uni_account_menus',array('status'=>1),array('uniacid' => $value));
-					 pdo_update('uni_account_menus',array('status'=>0),array('id' => $menuid, 'uniacid' => $value));
-				}else{
-					$insert = array(
-						'uniacid' => $value,
-						'menuid' => $result,
-						'title' => $res['title'],
-						'type' => $res['type'],
-						'sex' => intval($res['sex']),
-						'group_id' => $res['group_id'], 
-						'client_platform_type' => intval($res['client_platform_type']),
-						'area' => $res,
-						'data' => base64_encode(iserializer($menu)),
-						'status' => STATUS_ON,
-						'createtime' => TIMESTAMP,
-					);
-
-					pdo_insert('uni_account_menus', $insert);
+		// 获取该模板信息
+		$menu = menu_get($menu_Id);
+		$data = $menu;
+		if (empty($menu)) {
+			itoast('菜单不存在或已经删除', url('platform/menu/display'), 'error');
+		}
+		// 若菜单存在 配置自定义菜单的参数
+		if (!empty($menu['data'])) {
+			$menu['data'] = iunserializer(base64_decode($menu['data']));
+			if (!empty($menu['data']['button'])) {
+				foreach ($menu['data']['button'] as &$button) {
+					if (!empty($button['url'])) {
+						$button['url'] = preg_replace('/(.*)redirect_uri=(.*)&response_type(.*)wechat_redirect/', '$2', $button['url']);
+						$button['url'] = urldecode($button['url']);
+					}
+					if (empty($button['sub_button'])) {
+						if ($button['type'] == 'media_id') {
+							$button['type'] = 'click';
+						}
+						$button['sub_button'] = array();
+					} else {
+						$button['sub_button'] = !empty($button['sub_button']['list']) ? $button['sub_button']['list'] : $button['sub_button'];
+						foreach ($button['sub_button'] as &$subbutton) {
+							if (!empty($subbutton['url'])) {
+								$subbutton['url'] = preg_replace('/(.*)redirect_uri=(.*)&response_type(.*)wechat_redirect/', '$2', $subbutton['url']);
+								$subbutton['url'] = urldecode($subbutton['url']);
+							}
+							if ($subbutton['type'] == 'media_id') {
+								$subbutton['type'] = 'click';
+							}
+						}
+						unset($subbutton);
+					}
+				}
+				unset($button);
+			}
+			if (!empty($menu['data']['matchrule']['province'])) {
+				$menu['data']['matchrule']['province'] .= '省';
+			}
+			if (!empty($menu['data']['matchrule']['city'])) {
+				$menu['data']['matchrule']['city'] .= '市';
+			}
+			if (empty($menu['data']['matchrule']['sex'])) {
+				$menu['data']['matchrule']['sex'] = 0;
+			}
+			if (empty($menu['data']['matchrule']['group_id'])) {
+				$menu['data']['matchrule']['group_id'] = -1;
+			}
+			if (empty($menu['data']['matchrule']['client_platform_type'])) {
+				$menu['data']['matchrule']['client_platform_type'] = 0;
+			}
+			if (empty($menu['data']['matchrule']['language'])) {
+				$menu['data']['matchrule']['language'] = 'zh_CN';
+			}
+			$params = $menu['data'];
+			$params['title'] = $menu['title'];
+			$params['type'] = $menu['type'];
+			$params['id'] = $menu['id'];
+			$params['status'] = $menu['status'];
+		}
+		$type = $menu['type'];
+		$status = STATUS_ON;
+		//暂时不知道
+		$groups = mc_fans_groups();
+		$languages = menu_languages();
+		// 新增数据是选中的菜单模板信息为准
+		//提交菜单
+		//判断公众号是不是数组传值
+		if(is_array($accountId)){
+				$menuid = array();
+				foreach ($accountId as $key => $value) {
+					// 获取该公众号的信息
+					$token = getAccessToken($value);
+					// 添加菜单
+					$result = menuCreate($token,$menu['data']);
+					// 判断添加菜单是否成功
+				if (is_error($result)) {
+					iajax($result['errno'], $account_message['name'].$result['message']);
+				} else {
+					$menuid = implode(",", $menuid);
+					// 若菜单已经存在该公众号时，只修改状态
+					if($menu_Id==$menu['id'] && $value==$menu['uniacid']){
+						pdo_update('uni_account_menus',array('status'=>STATUS_OFF),array('uniacid' =>$value));
+						pdo_update('uni_account_menus',array('status'=>STATUS_ON,'menuid'=>$result),array('uniacid' =>$value,'id'=>$menu_Id));
+					}else{
+						// 否则添加新的数据
+						pdo_update('uni_account_menus',array('status'=>STATUS_OFF),array('uniacid' =>$value));
+						unset($data['id']);
+						$data['status']=$status;
+						$data['menuid']=$result;
+						$data['uniacid']=$value;
+						pdo_insert('uni_account_menus', $data);
+					}
 				}
 				
+				iajax(0, '批量操作完成');
+
 			}
 		}else{
 			iajax(0, '缺少参数');
@@ -254,7 +325,7 @@ if ($do == 'post') {
 		$_GPC['group']['title'] = trim($_GPC['group']['title']);
 		$_GPC['group']['type'] = intval($_GPC['group']['type']) == 0 ? 1 : intval($_GPC['group']['type']);
 		$post = $_GPC['group'];
-				if (empty($post['title'])) {
+		if (empty($post['title'])) {
 			iajax(-1, '请填写菜单组名称！', '');
 		}
 		$check_title_exist_condition = array(
@@ -292,7 +363,6 @@ if ($do == 'post') {
 
 		$is_conditional = $post['type'] == MENU_CONDITIONAL ? true : false;
 		$menu = menu_construct_createmenu_data($post, $is_conditional);
-
 		if ($_GPC['submit_type'] == 'publish' || $is_conditional) {
 			$account_api = WeAccount::create();
 			$result = $account_api->menuCreate($menu);
@@ -302,7 +372,7 @@ if ($do == 'post') {
 		if (is_error($result)) {
 			iajax($result['errno'], $result['message']);
 		} else {
-						if ($post['matchrule']['group_id'] != -1) {
+			if ($post['matchrule']['group_id'] != -1) {
 				$menu['matchrule']['groupid'] = $menu['matchrule']['tag_id'];
 				unset($menu['matchrule']['tag_id']);
 			}
@@ -419,3 +489,31 @@ if ($do == 'current_menu') {
 	}
 	iajax(0, $material);
 }
+	
+	function getAccessToken($uniacid) {
+		$account_api = WeAccount::create($uniacid);
+		$token = $account_api->getAccessToken();
+		return $token;
+	}
+
+
+	function menuCreate($token,$menu) {
+		global $_W;
+		if(is_error($token)){
+			return $token;
+		}
+		$url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token={$token}";
+		if(!empty($menu['matchrule'])) {
+			$url = "https://api.weixin.qq.com/cgi-bin/menu/addconditional?access_token={$token}";
+		}
+		$data = urldecode(json_encode($menu,JSON_UNESCAPED_UNICODE));
+		$response = ihttp_post($url, $data);
+		if(is_error($response)) {
+			return error(-1, "访问公众平台接口失败, 错误: {$response['message']}");
+		}
+		$result = @json_decode($response['content'], true);
+		if(!empty($result['errcode'])) {
+			return error(-1, "访问微信接口错误, 错误代码: {$result['errcode']}, 错误信息: {$result['errmsg']}");
+		}
+		return $result['menuid'];
+	}
