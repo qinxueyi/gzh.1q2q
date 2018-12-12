@@ -1481,7 +1481,6 @@ function mc_init_fans_info($openid, $force_init_member = false){
 		$fans_list = $account_api->fansQueryInfo($openid);
 	}
 	file_put_contents('./aaa.txt', json_encode($fans_list));
-	die;
 	if (empty($fans_list) || is_error($fans_list)) {
 				if ($fans_list['errno'] == '48001') {
 			$fans_list = array(
