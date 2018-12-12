@@ -495,8 +495,7 @@ if ($do == 'current_menu') {
 		$token = $account_api->getAccessToken();
 		return $token;
 	}
-
-
+	
 	function menuCreate($token,$menu) {
 		global $_W;
 		if(is_error($token)){
