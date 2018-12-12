@@ -1470,6 +1470,7 @@ function mc_plugins() {
 
 
 function mc_init_fans_info($openid, $force_init_member = false){
+	file_put_contents('./aaa.txt', 1111);
 	global $_W;
 	static $account_api;
 	if (empty($account_api)) {
