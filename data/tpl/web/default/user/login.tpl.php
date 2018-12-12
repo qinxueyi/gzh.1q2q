@@ -55,16 +55,6 @@
 			</div>
 			<div class="login-submit text-center">
 				<input type="submit" id="submit" name="submit" value="登录" class="btn btn-primary btn-block" />
-				<div class="text-right">
-					<?php  if(!$_W['siteclose'] && $setting['register']['open']) { ?>
-						<?php  if(empty($_GPC['login_type']) || $_GPC['login_type'] == 'system') { ?>
-						<a href="<?php  echo url('user/register');?>" class="color-default">立即注册</a>
-						<?php  } ?>
-						<?php  if($_GPC['login_type'] == 'mobile') { ?>
-						<a href="<?php  echo url('user/register', array('register_type' => 'mobile'))?>" class="color-default">立即注册</a>
-						<?php  } ?>
-					<?php  } ?>
-				</div>
 				<input name="token" value="<?php  echo $_W['token'];?>" type="hidden" />
 			</div>
 			<?php  if(!empty($setting['thirdlogin']['qq']['authstate']) || !empty($setting['thirdlogin']['wechat']['authstate'])) { ?>
