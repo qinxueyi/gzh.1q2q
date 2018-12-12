@@ -65,6 +65,8 @@ if($do == 'account'){
 				array_push($data,$v['uniacid']);
 			}
 			 iajax(0, $data);
+        }else{
+        	iajax(1, '未找到可用公众号');	
         }
 	}
 }
@@ -495,7 +497,7 @@ if ($do == 'current_menu') {
 		$token = $account_api->getAccessToken();
 		return $token;
 	}
-	
+
 	function menuCreate($token,$menu) {
 		global $_W;
 		if(is_error($token)){

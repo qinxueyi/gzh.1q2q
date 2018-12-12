@@ -106,7 +106,11 @@
 		</td>
 		<td><img ng-src="{{list.qrcode}}" style="width:70px;"></td>
 		<td><p class="color-dark" ng-bind="list.fans_total"></td>
-		<td><p class="color-dark" ng-bind="list.tag"></td>
+		<td>
+			<?php  if(is_array($tag1)) { foreach($tag1 as $index => $item) { ?>
+				<p class="color-dark" ng-if="list.tag==<?php  echo $item['id'];?>? a='<?php  echo $item['tag_name'];?>':''" ng-bind="a"  >
+			<?php  } } ?>
+		</td>
 		<td class="vertical-middle table-manage-td">
 			<div class="link-group">
 				<a ng-href="{{links.switch}}uniacid={{list.uniacid}}">进入公众号</a>
@@ -116,6 +120,52 @@
 			</div>
 			<?php  if($role_type) { ?>
 			<div class="manage-option text-right">
+
+				<label class="radio-inline" style="display:none">
+					<?php  if(is_array($tag1)) { foreach($tag1 as $index => $item) { ?>
+						<div ng-if="list.tag==<?php  echo $item['id'];?>" style="float:left">
+							<input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px" ng-checked="true"><?php  echo $item['tag_name'];?>
+							<!-- <input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px" ng-if="list.tag==<?php  echo $item['id'];?>? b='true': b='false'" ng-checked="b"><?php  echo $item['tag_name'];?> -->
+						</div>						
+						<div ng-if="list.tag!=<?php  echo $item['id'];?>" style="float:left">
+							<input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px"><?php  echo $item['tag_name'];?>
+							<!-- <input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px" ng-if="list.tag==<?php  echo $item['id'];?>? b='true': b='false'" ng-checked="b"><?php  echo $item['tag_name'];?> -->
+						</div>
+
+					  	
+					<?php  } } ?>
+					<div ng-bind="list.uniacid" class="account" style="display:none"></div>	
+				</label>	
+				<a href="javascript:;" onclick="updateTage(this)">修改标签</a>
+				<script type="text/javascript">
+					function updateTage(a){
+						var uniacid = $(a).parent().find('.account').html();
+						layui.use('layer', function(){
+							var layer = layui.layer;
+							layer.open({
+							 	title:'选择标签',
+							  	content: $(a).parent().find('.radio-inline').html()
+							  	,btn: ['确定']
+							  	,yes: function(index, layero){
+							  		layer.closeAll();
+							  		$.each(layero.find('input'),function(index,value){
+									 	if($(this).is(':checked') && uniacid){
+									 		 	$.post("<?php  echo url('account/manage/updateTag')?>", {'tag_id' : $(this).val(),'account':uniacid},function(data) {
+									 		   	data = $.parseJSON(data);
+							 		   			if(data.message.errno==0){
+							 		   				util.message(data.message.message, '', 'success');	
+							 		   			}else{
+							 		   				util.message(data.message.message, '', 'error');
+							 		   			}
+									 		});	  		
+									 	}
+									});
+							  	}
+							});
+						});
+					}
+				</script>
+				&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
 				<a href="{{links.post}}&acid={{list.acid}}&uniacid={{list.uniacid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">基础信息</a>
 				<!-- <a href="{{links.post}}&do=sms&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">短信信息</a> -->
 				<!-- <a href="{{links.postUser}}&do=edit&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}">使用者管理</a> -->

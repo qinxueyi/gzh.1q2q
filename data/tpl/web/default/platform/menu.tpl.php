@@ -125,6 +125,8 @@
 								    });
 
 								}); 
+							}else{
+								util.message(data.message.message, '', 'error');
 							}
 						});	
 					}
