@@ -140,16 +140,12 @@ if($do == 'editAccount'){
 		$languages = menu_languages();
 		// 新增数据是选中的菜单模板信息为准
 		//提交菜单
-		// $account_api = WeAccount::create();
-		// $result = $account_api->menuCreate($menu['data']);
 		//判断公众号是不是数组传值
 		if(is_array($accountId)){
 				$menuid = array();
 				foreach ($accountId as $key => $value) {
 					// 获取该公众号的信息
-					$account_message = pdo_get('account_wechats',array('uniacid'=>$value),array('key','secret','acid','name'));
-					// 获取token
-					$token = getAccessToken($account_message['acid'],$account_message['key'],$account_message['secret']);
+					$token = getAccessToken($value);
 					// 添加菜单
 					$result = menuCreate($token,$menu['data']);
 					// 判断添加菜单是否成功
@@ -493,36 +489,11 @@ if ($do == 'current_menu') {
 	}
 	iajax(0, $material);
 }
-
-
-	function getAccessToken($acid,$key,$secret) {
-	    $cachekey = "accesstoken:{$acid}";
-		$cache = cache_load($cachekey);
-		if (!empty($cache) && !empty($cache['token']) && $cache['expire'] > TIMESTAMP) {
-			return $cache['token'];
-		}
-		if (empty($key) || empty($secret)) {
-			return error('-1', '未填写公众号的 appid 或 appsecret！');
-		}
-		$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$key."&secret=".$secret;
-		$content = ihttp_get($url);
-		if(is_error($content)) {
-			return error('-1', '获取微信公众号授权失败, 请稍后重试！错误详情: ' . $content['message']);
-		}
-		if (empty($content['content'])) {
-			return error('-1', 'AccessToken获取失败，请检查appid和appsecret的值是否与微信公众平台一致！');
-		}
-		$token = @json_decode($content['content'], true);
-		if(empty($token) || !is_array($token) || empty($token['access_token']) || empty($token['expires_in'])) {
-			$errorinfo = substr($content['meta'], strpos($content['meta'], '{'));
-			$errorinfo = @json_decode($errorinfo, true);
-			return error('-1', '获取微信公众号授权失败, 请稍后重试！ 公众平台返回原始数据为: 错误代码-' . $errorinfo['errcode'] . '，错误信息-' . $errorinfo['errmsg']);
-		}
-		$record = array();
-		$record['token'] = $token['access_token'];
-		$record['expire'] = TIMESTAMP + $token['expires_in'] - 200;
-		cache_write($cachekey, $record);
-		return $record['token'];
+	
+	function getAccessToken($uniacid) {
+		$account_api = WeAccount::create($uniacid);
+		$token = $account_api->getAccessToken();
+		return $token;
 	}
 
 
