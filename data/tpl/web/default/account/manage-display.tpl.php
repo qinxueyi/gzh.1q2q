@@ -125,14 +125,10 @@
 					<?php  if(is_array($tag1)) { foreach($tag1 as $index => $item) { ?>
 						<div ng-if="list.tag==<?php  echo $item['id'];?>" style="float:left">
 							<input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px" ng-checked="true"><?php  echo $item['tag_name'];?>
-							<!-- <input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px" ng-if="list.tag==<?php  echo $item['id'];?>? b='true': b='false'" ng-checked="b"><?php  echo $item['tag_name'];?> -->
 						</div>						
 						<div ng-if="list.tag!=<?php  echo $item['id'];?>" style="float:left">
 							<input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px"><?php  echo $item['tag_name'];?>
-							<!-- <input type="radio" name="tag" value="<?php  echo $item['id'];?>" style="margin-left:30px" ng-if="list.tag==<?php  echo $item['id'];?>? b='true': b='false'" ng-checked="b"><?php  echo $item['tag_name'];?> -->
 						</div>
-
-					  	
 					<?php  } } ?>
 					<div ng-bind="list.uniacid" class="account" style="display:none"></div>	
 				</label>	
