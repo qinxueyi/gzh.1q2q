@@ -105,6 +105,7 @@
 									  	btn: ['确定'],
 									  	yes: function(index, layero){
 									 		//按钮【按钮一】的回调
+									 		layer.closeAll();
 									 		var val = new Array();
 									 		$.each(layero.find('input'),function(index,value){
 									 		   	if($(this).is(':checked')){
@@ -119,7 +120,6 @@
 							 		   				util.message(data.message.message, '', 'error');
 							 		   			}
 									 		});
-									 		layer.closeAll();
 									 		location.href = location.href;
 										}
 								    });

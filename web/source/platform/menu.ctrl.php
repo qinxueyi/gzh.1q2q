@@ -144,34 +144,44 @@ if($do == 'editAccount'){
 		//提交菜单
 		//判断公众号是不是数组传值
 		if(is_array($accountId)){
-				$menuid = array();
-				foreach ($accountId as $key => $value) {
+			// 失败的公众号数组
+			$error = array();
+			foreach ($accountId as $key => $value) {
+				$res = pdo_get('uni_account_menus',array('id'=>$menu['id'],'uniacid'=>$menu['uniacid'],'status'=>STATUS_ON),'id');
+				if($res){
+					$name = pdo_get('uni_account_wechats',array('uniacid'=>$value),array('name'));
 					// 获取该公众号的信息
 					$token = getAccessToken($value);
 					// 添加菜单
 					$result = menuCreate($token,$menu['data']);
 					// 判断添加菜单是否成功
-				if (is_error($result)) {
-					iajax($result['errno'], $account_message['name'].$result['message']);
-				} else {
-					$menuid = implode(",", $menuid);
-					// 若菜单已经存在该公众号时，只修改状态
-					if($menu_Id==$menu['id'] && $value==$menu['uniacid']){
-						pdo_update('uni_account_menus',array('status'=>STATUS_OFF),array('uniacid' =>$value));
-						pdo_update('uni_account_menus',array('status'=>STATUS_ON,'menuid'=>$result),array('uniacid' =>$value,'id'=>$menu_Id));
-					}else{
-						// 否则添加新的数据
-						pdo_update('uni_account_menus',array('status'=>STATUS_OFF),array('uniacid' =>$value));
-						unset($data['id']);
-						$data['status']=$status;
-						$data['menuid']=$result;
-						$data['uniacid']=$value;
-						pdo_insert('uni_account_menus', $data);
+					if (is_error($result)) {
+						// iajax($result['errno'],$result['message']);
+						array_push($error,$name['name']);
+					} else {
+						// 若菜单已经存在该公众号时，只修改状态
+						if($menu_Id==$menu['id'] && $value==$menu['uniacid']){
+							pdo_update('uni_account_menus',array('status'=>STATUS_OFF),array('uniacid' =>$value));
+							pdo_update('uni_account_menus',array('status'=>STATUS_ON,'menuid'=>$result),array('uniacid' =>$value,'id'=>$menu_Id));
+							
+						}else{
+							// 否则添加新的数据
+							pdo_update('uni_account_menus',array('status'=>STATUS_OFF),array('uniacid' =>$value));
+							unset($data['id']);
+							$data['status']=$status;
+							$data['menuid']=$result;
+							$data['uniacid']=$value;
+							pdo_insert('uni_account_menus', $data);
+						}
 					}
 				}
 				
-				iajax(0, '批量操作完成');
-
+			}	
+			if($error){
+				$err = implode(",", $error);
+				iajax(0, $err.'出现错误其他批量操作完成');	
+			}else{
+				iajax(0, '批量操作完成');	
 			}
 		}else{
 			iajax(0, '缺少参数');
