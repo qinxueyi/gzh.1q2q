@@ -290,7 +290,7 @@ function menu_delete($id) {
 }
 
 
-function menu_push($id) {
+function menu_push($id,$value="") {
 	global $_W;
 	$menu_info = menu_get($id);
 	if (empty($menu_info)) {
@@ -304,7 +304,7 @@ function menu_push($id) {
 		$is_conditional = (!empty($post['matchrule']) && $menu_info['type'] == MENU_CONDITIONAL) ? true : false;
 		$menu = menu_construct_createmenu_data($post, $is_conditional);
 
-		$account_api = WeAccount::create();
+		$account_api = WeAccount::create($value);
 		$result = $account_api->menuCreate($menu);
 		if (is_error($result)) {
 			return error(-1, $result['message']);
@@ -322,7 +322,7 @@ function menu_push($id) {
 		return true;
 	}
 		if ($menu_info['status'] == STATUS_ON && $menu_info['type'] == MENU_CONDITIONAL && $menu_info['menuid'] > 0) {
-		$account_api = WeAccount::create();
+		$account_api = WeAccount::create($value);
 		$result = $account_api->menuDelete($menu_info['menuid']);
 		if (is_error($result)) {
 			return error(-1, $result['message']);

@@ -83,7 +83,7 @@
 				    	{/loop}
 				  	{/loop}
 				</div>
-				<a href="javascript:;" onclick="wxSelect({$da['id']}, {$da['status']}, {$da['type']})">选择</a>
+				<a href="javascript:;" class="js-switch-{$da['id']} color-default" onclick="wxSelect({$da['id']}, {$da['status']}, {$da['type']})">选择</a>
 				<script type="text/javascript">
 					function wxSelect(id,status,type){
 						$.post("{php echo url('platform/menu/account')}", {'accountId' : id},function(data) {
@@ -115,12 +115,11 @@
 									 		$.post("{php echo url('platform/menu/editAccount')}", {'menuId' : id,'account':val},function(data) {
 									 		   	data = $.parseJSON(data);
 							 		   			if(data.message.errno==0){
-							 		   				util.message(data.message.message, '', 'success');	
+							 		   				util.message(data.message.message, "<?php  echo url('platform/menu/display')?>", 'success');	
 							 		   			}else{
 							 		   				util.message(data.message.message, '', 'error');
 							 		   			}
 									 		});
-									 		location.href = location.href;
 										}
 								    });
 
