@@ -106,7 +106,11 @@
 		</td>
 		<td><img ng-src="{{list.qrcode}}" style="width:70px;"></td>
 		<td><p class="color-dark" ng-bind="list.fans_total"></td>
-		<td><p class="color-dark" ng-bind="list.tag"></td>
+		<td>
+			{loop $tag1 $index $item}
+				<p class="color-dark" ng-if="list.tag=={$item['id']}? a='{$item['tag_name']}':''" ng-bind="a"  >
+			{/loop}
+		</td>
 		<td class="vertical-middle table-manage-td">
 			<div class="link-group">
 				<a ng-href="{{links.switch}}uniacid={{list.uniacid}}">进入公众号</a>
@@ -116,6 +120,48 @@
 			</div>
 			{if $role_type}
 			<div class="manage-option text-right">
+
+				<label class="radio-inline" style="display:none">
+					{loop $tag1 $index $item}
+						<div ng-if="list.tag=={$item['id']}" style="float:left">
+							<input type="radio" name="tag" value="{$item['id']}" style="margin-left:30px" ng-checked="true">{$item['tag_name']}
+						</div>						
+						<div ng-if="list.tag!={$item['id']}" style="float:left">
+							<input type="radio" name="tag" value="{$item['id']}" style="margin-left:30px">{$item['tag_name']}
+						</div>
+					{/loop}
+					<div ng-bind="list.uniacid" class="account" style="display:none"></div>	
+				</label>	
+				<a href="javascript:;" onclick="updateTage(this)">修改标签</a>
+				<script type="text/javascript">
+					function updateTage(a){
+						var uniacid = $(a).parent().find('.account').html();
+						layui.use('layer', function(){
+							var layer = layui.layer;
+							layer.open({
+							 	title:'选择标签',
+							  	content: $(a).parent().find('.radio-inline').html()
+							  	,btn: ['确定']
+							  	,yes: function(index, layero){
+							  		layer.closeAll();
+							  		$.each(layero.find('input'),function(index,value){
+									 	if($(this).is(':checked') && uniacid){
+									 		 	$.post("{php echo url('account/manage/updateTag')}", {'tag_id' : $(this).val(),'account':uniacid},function(data) {
+									 		   	data = $.parseJSON(data);
+							 		   			if(data.message.errno==0){
+							 		   				util.message(data.message.message, '', 'success');	
+							 		   			}else{
+							 		   				util.message(data.message.message, '', 'error');
+							 		   			}
+									 		});	  		
+									 	}
+									});
+							  	}
+							});
+						});
+					}
+				</script>
+				&nbsp&nbsp&nbsp|&nbsp&nbsp&nbsp
 				<a href="{{links.post}}&acid={{list.acid}}&uniacid={{list.uniacid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">基础信息</a>
 				<!-- <a href="{{links.post}}&do=sms&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}" ng-show="list.role == 'owner' || list.role == 'founder' || list.role == 'vice_founder'">短信信息</a> -->
 				<!-- <a href="{{links.postUser}}&do=edit&uniacid={{list.uniacid}}&acid={{list.acid}}&account_type={{list.type}}">使用者管理</a> -->

@@ -8,13 +8,32 @@ defined('IN_IA') or exit('Access Denied');
 load()->func('file');
 load()->model('user');
 load()->model('message');
-$dos = array('display', 'delete');
+$dos = array('display', 'delete','updateTag');
 $do = in_array($_GPC['do'], $dos)? $do : 'display';
 
 $_W['page']['title'] = $account_typename . '列表 - ' . $account_typename;
 $account_info = permission_user_account_num();
 $role_type = in_array($_W['role'], array(ACCOUNT_MANAGE_NAME_FOUNDER, ACCOUNT_MANAGE_NAME_VICE_FOUNDER, ACCOUNT_MANAGE_NAME_OWNER, ACCOUNT_MANAGE_NAME_MANAGER));
+if ($do == 'updateTag') {
+	$account = $_GPC['account'];
+	$tag_id = $_GPC['tag_id'];	
+	if($account && $tag_id){
+		$res = pdo_get('account_tag_link', array('uniacid' => $account));
+		if($res){
+			$result = pdo_update('account_tag_link', array('tag_id'=>$tag_id), array('uniacid' => $account));
+		}else{
+			$result = pdo_insert('account_tag_link', array('tag_id'=>$tag_id, 'uniacid' => $account));
+		}
 
+		if($result){
+			iajax(0, '修改标签成功');
+		}else{
+			iajax(1, '修改标签失败');
+		}
+	}else{
+		iajax(1, '缺少参数');
+	}
+}
 
 
 if ($do == 'display') {
