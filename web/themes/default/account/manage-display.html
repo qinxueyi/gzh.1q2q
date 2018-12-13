@@ -150,6 +150,7 @@
 									 		   	data = $.parseJSON(data);
 							 		   			if(data.message.errno==0){
 							 		   				util.message(data.message.message, '', 'success');	
+							 		   				location.href = location.href;
 							 		   			}else{
 							 		   				util.message(data.message.message, '', 'error');
 							 		   			}
