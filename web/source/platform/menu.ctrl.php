@@ -89,14 +89,13 @@ if($do == 'editAccount'){
 		if(is_array($accountId)){
 			// 失败的公众号数组
 			$error = array();
-			$result= array();
 			foreach ($accountId as $key => $value) {
 			    $res = pdo_get('uni_account_menus',array('title'=>$menu['title'],'uniacid'=>$value));
 				
 				$name = pdo_get('account_wechats',array('uniacid'=>$value),array('name'));
 					// 若菜单已经存在该公众号时，只修改状态
 				if($res){
-				    $result[] = menu_push($res['id'],$value);
+				    $result = menu_push($res['id'],$value);
 					if(!$result){
 						array_push($error,$name['name']);
 					}
@@ -108,7 +107,7 @@ if($do == 'editAccount'){
 					$id = pdo_insert('uni_account_menus', $data);
 					if($id){
 						$uid = pdo_insertid();
-						$result[] = menu_push($uid,$value);
+						$result = menu_push($uid,$value);
 
 						if(!$result){
 							array_push($error,$name['name']);
