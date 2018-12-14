@@ -388,7 +388,7 @@
 <div class="panel-body col-sm-12">
 	<table class="table we7-table table-hover vertical-middle table-manage">
 		<tr>
-			<th>内容</th>
+			<th width="650px">内容</th>
 			<th>类型</th>
 			<th>延迟时间</th>
 			<th>操作</th>
@@ -407,7 +407,8 @@
 				<?php  } ?>
 				<input type="hidden" name=""  value="<?php  echo $item['id'];?>" id="event_list_id">
 				<a href="javascript:" id="text" onclick="edit_inf(<?php  echo $item['id'];?>)" class="btn btn-success">编辑</a>
-				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>)" class="btn btn-success edit-gray" >排序</a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'mpnews') { ?>
@@ -425,7 +426,8 @@
 				<?php  } ?>
 				<!--<a href="<?php  echo url('platform/reply',array('m'=>'testtz','id'=>$item['id']))?>" class="btn btn-success">编辑</a>-->
 				<a href="<?php  echo url('platform/material-post',array('type'=>'reply','newsid'=>$item['newsid']))?>" class="btn btn-success">编辑</a>
-				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>)" class="btn btn-success edit-gray" >排序</a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'news') { ?>
@@ -466,15 +468,15 @@
 </div>
 <!--弹窗-->
 <div class="win">
-	<form action="javascript:">
-		<div class="win_head"><span style="font-size: 16px;margin-left: 15px;">请输入排序序号</span></div>
-		<input type="text" name="sort" placeholder="数字越大排序越靠前"id="inp">
-		<input type="hidden" id="hidd">
-		<div class="but">
-			<button id="sub">提交</button>
-			<button id="hide" onclick="hide_win()">取消</button>
-		</div>
-	</form>
+	<!--<form action="javascript:">-->
+		<!--<div class="win_head"><span style="font-size: 16px;margin-left: 15px;">请输入排序序号</span></div>-->
+		<!--<input type="text" name="sort" placeholder="数字越大排序越靠前"id="inp">-->
+		<!--<input type="hidden" id="hidd">-->
+		<!--<div class="but">-->
+			<!--<button id="sub">提交</button>-->
+			<!--<button id="hide" onclick="hide_win()">取消</button>-->
+		<!--</div>-->
+	<!--</form>-->
 </div>
 <!-- <hr>
 <span><b>添加延迟推送</b></span>
@@ -567,55 +569,55 @@
 			},
 		});
 	}
-
-	// var a=document.getElementById("aa");
-	// a.value="a<br/>b";//达到想要的效果
-	// a.value="a\r\nb";//达到想要的效果
 </script>
 <script>
-	function Mysort(e) {
+	function Mysort(e,direction) {
 		$.ajax({
 			url:"<?php  echo url('platform/reply',array('m'=>'sort'))?>",
 			type:'post',
-			data:{'id':e},
+			data:{'id':e,'direction':direction},
 			dataType:'json',
 			success:function (data) {
-				var sort_now = data.sort;
-				$('#inp').val(sort_now);
-			},
-		});
-		$(".win").show();
-		$('#hidd').val(e);
-	}
-
-	function hide_win() { $(".win").hide();}
-
-	$("#sub").click(function () {
-		var sort = $('#inp').val();
-		var id = $('#hidd').val();
-		alert(id);
-		$.ajax({
-			url:"<?php  echo url('platform/reply',array('m'=>'new_sort'))?>",
-			type:'post',
-			data:{'new_sort':sort,'id':id},
-			dataType:'text',
-			success:function (data) {
-				if (data == '1'){
-					$(".win").hide();
+				var info = data.success;
+				if (info == 1){
 					layui.use('layer', function(){
 						var layer = layui.layer;
 						layer.msg('修改成功');
 						location.reload();
 					});
-				}else {
-					layui.use('layer', function(){
-						var layer = layui.layer;
-						layer.msg('修改失败');
-					});
 				}
 			},
 		});
-	});
+	}
+
+	// function hide_win() { $(".win").hide();}
+	//
+	// $("#sub").click(function () {
+	// 	var sort = $('#inp').val();
+	// 	var id = $('#hidd').val();
+	// 	alert(id);
+	// 	$.ajax({
+	// 		url:"<?php  echo url('platform/reply',array('m'=>'new_sort'))?>",
+	// 		type:'post',
+	// 		data:{'new_sort':sort,'id':id},
+	// 		dataType:'text',
+	// 		success:function (data) {
+	// 			if (data == '1'){
+	// 				$(".win").hide();
+	// 				layui.use('layer', function(){
+	// 					var layer = layui.layer;
+	// 					layer.msg('修改成功');
+	// 					location.reload();
+	// 				});
+	// 			}else {
+	// 				layui.use('layer', function(){
+	// 					var layer = layui.layer;
+	// 					layer.msg('修改失败');
+	// 				});
+	// 			}
+	// 		},
+	// 	});
+	// });
 </script>
 
 <script>

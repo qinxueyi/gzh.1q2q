@@ -228,30 +228,24 @@ if ($do == 'display') {
 
     if ($m == 'sort'){ //获取默认排序
         $id = $_GPC['id'];
-        $data = pdo_getcolumn('event_list',array('id' => $id),'sort');
-        echo json_encode(array('sort'=>$data));
+        $direction = $_GPC['direction'];
+        $sort = pdo_getcolumn('event_list',array('id' => $id),'sort');
+        if ($direction == 1){
+            $up_sort = $sort+1;
+            $up_id = pdo_getcolumn('event_list',array('sort' => $up_sort),'id');
+            $res = pdo_update('event_list',array('sort'=>$up_sort),array('id'=>$id));
+            $res_n = pdo_update('event_list',array('sort'=>$sort),array('id'=>$up_id));
+        }else{
+            $down_sort = $sort-1;
+            $down_id = pdo_getcolumn('event_list',array('sort' => $down_sort),'id');
+            $res = pdo_update('event_list',array('sort'=>$down_sort),array('id'=>$id));
+            $res_n = pdo_update('event_list',array('sort'=>$sort),array('id'=>$down_id));
+        }
+        if ($res && $res_n){
+            echo json_encode(array('success'=> 1));
+        }
         exit;
     }
-
-    if ($m == 'new_sort'){  //提交排序
-        $new_sort = $_GPC['new_sort'];
-        $id = $_GPC['id'];
-        $result = pdo_query("update".tablename('event_list')."set sort=:sort where id=:id",array('sort'=>$new_sort,':id'=>$id));
-        if ($result){
-            echo 1;
-        }
-        exit();
-    }
-
-    if ($m == 'edit_inf'){  //延迟推送内容回显
-        $id = $_GPC['id'];
-        $data = pdo_getcolumn('event_list',array('id' => $id),'content');
-        $str = trim(trim($data,'}'),'{');
-        $str = substr($str,10);
-        echo $str;
-        exit();
-    }
-
     template('platform/reply');
 }
 
@@ -516,8 +510,6 @@ if ($do == 'post') {
             }else{
                 $data['content'] = urldecode(json_encode(array('content' => urlencode($res))));
             }
-            //            $content['content'] = $content;
-            //            $data['content']=json_encode(array('content'=>urlencode($_GPC['reply']['reply_basic'])));
         } elseif ($_GPC['reply']['reply_news']) {
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
             $contents = json_decode('[' . $contents . ']', true);
@@ -553,8 +545,19 @@ if ($do == 'post') {
             
         } elseif ($_GPC['reply']['reply_video']) {//vedio类型
             $data['msgtype'] = 'video';
-            
         }
+        $all_data = pdo_getall('event_list');
+        //获取sort字段当前最大值
+        if ($all_data){
+            $max = 0;
+            foreach ($all_data as $key => $val) {
+                $max = max($max, $val['sort']);
+                $max = (int)$max;
+            }
+        }else{
+            $data['sort'] = 1;
+        }
+        $data['sort'] = $max+1;
         $res = pdo_insert('event_list', $data);
         if ($res) {
             itoast('发布成功!', referer(), 'success');
