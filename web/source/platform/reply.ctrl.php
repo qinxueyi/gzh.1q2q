@@ -251,16 +251,6 @@ if ($do == 'display') {
         echo $str;
         exit();
     }
-    if ($m == 'testtz'){
-        $id = $_GPC['id'];
-        $data = pdo_get('event_list',array('id'=>$id));
-        echo "<pre>";
-        var_dump(json_decode($data['content'], true));
-        die();
-    }
-
-    //测试
-
 
     template('platform/reply');
 }
