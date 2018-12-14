@@ -26,11 +26,30 @@ class MenuTable extends We7Table {
 		$result = $this->query->getall('id');
 		return $result;
 	}
-	public function accountMenuInfo($condition = array()) {
+	// public function accountMenuInfo($condition = array()) {
+	// 	global $_W;
+	// 	$fields = array('id', 'menuid', 'type', 'status');
+
+	// 	$this->query->from($this->account_menu_table)->where('uniacid', $_W['uniacid']);
+	// 	if (!empty($condition)) {
+	// 		foreach ($condition as $key => $val) {
+	// 			if (in_array($key, $fields)) {
+	// 				$this->query->where($key, $val);
+	// 			}
+	// 		}
+	// 	}
+	// 	$result = $this->query->get();
+	// 	return $result;
+	// }	
+
+	public function accountMenuInfo($condition = array(),$uniacid='') {
 		global $_W;
 		$fields = array('id', 'menuid', 'type', 'status');
-
-		$this->query->from($this->account_menu_table)->where('uniacid', $_W['uniacid']);
+		if($uniacid){
+			$this->query->from($this->account_menu_table)->where('uniacid', $uniacid);
+		}else{
+			$this->query->from($this->account_menu_table)->where('uniacid', $_W['uniacid']);
+		}
 		if (!empty($condition)) {
 			foreach ($condition as $key => $val) {
 				if (in_array($key, $fields)) {

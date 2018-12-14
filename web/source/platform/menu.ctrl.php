@@ -90,30 +90,30 @@ if($do == 'editAccount'){
 			// 失败的公众号数组
 			$error = array();
 			foreach ($accountId as $key => $value) {
-				$res = pdo_get('uni_account_menus',array('id'=>$menu['id'],'uniacid'=>$menu['uniacid'],'status'=>STATUS_ON),'id');
-				if(!$res){
-					$name = pdo_get('account_wechats',array('uniacid'=>$value),array('name'));
-						// 若菜单已经存在该公众号时，只修改状态
-					if($menu_Id==$menu['id'] && $value==$menu['uniacid']){
-						$result = menu_push($menu['id'],$value);
+			    $res = pdo_get('uni_account_menus',array('title'=>$menu['title'],'uniacid'=>$value));
+				
+				$name = pdo_get('account_wechats',array('uniacid'=>$value),array('name'));
+					// 若菜单已经存在该公众号时，只修改状态
+				if($res){
+				    $result = menu_push($res['id'],$value);
+					if(!$result){
+						array_push($error,$name['name']);
+					}
+				}else{
+					// 否则添加新的数据
+					unset($data['id']);
+					$data['status']=STATUS_OFF;
+					$data['uniacid']=$value;
+					$id = pdo_insert('uni_account_menus', $data);
+					if($id){
+						$uid = pdo_insertid();
+						$result = menu_push($uid,$value);
+
 						if(!$result){
 							array_push($error,$name['name']);
 						}
 					}else{
-						// 否则添加新的数据
-						unset($data['id']);
-						$data['status']=STATUS_ON;
-						$data['uniacid']=$value;
-						$result = pdo_insert('uni_account_menus', $data);
-						if($result){
-							$uid = pdo_insertid();
-							$result = menu_push($uid,$value);
-							if(!$result){
-								array_push($error,$name['name']);
-							}
-						}else{
-							array_push($error,$name['name']);
-						}
+						array_push($error,$name['name']);
 					}
 				}
 				
@@ -129,6 +129,7 @@ if($do == 'editAccount'){
 		}
 	}
 }
+
 
 if($do == 'display') {
 	set_time_limit(0);
