@@ -413,6 +413,7 @@
 		{elseif $item['msgtype'] == 'mpnews'}
 		<tr>
 			<input type="hidden" name="" value="{$item['id']}">
+			<!--<input type="hidden" name="" value="{$item['id']}">-->
 			<td><img src="{$item['content']}" width="100"></td>
 			<td>图文</td>
 			<td>{$item['time']}</td>
@@ -422,7 +423,8 @@
 				{else}
 				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 				{/if}
-				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">编辑</a>
+				<!--<a href="{php echo url('platform/reply',array('m'=>'testtz','id'=>$item['id']))}" class="btn btn-success">编辑</a>-->
+				<a href="{php echo url('platform/material-post',array('type'=>'reply','newsid'=>$item['newsid']))}" class="btn btn-success">编辑</a>
 				<a href="javascript:" id="sort" onclick="Mysort({$item['id']})" class="btn btn-success edit-gray" >排序</a>
 			</td>
 		</tr>
@@ -603,6 +605,7 @@
 					layui.use('layer', function(){
 						var layer = layui.layer;
 						layer.msg('修改成功');
+						location.reload();
 					});
 				}else {
 					layui.use('layer', function(){

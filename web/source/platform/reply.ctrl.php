@@ -217,9 +217,14 @@ if ($do == 'display') {
                 $content = json_decode($v['content'], true);
                 $material = material_get($content['media_id']);
                 $data[$k]['content'] = $material['news'][0]['thumb_url'];
+                $data[$k]['newsid'] = $material['news'][0]['attach_id'];
+//                echo "<pre>";
+//                var_dump($data);
+
             }
         }
     }
+//    die();
 
     if ($m == 'sort'){ //获取默认排序
         $id = $_GPC['id'];
@@ -246,6 +251,16 @@ if ($do == 'display') {
         echo $str;
         exit();
     }
+    if ($m == 'testtz'){
+        $id = $_GPC['id'];
+        $data = pdo_get('event_list',array('id'=>$id));
+        echo "<pre>";
+        var_dump(json_decode($data['content'], true));
+        die();
+    }
+
+    //测试
+
 
     template('platform/reply');
 }
