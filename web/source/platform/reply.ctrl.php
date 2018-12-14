@@ -218,13 +218,9 @@ if ($do == 'display') {
                 $material = material_get($content['media_id']);
                 $data[$k]['content'] = $material['news'][0]['thumb_url'];
                 $data[$k]['newsid'] = $material['news'][0]['attach_id'];
-//                echo "<pre>";
-//                var_dump($data);
-
             }
         }
     }
-//    die();
 
     if ($m == 'sort'){ //获取默认排序
         $id = $_GPC['id'];
