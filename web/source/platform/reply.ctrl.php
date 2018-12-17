@@ -195,7 +195,7 @@ if ($do == 'display') {
             }
         }
     }
-    
+
     if ($m == 'delay') {//延迟推送
         $data = pdo_getall('event_list', array('uniacid' => $_W['uniacid']),array(),'','sort DESC');
         $result = pdo_get('interaction_type', array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']));
@@ -223,17 +223,50 @@ if ($do == 'display') {
     }
 
     if ($m == 'sort'){ //获取默认排序
-        $id = $_GPC['id'];
+        $id = $_GPC['id'];//当前推送id
         $direction = $_GPC['direction'];
-        $sort = pdo_getcolumn('event_list',array('id' => $id),'sort');
+        $uniacid = $_GPC['uniacid'];
+        $sort = pdo_getcolumn('event_list',array('id' => $id),'sort');//当前排序
+        $all_data = pdo_getall('event_list',array('uniacid'=>$uniacid));
+        $sort_array = [];
+        foreach($all_data as $val){
+            array_push($sort_array,$val['sort']);
+        }
+        rsort($sort_array);
         if ($direction == 1){
-            $up_sort = $sort+1;
-            $up_id = pdo_getcolumn('event_list',array('sort' => $up_sort),'id');
+            //判断是否在第一位
+            if ($all_data){
+                $max = 0;
+                foreach ($all_data as $key => $val) {
+                    $max = max($max, $val['sort']);
+                    $max = (int)$max;
+                }
+                if ($max == $sort){
+                    echo json_encode(array('success'=> 2));
+                    die();
+                }
+            }
+            $sort_ind = array_search($sort,$sort_array);//根据值获取下标
+            $up_sort= $sort_array[$sort_ind-1];//上一个推送排序
+            $up_id = pdo_getcolumn('event_list',array('sort' => $up_sort),'id');//上一个推送id
             $res = pdo_update('event_list',array('sort'=>$up_sort),array('id'=>$id));
             $res_n = pdo_update('event_list',array('sort'=>$sort),array('id'=>$up_id));
         }else{
-            $down_sort = $sort-1;
-            $down_id = pdo_getcolumn('event_list',array('sort' => $down_sort),'id');
+            //判断是否在第一位
+            if ($all_data){
+                $min = 0;
+                foreach ($all_data as $key => $val) {
+                    $min = min($min , $val['boxnum']);
+                    $min = (int)$min;
+                }
+                if ($min == $sort){
+                    echo json_encode(array('success'=> 3));
+                    die();
+                }
+            }
+            $sort_ind = array_search($sort,$sort_array);//根据值获取下标
+            $down_sort= $sort_array[$sort_ind+1];//上一个推送排序
+            $down_id = pdo_getcolumn('event_list',array('sort' => $down_sort),'id');//上一个推送id
             $res = pdo_update('event_list',array('sort'=>$down_sort),array('id'=>$id));
             $res_n = pdo_update('event_list',array('sort'=>$sort),array('id'=>$down_id));
         }
@@ -242,7 +275,9 @@ if ($do == 'display') {
         }
         exit;
     }
+
     template('platform/reply');
+
 }
 
 if ($do == 'post') {
@@ -283,9 +318,9 @@ if ($do == 'post') {
             }
         }
         if (checksubmit('submit')) {
-            
+
             $keywords = @json_decode(htmlspecialchars_decode($_GPC['keywords']), true);
-            
+
             if (empty($keywords)) {
                 itoast('必须填写有效的触发关键字.');
             }
@@ -314,14 +349,14 @@ if ($do == 'post') {
             } else {
                 $rule['displayorder'] = range_limit($rule['displayorder'], 0, 254);
             }
-            
+
             if ($m == 'userapi') {
                 $module = WeUtility::createModule('userapi');
             } else {
                 $module = WeUtility::createModule('core');
             }
             $msg = $module->fieldsFormValidate();
-            
+
             $module_info = module_fetch($m);
             if (!empty($module_info) && empty($module_info['issystem'])) {
                 $user_module = WeUtility::createModule($m);
@@ -339,10 +374,10 @@ if ($do == 'post') {
                 $result = pdo_insert('rule', $rule);
                 $rid = pdo_insertid();
             }
-            
+
             if (!empty($rid)) {
                 pdo_delete('rule_keyword', array('rid' => $rid, 'uniacid' => $_W['uniacid']));
-                
+
                 $rowtpl = array(
                     'rid' => $rid,
                     'uniacid' => $_W['uniacid'],
@@ -386,7 +421,7 @@ if ($do == 'post') {
             if (is_error($result)) {
                 itoast($result['message'], '', 'info');
             }
-            
+
             if ($reply_type == 'module') {
                 $setting[$type] = array('type' => 'module', 'module' => $module);
             } else {
@@ -456,7 +491,7 @@ if ($do == 'post') {
                 }
             }
             $module['icon'] = $cion;
-            
+
             if ($module['enabled'] == 1) {
                 $enable_modules[$name] = $module;
             } else {
@@ -470,14 +505,14 @@ if ($do == 'post') {
         $moudles = true;
         template('platform/reply-post');
     }
-    
+
     if ($m == 'delay') {//延迟推送
         $data['time'] = (intval($_GPC['delay-hour']) * 3600 + intval($_GPC['delay-minute']) * 60 + intval($_GPC['delay-second'])) * 1000;
         $data['uniacid'] = $_GPC['__uniacid'];
         $res['type'] = $_GPC['type'];
         $res['uniacid'] = $data['uniacid'];
         $res['acid'] = $_W['acid'];
-        
+
         $result = pdo_get('interaction_type', array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']));
         if ($result) {
             $result = pdo_update('interaction_type', array('type' => $res['type']), array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']));
@@ -491,9 +526,9 @@ if ($do == 'post') {
             $contents = explode(',', $contents);
             $get_content = array_rand($contents, 1);
             $msg = trim($contents[$get_content], '\"');
-            
+
             //$msg = htmlspecialchars_decode($msg);
-            
+
             $preg = preg_match_all("/\[U\+[A-Za-z0-9]+\]/", $content, $arr);
             foreach ($arr[0] as $k => $v) {
                 $str = emoji($v);
@@ -530,7 +565,7 @@ if ($do == 'post') {
             $get_content = array_rand($contents, 1);
             $content = trim($contents[$get_content], '\"');
             $data['content'] = json_encode(array('media_id' => $content));
-            
+
         } elseif ($_GPC['reply']['reply_voice']) {//voice类型
             $data['msgtype'] = 'voice';
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_voice']);
@@ -538,12 +573,12 @@ if ($do == 'post') {
             $get_content = array_rand($contents, 1);
             $content = trim($contents[$get_content], '\"');
             $data['content'] = json_encode(array('media_id' => $content));
-            
+
         } elseif ($_GPC['reply']['reply_video']) {//vedio类型
             $data['msgtype'] = 'video';
         }
-        $all_data = pdo_getall('event_list');
-        //获取sort字段当前最大值
+        $all_data = pdo_getall('event_list',array('uniacid'=>$data['uniacid']));
+        //获取sort字段当前当前公众号最大值
         if ($all_data){
             $max = 0;
             foreach ($all_data as $key => $val) {
@@ -558,9 +593,8 @@ if ($do == 'post') {
         if ($res) {
             itoast('发布成功!', referer(), 'success');
         }
-        
     }
-    
+
 }
 
 if ($do == 'delete') {
@@ -639,7 +673,7 @@ if ($do == 'change_status') {
 }
 
 if ($do == 'change_keyword_status') {
-    
+
     $id = intval($_GPC['id']);
     $result = pdo_get('rule', array('id' => $id), array('status'));
     if (!empty($result)) {
@@ -707,7 +741,7 @@ function changeTime($time)
             $str = $s . '秒';
         }
     }
-    
+
     return $str;
 }
 
@@ -741,7 +775,7 @@ function UnicodeEncode($str)
 {
     //split word
     preg_match_all('/./u', $str, $matches);
-    
+
     $unicodeStr = "";
     foreach ($matches[0] as $m) {
         //拼接

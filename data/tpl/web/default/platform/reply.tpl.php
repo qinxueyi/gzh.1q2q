@@ -410,8 +410,8 @@
 				<?php  } ?>
 				<input type="hidden" name=""  value="<?php  echo $item['id'];?>" id="event_list_id">
 				<a href="javascript:" id="text" onclick="edit_inf(<?php  echo $item['id'];?>)" class="btn btn-success">编辑</a>
-				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
-				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'mpnews') { ?>
@@ -429,8 +429,8 @@
 				<?php  } ?>
 				<!--<a href="<?php  echo url('platform/reply',array('m'=>'testtz','id'=>$item['id']))?>" class="btn btn-success">编辑</a>-->
 				<a href="<?php  echo url('platform/material-post',array('type'=>'reply','newsid'=>$item['newsid']))?>" class="btn btn-success">编辑</a>
-				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
-				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'news') { ?>
@@ -446,7 +446,8 @@
 				<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 				<?php  } ?>
 				<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">编辑</a>
-				<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">排序</a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'image') { ?>
@@ -461,8 +462,8 @@
 				<?php  } else { ?>
 				<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 				<?php  } ?>
-				<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">编辑</a>
-				<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">排序</a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['uniacid'];?>,<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		<?php  } ?>
@@ -547,19 +548,30 @@
     </div>
 </form> -->
 <script>
-	function Mysort(e,direction) {
+	function Mysort(uniacid,e,direction) {
 		$.ajax({
 			url:"<?php  echo url('platform/reply',array('m'=>'sort'))?>",
 			type:'post',
-			data:{'id':e,'direction':direction},
+			data:{'uniacid':uniacid,'id':e,'direction':direction},
 			dataType:'json',
 			success:function (data) {
+				console.log(data);
 				var info = data.success;
 				if (info == 1){
 					layui.use('layer', function(){
 						var layer = layui.layer;
 						layer.msg('修改成功');
 						location.reload();
+					});
+				}else if(info == 2) {
+					layui.use('layer', function(){
+						var layer = layui.layer;
+						layer.msg('该推送已经排在第一位');
+					});
+				}else if(info == 3){
+					layui.use('layer', function(){
+						var layer = layui.layer;
+						layer.msg('该推送已经排在最后一位了');
 					});
 				}
 			},
