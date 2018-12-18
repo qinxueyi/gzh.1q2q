@@ -91,6 +91,8 @@
 									<div class="col-sm-12 form-control-box">
 										<div we7-linker we7-my-url="materialList[activeIndex].content_source_url" we7-my-title="materialList[activeIndex].content_source_url"></div>
 									</div>
+									<button ng-click="test()">test</button>
+									<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image>
 								</div>
 							</div>
 							<!-- END 跳转链接 -->
@@ -113,6 +115,10 @@
 								<image ng-src="{{ materialList[activeIndex].thumb }}" style="max-height: 200px;"></image>
 							</div>
 						</div>
+
+
+
+
 						<div class="form-group">
 							<label class="col-sm-12 control-label" ng-click="zhaiyao()">摘要<span class="color-gray">(选填，如果不填写会默认抓取正文前54个字)</span></label>
 							<div>
