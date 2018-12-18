@@ -109,7 +109,7 @@
 							<div style="margin-top:15px;display:none;" id="outerJoin">
 								<!-- BEGIN 添加图片 -->
 								<a  href="javascript:void(0);" class="btn btn-default" ng-click="multiGraph()" style="margin-left:15px;">选择图片</a>
-								<image ng-src="{{ materialList[activeIndex].imgurl }}" style="max-height: 200px;"></image>
+								<image ng-src="{{ materialList[activeIndex].imgurl}}" style="max-height: 100px;max-width:150px;"></image>
 								<!-- END 添加图片 -->
 								<!-- BEGIN 添加随机链接 -->
 								<style type="text/css">
@@ -178,7 +178,7 @@
 											                var $trTemp = $("<tr></tr>");
 
 											                //往行里面追加 td单元格
-											                $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].id+'"></td>');
+											                $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].id+'" onclick="select()"></td>');
 											                $trTemp.append("<td>"+ datas[i].title +"</td>");
 											                // $("#J_TbData").append($trTemp);
 											                $trTemp.appendTo("#J_TbData");
@@ -191,7 +191,10 @@
 										
 									});
 
+									function select(){
+										alert(1111);
 
+									}
 								</script>
 							</div>
 						</div>
