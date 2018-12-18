@@ -92,8 +92,8 @@
 									<div class="col-sm-12 form-control-box">
 										<div we7-linker we7-my-url="materialList[activeIndex].content_source_url" we7-my-title="materialList[activeIndex].content_source_url"></div>
 									</div>
-									<button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button>
-									<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image>
+									 <button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button> -->
+					<!-- 				<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image>
 								</div>
 							</div> -->
 							<!-- END 跳转链接 -->
@@ -108,7 +108,7 @@
 							<!-- END 判断是不是外链接 -->
 							<div style="margin-top:15px;display:none;" id="outerJoin">
 								<!-- BEGIN 添加图片 -->
-								<a  href="javascript:void(0);" class="btn btn-default" ng-click="selectPicture('local')" style="margin-left:15px;">选择图片</a>
+								<a  href="javascript:void(0);" class="btn btn-default" ng-click="multiGraph()" style="margin-left:15px;">选择图片</a>
 								<image ng-src="{{ materialList[activeIndex].imgurl }}" style="max-height: 200px;"></image>
 								<!-- END 添加图片 -->
 								<!-- BEGIN 添加随机链接 -->
@@ -155,6 +155,7 @@
 									});
 
 									$('#ex_select').change(function(){
+
 								        uniacid = $('#ex_select').val(); //公众号Id
 								        if(!uniacid){
 								        	util.message('未选中公众号', '', 'error');
