@@ -1,19 +1,19 @@
 
 {template 'common/header'}
 {if in_array($m, $sysmods)}
-	<div class="we7-page-title">
-		自动回复
-	</div>
-	<ul class="we7-page-tab">
-		<li {if $m == 'keyword' || $m == ''}class="active" {/if}><a href="{url 'platform/reply' array('m' => 'keyword')}">关键字自动回复 </a></li>
-		<li {if $m == 'special'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'special')}">非文字自动回复</a></li>
-		<li {if $m == 'welcome'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'welcome')}">首次访问自动回复</a></li>
-		<li {if $m == 'default'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'default')}">默认回复</a></li>
-		<li {if $m == 'service'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'service')}">常用服务</a></li>
-		<li {if $m == 'userapi'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'userapi')}">自定义接口回复</a></li>
-		<li {if $m == 'delay'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'delay')}">延迟推送</a></li>
-		<li><a href="{url 'profile/reply-setting'}">回复设置</a></li>
-	</ul>
+<div class="we7-page-title">
+	自动回复
+</div>
+<ul class="we7-page-tab">
+	<li {if $m == 'keyword' || $m == ''}class="active" {/if}><a href="{url 'platform/reply' array('m' => 'keyword')}">关键字自动回复 </a></li>
+	<li {if $m == 'special'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'special')}">非文字自动回复</a></li>
+	<li {if $m == 'welcome'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'welcome')}">首次访问自动回复</a></li>
+	<!--<li {if $m == 'default'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'default')}">默认回复</a></li>-->
+	<!--<li {if $m == 'service'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'service')}">常用服务</a></li>-->
+	<!--<li {if $m == 'userapi'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'userapi')}">自定义接口回复</a></li>-->
+	<li {if $m == 'delay'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'delay')}">延迟推送</a></li>
+	<!--<li><a href="{url 'profile/reply-setting'}">回复设置</a></li>-->
+</ul>
 {else}
 <div class="we7-page-title">
 	入口设置
@@ -394,8 +394,8 @@
 				{/if}
 				<input type="hidden" name=""  value="{$item['id']}" id="event_list_id">
 				<a href="javascript:" id="text" onclick="edit_inf({$item['id']})" class="btn btn-success">编辑</a>
-				<a href="javascript:" id="sort" onclick="Mysort({$item['id']},1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
-				<a href="javascript:" id="sort" onclick="Mysort({$item['id']},0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		{elseif $item['msgtype'] == 'mpnews'}
@@ -413,8 +413,8 @@
 				{/if}
 				<!--<a href="{php echo url('platform/reply',array('m'=>'testtz','id'=>$item['id']))}" class="btn btn-success">编辑</a>-->
 				<a href="{php echo url('platform/material-post',array('type'=>'reply','newsid'=>$item['newsid']))}" class="btn btn-success">编辑</a>
-				<a href="javascript:" id="sort" onclick="Mysort({$item['id']},1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
-				<a href="javascript:" id="sort" onclick="Mysort({$item['id']},0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		{elseif $item['msgtype'] == 'news'}
@@ -430,7 +430,8 @@
 				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 				{/if}
 				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">编辑</a>
-				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">排序</a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		{elseif $item['msgtype'] == 'image'}
@@ -445,8 +446,8 @@
 				{else}
 				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 				{/if}
-				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">编辑</a>
-				<a href="{php echo url('platform/reply/status',array('id'=>$item['id']))}" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">排序</a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+				<a href="javascript:" id="sort" onclick="Mysort({$item['uniacid']},{$item['id']},0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a>
 			</td>
 		</tr>
 		{/if}
@@ -531,19 +532,30 @@
     </div>
 </form> -->
 <script>
-	function Mysort(e,direction) {
+	function Mysort(uniacid,e,direction) {
 		$.ajax({
 			url:"{php echo url('platform/reply',array('m'=>'sort'))}",
 			type:'post',
-			data:{'id':e,'direction':direction},
+			data:{'uniacid':uniacid,'id':e,'direction':direction},
 			dataType:'json',
 			success:function (data) {
+				console.log(data);
 				var info = data.success;
 				if (info == 1){
 					layui.use('layer', function(){
 						var layer = layui.layer;
 						layer.msg('修改成功');
 						location.reload();
+					});
+				}else if(info == 2) {
+					layui.use('layer', function(){
+						var layer = layui.layer;
+						layer.msg('该推送已经排在第一位');
+					});
+				}else if(info == 3){
+					layui.use('layer', function(){
+						var layer = layui.layer;
+						layer.msg('该推送已经排在最后一位了');
 					});
 				}
 			},
