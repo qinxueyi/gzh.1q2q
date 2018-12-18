@@ -20,7 +20,6 @@ load()->model('visit');
 
 $dos = array('platform', 'system', 'ext', 'get_fans_kpi', 'get_last_modules', 'get_system_upgrade', 'get_upgrade_modules', 'get_module_statistics', 'get_ads', 'get_not_installed_modules', 'system_home', 'set_top', 'add_welcome','get_user_statistics','getall_user_statistics');
 $do = in_array($do, $dos) ? $do : 'platform';
-
 /* $account2 = pdo_get('account',array('isdeleted'=>0));
 $uniacid2 = $account2['uniacid'];
 $_W['uniacid'] = $uniacid2;

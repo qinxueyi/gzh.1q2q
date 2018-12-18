@@ -83,7 +83,7 @@
 				    	<?php  } } ?>
 				  	<?php  } } ?>
 				</div>
-				<a href="javascript:;" onclick="wxSelect(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">选择</a>
+				<a href="javascript:;" class="js-switch-<?php  echo $da['id'];?> color-default" onclick="wxSelect(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">选择</a>
 				<script type="text/javascript">
 					function wxSelect(id,status,type){
 						$.post("<?php  echo url('platform/menu/account')?>", {'accountId' : id},function(data) {
@@ -105,6 +105,7 @@
 									  	btn: ['确定'],
 									  	yes: function(index, layero){
 									 		//按钮【按钮一】的回调
+									 		layer.closeAll();
 									 		var val = new Array();
 									 		$.each(layero.find('input'),function(index,value){
 									 		   	if($(this).is(':checked')){
@@ -114,13 +115,11 @@
 									 		$.post("<?php  echo url('platform/menu/editAccount')?>", {'menuId' : id,'account':val},function(data) {
 									 		   	data = $.parseJSON(data);
 							 		   			if(data.message.errno==0){
-							 		   				util.message(data.message.message, '', 'success');	
+							 		   				util.message(data.message.message, "<?php   echo url('platform/menu/display')?>", 'success');	
 							 		   			}else{
 							 		   				util.message(data.message.message, '', 'error');
 							 		   			}
 									 		});
-									 		layer.closeAll();
-									 		// location.href = location.href;
 										}
 								    });
 

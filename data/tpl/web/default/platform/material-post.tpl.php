@@ -94,6 +94,96 @@
 								</div>
 							</div>
 							<!-- END 跳转链接 -->
+							<!-- BEGIN 判断是不是外链接 -->
+							<div>
+								<label>是否是外链接</label>
+								<select id="select_urls">
+									<option value="false">否</option>
+									<option value="true">是</option>
+								</select>
+							</div>
+							<!-- END 判断是不是外链接 -->
+							<div style="margin-top:15px;display:none;" id="outerJoin">
+								<!-- BEGIN 添加图片 -->
+								<a  href="javascript:void(0);" class="btn btn-default" ng-click="selectPicture('local')" style="margin-left:15px;">选择图片</a>
+								<image ng-src="{{ materialList[activeIndex].imgurl }}" style="max-height: 200px;"></image>
+								<!-- END 添加图片 -->
+								<!-- BEGIN 添加随机链接 -->
+								<style type="text/css">
+									.ex_left{
+										float:left;
+										height:34px;
+										margin-left:15px;
+									}
+									.ex_text{
+										line-height: 34px;
+									}
+								</style>
+								<div style="margin-top:20px;">
+									<div class="ex_left ex_text">微信公众号选择:</div>
+									<div class="ex_left">
+										<select id="ex_select">
+											<?php  if(is_array($_W['tag'])) { foreach($_W['tag'] as $index => $item) { ?>
+												<?php  if(is_array($item['account'])) { foreach($item['account'] as $index1 => $item1) { ?>
+													<option value="<?php  echo $item1['uniacid'];?>" <?php  if($item1['uniacid'] == $_W['uniacid']) { ?>selected<?php  } ?>><?php  echo $item1['name'];?></option>	
+												<?php  } } ?>
+											<?php  } } ?>
+										</select>
+									</div>
+									<table id="demo" lay-filter="test" style="display:none"></table>
+								</div>	
+								<!-- END 添加随机链接 -->
+								<script type="text/javascript">
+									$('#select_urls').change(function(){
+										if($('#select_urls').val()=="true"){
+											$('#outerJoin').show();
+										}else{
+											$('#outerJoin').hide();
+										}
+									});
+
+									$('#ex_select').change(function(){
+										layui.use('table', function () {
+									        search();
+									    });
+									    function search($isExport) {
+									        var table = layui.table;
+									        $uniacid = $('#ex_select').val(); //公众号Id
+									        if(!$uniacid){
+									        	util.message('未选中公众号', '', 'error');
+									        	return false;
+									        }
+									        $url = "/web/index.php?c=platform&a=material-post&do=getContent_material"; //查询粉丝列表
+									        if ($uniacid != "") {
+									            $url += "&uniacid=" + $uniacid;
+									        }
+											table.render({
+									            elem: '#demo'
+									       	    ,toolbar: true
+									       	    ,title: '文章表'
+									       	    ,totalRow: true
+									            , url: $url //数据接口
+									            , page: true //开启分页
+									            , cols: [
+									            	[
+									            		{field: 'id', title: '序号',width:100
+									            		,templet: function(d){
+									            			return '<input type="checkbox" name="newsid" value="'+d.id+'" ng-change="checkAll()">'
+														}
+
+									            		}
+									                    , {field: 'title', title: '标题',rowspan: 2}
+									            	]]
+									        })
+									       
+									    }
+										
+									});	
+									function checkAll(){
+										alert(1111);
+									}
+								</script>
+							</div>
 						</div>
 					</div>
 				</div>

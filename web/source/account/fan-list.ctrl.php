@@ -13,7 +13,6 @@
 load()->web('export');
 load()->web('util');
 $do = $_GET["do"];
-
 function weChatList()
 {
     $weChatList = pdo_getall('account_wechats');

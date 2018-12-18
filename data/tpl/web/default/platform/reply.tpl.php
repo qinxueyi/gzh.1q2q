@@ -1,20 +1,6 @@
 <?php defined('IN_IA') or exit('Access Denied');?>
 <?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
-<!-- <style>
-    .emoji-triggers{
-        display:none;
-    }
-</style> -->
-<style>
-	.win{width: 400px;height: 200px;background: white; border: 1px silver solid;position: fixed;left: 50%;margin-left: -200px;display: none}
-	.win_head{width: 100%;height: 40px;line-height: 40px;background: #F5F5F9}
-	.but{position: absolute;bottom: 20px;left: 50%;margin-left: -55px;}
-	#inp{height: 30px;margin-left: 118px;margin-top: 30px;}
-	#sub,#hide{width: 60px;height: 35px;}
-</style>
-
 <?php  if(in_array($m, $sysmods)) { ?>
-<<<<<<< HEAD
 	<div class="we7-page-title">
 		自动回复
 	</div>
@@ -28,21 +14,6 @@
 		<li <?php  if($m == 'delay') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'delay'));?>">延迟推送</a></li>
 		<li><a href="<?php  echo url('profile/reply-setting');?>">回复设置</a></li>
 	</ul>
-=======
-<div class="we7-page-title">
-	自动回复
-</div>
-<ul class="we7-page-tab">
-	<li <?php  if($m == 'keyword' || $m == '') { ?>class="active" <?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'keyword'));?>">关键字自动回复 </a></li>
-	<li <?php  if($m == 'special') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'special'));?>">非文字自动回复</a></li>
-	<li <?php  if($m == 'welcome') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'welcome'));?>">首次访问自动回复</a></li>
-	<!--<li <?php  if($m == 'default') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'default'));?>">默认回复</a></li>-->
-	<!--<li <?php  if($m == 'service') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'service'));?>">常用服务</a></li>-->
-	<!--<li <?php  if($m == 'userapi') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'userapi'));?>">自定义接口回复</a></li>-->
-	<li <?php  if($m == 'delay') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'delay'));?>">延迟推送</a></li>
-	<!--<li><a href="<?php  echo url('profile/reply-setting');?>">回复设置</a></li>-->
-</ul>
->>>>>>> 74c061299b89e64a942b683da8caabc0560fc08e
 <?php  } else { ?>
 <div class="we7-page-title">
 	入口设置
@@ -483,17 +454,6 @@
 	</table>
 </div>
 <!--弹窗-->
-<div class="win">
-	<!--<form action="javascript:">-->
-		<!--<div class="win_head"><span style="font-size: 16px;margin-left: 15px;">请输入排序序号</span></div>-->
-		<!--<input type="text" name="sort" placeholder="数字越大排序越靠前"id="inp">-->
-		<!--<input type="hidden" id="hidd">-->
-		<!--<div class="but">-->
-			<!--<button id="sub">提交</button>-->
-			<!--<button id="hide" onclick="hide_win()">取消</button>-->
-		<!--</div>-->
-	<!--</form>-->
-</div>
 <!-- <hr>
 <span><b>添加延迟推送</b></span>
 <br>
@@ -571,22 +531,6 @@
     </div>
 </form> -->
 <script>
-	function edit_inf(e){
-		$('[onclick="select_mediaid(\'basic\');"]').click();
-		$.ajax({
-			url:"<?php  echo url('platform/reply',array('m'=>'edit_inf'))?>",
-			type:'post',
-			data:{'id':e},
-			dataType:'text',
-			success:function (data) {
-				console.log(data);
-				$('#basictext').val(data);
-
-			},
-		});
-	}
-</script>
-<script>
 	function Mysort(e,direction) {
 		$.ajax({
 			url:"<?php  echo url('platform/reply',array('m'=>'sort'))?>",
@@ -605,35 +549,6 @@
 			},
 		});
 	}
-
-	// function hide_win() { $(".win").hide();}
-	//
-	// $("#sub").click(function () {
-	// 	var sort = $('#inp').val();
-	// 	var id = $('#hidd').val();
-	// 	alert(id);
-	// 	$.ajax({
-	// 		url:"<?php  echo url('platform/reply',array('m'=>'new_sort'))?>",
-	// 		type:'post',
-	// 		data:{'new_sort':sort,'id':id},
-	// 		dataType:'text',
-	// 		success:function (data) {
-	// 			if (data == '1'){
-	// 				$(".win").hide();
-	// 				layui.use('layer', function(){
-	// 					var layer = layui.layer;
-	// 					layer.msg('修改成功');
-	// 					location.reload();
-	// 				});
-	// 			}else {
-	// 				layui.use('layer', function(){
-	// 					var layer = layui.layer;
-	// 					layer.msg('修改失败');
-	// 				});
-	// 			}
-	// 		},
-	// 	});
-	// });
 </script>
 
 <script>

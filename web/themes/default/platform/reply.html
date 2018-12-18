@@ -1,7 +1,6 @@
 
 {template 'common/header'}
 {if in_array($m, $sysmods)}
-<<<<<<< HEAD
 	<div class="we7-page-title">
 		自动回复
 	</div>
@@ -15,21 +14,6 @@
 		<li {if $m == 'delay'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'delay')}">延迟推送</a></li>
 		<li><a href="{url 'profile/reply-setting'}">回复设置</a></li>
 	</ul>
-=======
-<div class="we7-page-title">
-	自动回复
-</div>
-<ul class="we7-page-tab">
-	<li {if $m == 'keyword' || $m == ''}class="active" {/if}><a href="{url 'platform/reply' array('m' => 'keyword')}">关键字自动回复 </a></li>
-	<li {if $m == 'special'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'special')}">非文字自动回复</a></li>
-	<li {if $m == 'welcome'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'welcome')}">首次访问自动回复</a></li>
-	<!--<li {if $m == 'default'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'default')}">默认回复</a></li>-->
-	<!--<li {if $m == 'service'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'service')}">常用服务</a></li>-->
-	<!--<li {if $m == 'userapi'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'userapi')}">自定义接口回复</a></li>-->
-	<li {if $m == 'delay'}class="active"{/if}><a href="{url 'platform/reply' array('m' => 'delay')}">延迟推送</a></li>
-	<!--<li><a href="{url 'profile/reply-setting'}">回复设置</a></li>-->
-</ul>
->>>>>>> 74c061299b89e64a942b683da8caabc0560fc08e
 {else}
 <div class="we7-page-title">
 	入口设置
