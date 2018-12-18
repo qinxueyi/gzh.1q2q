@@ -9,6 +9,7 @@
     width: calc(100% - 30px);
     margin: auto;
 }
+.tz_select_pintures{    margin-top: 14px;margin-left: 14px;}
 </style>
 <div class="" ng-module="materialApp" ng-controller="materialAdd" id="main" ng-cloak>
 	<div class="penel we7-panel panel-special">
@@ -91,7 +92,7 @@
 									<div class="col-sm-12 form-control-box">
 										<div we7-linker we7-my-url="materialList[activeIndex].content_source_url" we7-my-title="materialList[activeIndex].content_source_url"></div>
 									</div>
-									<button ng-click="test()">test</button>
+									<button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button>
 									<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image>
 								</div>
 							</div>
