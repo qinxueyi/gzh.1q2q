@@ -87,7 +87,7 @@
 							</div>
 							<!-- END 标题 -->
 							<!-- BEGIN 跳转链接 -->
-							<div class="we7-form appmsg-edit-item origin-url-area">
+<!-- 							<div class="we7-form appmsg-edit-item origin-url-area">
 								<div class="form-group">
 									<div class="col-sm-12 form-control-box">
 										<div we7-linker we7-my-url="materialList[activeIndex].content_source_url" we7-my-title="materialList[activeIndex].content_source_url"></div>
@@ -95,7 +95,7 @@
 									<button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button>
 									<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image>
 								</div>
-							</div>
+							</div> -->
 							<!-- END 跳转链接 -->
 							<!-- BEGIN 判断是不是外链接 -->
 							<div>
@@ -133,7 +133,16 @@
 											<?php  } } ?>
 										</select>
 									</div>
-									<table id="demo" lay-filter="test" style="display:none"></table>
+									<table id="demo" lay-filter="test" style="display:none;" class="table table-bordered">
+										<thead>
+											<tr>
+								                <th>序号</th>
+								                <th>标题</th>
+								            </tr>
+							            </thead>
+							            <tbody id="J_TbData">
+        								</tbody>
+									</table>
 								</div>	
 								<!-- END 添加随机链接 -->
 								<script type="text/javascript">
@@ -146,45 +155,42 @@
 									});
 
 									$('#ex_select').change(function(){
-										layui.use('table', function () {
-									        search();
-									    });
-									    function search($isExport) {
-									        var table = layui.table;
-									        $uniacid = $('#ex_select').val(); //公众号Id
-									        if(!$uniacid){
-									        	util.message('未选中公众号', '', 'error');
-									        	return false;
-									        }
-									        $url = "/web/index.php?c=platform&a=material-post&do=getContent_material"; //查询粉丝列表
-									        if ($uniacid != "") {
-									            $url += "&uniacid=" + $uniacid;
-									        }
-											table.render({
-									            elem: '#demo'
-									       	    ,toolbar: true
-									       	    ,title: '文章表'
-									       	    ,totalRow: true
-									            , url: $url //数据接口
-									            , page: true //开启分页
-									            , cols: [
-									            	[
-									            		{field: 'id', title: '序号',width:100
-									            		,templet: function(d){
-									            			return '<input type="checkbox" name="newsid" value="'+d.id+'" ng-change="checkAll()">'
-														}
+								        uniacid = $('#ex_select').val(); //公众号Id
+								        if(!uniacid){
+								        	util.message('未选中公众号', '', 'error');
+								        	return false;
+								        }
+								        $.post("<?php  echo url('platform/material-post/getContent_material')?>", {'uniacid':uniacid},function(data) {
+								        		data = $.parseJSON(data);
+								        		var datas = data.data;
+								        		if(datas){
+								        			$(function(){
+											            //第二种： 动态创建表格的方式，使用动态创建dom对象的方式
+											            //清空所有的子节点
+											            $("#J_TbData").empty();
 
-									            		}
-									                    , {field: 'title', title: '标题',rowspan: 2}
-									            	]]
-									        })
-									       
-									    }
+											            //自杀
+											            // $("#J_TbData").remove();
+
+											            for( var i = 0; i < datas.length; i++ ) {
+											                //动态创建一个tr行标签,并且转换成jQuery对象
+											                var $trTemp = $("<tr></tr>");
+
+											                //往行里面追加 td单元格
+											                $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].id+'"></td>');
+											                $trTemp.append("<td>"+ datas[i].title +"</td>");
+											                // $("#J_TbData").append($trTemp);
+											                $trTemp.appendTo("#J_TbData");
+											            }
+											        });
+											      	$('#demo').show();		
+								        		}
+
+								        });
 										
-									});	
-									function checkAll(){
-										alert(1111);
-									}
+									});
+
+
 								</script>
 							</div>
 						</div>
