@@ -6,6 +6,7 @@
         <tr>
            
             <th>标题</th>
+            <th>查看量</th>
             <th>查看</th>
             <th>编辑</th>
         </tr>
@@ -14,6 +15,7 @@
         {loop $news_list $index $item}
             <tr>
                 <th>{$item['title']}</th>
+                <th>{$item['browse']}</th>
                 <th><a href="./index.php?c=platform&a=material-post&do=news&newsid={$item['attach_id']}">查看</a></th>
                 <th><a href="./index.php?c=platform&a=material&do=update_news&id={$item['newid']}">编辑</a></th>
             </tr>   

@@ -132,11 +132,21 @@ if($do == 'getContent_material'){
     if (empty($_GPC['page']) || !is_numeric($_GPC['page'])) {
         $_GPC['page'] = 1;
     }
-	$select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' ";
-	$list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . $_GPC['page'] * $_GPC['limit'] . ", " . $_GPC['limit']);
-	// $total_sql = sprintf($select_sql, "count(*)", '');
-	// $total = pdo_fetchcolumn($total_sql, $uniacid);
-	$news_list = pdo_fetchall($list_sql, $uniacid);
-	echo responseMsg(0, "success", $news_list, count($news_list));
+	$select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' AND b.content <> '' %s";
+	$list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url,b.id as newid", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . ($_GPC['page']-1) * $_GPC['limit'] . ", " . $_GPC['limit']);
+	$total_sql = sprintf($select_sql, "count(*)", '');
+	$total = pdo_fetchcolumn($total_sql, $uniacid);
+	$news_list = array();
+	$totalPage = ceil($total/$_GPC['limit']);
+	$news_list['data'] = pdo_fetchall($list_sql, $uniacid);
+	$news_list['page'] = $_GPC['page'];
+	$news_list['total'] = $total;
+	$news_list['totalPage'] = $totalPage;
+	if($news_list['data']){
+		echo responseMsg(0, "success", $news_list);
+	}else{
+		echo responseMsg(1, "error", '');
+	}
+
 	// pdo_getall('wechat_news','')	
 }		

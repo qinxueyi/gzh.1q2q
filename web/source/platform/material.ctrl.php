@@ -74,7 +74,7 @@ if($do == 'random'){
     $_GPC['limit'] = 10;
     $pindex = max(1, intval($_GPC['page']));
     $select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' AND b.content='' %s";
-    $list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url,b.id as newid", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . ($pindex-1) * $_GPC['limit'] . ", " . $_GPC['limit']);
+    $list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url,b.id as newid,b.browse", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . ($pindex-1) * $_GPC['limit'] . ", " . $_GPC['limit']);
     $total_sql = sprintf($select_sql, "count(*)", '');
     $total = pdo_fetchcolumn($total_sql, $uniacid);
     $news_list = pdo_fetchall($list_sql, $uniacid);
@@ -85,6 +85,7 @@ if($do == 'random'){
 
 if($do =='update_news'){
     $id = $_GPC['id'];
+    $result = pdo_get('wechat_news',array('id'=>$id),array('attach_id_array','imgUrl'));
     template('platform/updateNews'); 
     return ;
 }
