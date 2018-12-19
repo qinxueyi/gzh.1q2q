@@ -87,15 +87,15 @@
 							</div>
 							<!-- END 标题 -->
 							<!-- BEGIN 跳转链接 -->
-<!-- 							<div class="we7-form appmsg-edit-item origin-url-area">
+							<div class="we7-form appmsg-edit-item origin-url-area">
 								<div class="form-group">
 									<div class="col-sm-12 form-control-box">
 										<div we7-linker we7-my-url="materialList[activeIndex].content_source_url" we7-my-title="materialList[activeIndex].content_source_url"></div>
 									</div>
-									 <button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button> -->
-					<!-- 				<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image>
+	<!-- 								 <button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button>
+									<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image> -->
 								</div>
-							</div> -->
+							</div>
 							<!-- END 跳转链接 -->
 							<!-- BEGIN 判断是不是外链接 -->
 							<div>
@@ -110,6 +110,7 @@
 								<!-- BEGIN 添加图片 -->
 								<a  href="javascript:void(0);" class="btn btn-default" ng-click="multiGraph()" style="margin-left:15px;">选择图片</a>
 								<image ng-src="{{ materialList[activeIndex].imgurl}}" style="max-height: 100px;max-width:150px;"></image>
+								<input type="hidden" name="attach_id_array" ng-model="materialList[activeIndex].attach_id_array" id="news_id">
 								<!-- END 添加图片 -->
 								<!-- BEGIN 添加随机链接 -->
 								<style type="text/css">
@@ -178,7 +179,7 @@
 											                var $trTemp = $("<tr></tr>");
 
 											                //往行里面追加 td单元格
-											                $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].id+'" onclick="select()"></td>');
+											                $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].id+'" onclick="checkboxOnclick(this)"></td>');
 											                $trTemp.append("<td>"+ datas[i].title +"</td>");
 											                // $("#J_TbData").append($trTemp);
 											                $trTemp.appendTo("#J_TbData");
@@ -190,10 +191,36 @@
 								        });
 										
 									});
-
-									function select(){
-										alert(1111);
-
+									Array.prototype.indexOf = function (val) {
+										  for(var i = 0; i < this.length; i++){
+										    if(this[i] == val){return i;}
+										  }
+										  return -1;
+										}
+									Array.prototype.remove = function (val) {
+									  var index = this.indexOf(val);
+									  if(index > -1){this.splice(index,1);}
+									}
+									function checkboxOnclick(a){
+										if($(a).is(':checked')) { 
+											var val = new Array();
+											var new_id=$('#news_id').val();
+											if(new_id){
+												val=new_id.toString().split(",");
+											}
+											val.push($(a).val());
+											b = val.join(',');
+											$('#news_id').val(b)
+							             }else{
+							             	var val = new Array();
+											var new_id=$('#news_id').val();
+											if(new_id){
+												val=new_id.toString().split(",");
+											}
+											val.remove($(a).val()); 
+											b = val.join(',');
+											$('#news_id').val(b)	
+							             }
 									}
 								</script>
 							</div>

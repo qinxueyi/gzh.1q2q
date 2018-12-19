@@ -47,7 +47,9 @@ if ($do == 'news') {
 						'url' => $row_news['url'],
 						'displayorder' => $key,
 						'show_cover_pic' => intval($row_news['incontent']),
-						'content_source_url' => $row_news['content_source_url']
+						'content_source_url' => $row_news['content_source_url'],
+						'imgUrl' => $row_news['imgurl'],
+						'attach_id_array' => $row_news['attach_id_array'],
 					);
 				}
 				unset($row_news);
@@ -79,8 +81,8 @@ if ($do == 'news') {
 }
 
 if ($do == 'addnews') {
-	var_dump($_GPC['news']);
-	die;
+	// var_dump($_GPC['news']);
+	// die;
 	$is_sendto_wechat = trim($_GPC['target']) == 'wechat' ? true : false;
 	$attach_id = intval($_GPC['attach_id']);
 	if (empty($_GPC['news'])) {

@@ -110,6 +110,8 @@ function material_news_set($data, $attach_id) {
 			'displayorder' 		=> intval($key),
 			'thumb_media_id' => addslashes($news['media_id']),
 			'content_source_url' => $news['content_source_url'],
+			'imgUrl' => $news['imgurl'],
+			'attach_id_array' => $news['attach_id_array'],
 		);
 	}
 	if (!empty($attach_id)){

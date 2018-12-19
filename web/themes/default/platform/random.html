@@ -1,0 +1,23 @@
+{template 'common/header'}
+
+<table id="demo" lay-filter="test" class="table table-bordered">
+    
+    <thead>
+        <tr>
+           
+            <th>标题</th>
+            <th>查看</th>
+            <th>编辑</th>
+        </tr>
+    </thead>
+    <tbody id="J_TbData">
+        {loop $news_list $index $item}
+            <tr>
+                <th>{$item['title']}</th>
+                <th><a href="./index.php?c=platform&a=material-post&do=news&newsid={$item['attach_id']}">查看</a></th>
+                <th><a href="./index.php?c=platform&a=material&do=update_news&id={$item['newid']}">编辑</a></th>
+            </tr>   
+        {/loop}
+    </tbody>
+</table>
+
