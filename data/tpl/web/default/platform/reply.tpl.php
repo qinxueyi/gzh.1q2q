@@ -11,12 +11,12 @@
 	<ul class="we7-page-tab">
 		<li <?php  if($m == 'keyword' || $m == '') { ?>class="active" <?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'keyword'));?>">关键字自动回复 </a></li>
 		<li <?php  if($m == 'special') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'special'));?>">非文字自动回复</a></li>
-		<li <?php  if($m == 'welcome') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'welcome'));?>">首次访问自动回复</a></li>
+		<li <?php  if($m == 'welcome') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'welcome'));?>">首次访问自动回复</a></li><!-- 
 		<li <?php  if($m == 'default') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'default'));?>">默认回复</a></li>
 		<li <?php  if($m == 'service') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'service'));?>">常用服务</a></li>
-		<li <?php  if($m == 'userapi') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'userapi'));?>">自定义接口回复</a></li>
-		<li <?php  if($m == 'delay') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'delay'));?>">延迟推送</a></li>
-		<li><a href="<?php  echo url('profile/reply-setting');?>">回复设置</a></li>
+		<li <?php  if($m == 'userapi') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'userapi'));?>">自定义接口回复</a></li> -->
+		<li <?php  if($m == 'delay') { ?>class="active"<?php  } ?>><a href="<?php  echo url('platform/reply', array('m' => 'delay'));?>">延迟推送</a></li><!-- 
+		<li><a href="<?php  echo url('profile/reply-setting');?>">回复设置</a></li> -->
 	</ul>
 <?php  } else { ?>
 	<div class="we7-page-title">
@@ -292,7 +292,7 @@
 	</script>
 <?php  } else if($m == 'delay') { ?>
 <div class="alert we7-page-alert">
-	<i class="wi wi-info-sign"></i>文字格式a链接格式为&lt; a href=&quot; 此处填写链接地址(加上)&quot;&gt;此处填写内容&lt;/ a&gt;
+	<i class="wi wi-info-sign"></i>文字格式a链接格式为&lt;a href=&quot; 此处填写链接地址(加上)&quot;&gt;此处填写内容&lt;/a&gt;
 </div>
 <form id="reply-form" class="form-horizontal form" action="<?php  echo url('platform/reply/post', array('m' => $m))?>" method="post" enctype="multipart/form-data" id="delay-form">
 	<div class="col-sm-12 form-inline" style="margin-bottom:10px;">
@@ -366,7 +366,7 @@
 	</div>
 	<input type="hidden" name="token" value="<?php  echo $_W['token'];?>">
 	<div>
-		<nav class="navbar navbar-wxapp-bottom navbar-fixed-bottom" role="navigation">
+		<nav class="navbar navbar-wxapp-bottom navbar-fixed-bottom" role="navigation" style="left:210px;">
 			<div class="container">
 				<div class="pager">
 					<input type="submit" name="submit" value="发布" class="reply-form-submit btn btn-primary">
@@ -379,57 +379,82 @@
 <div class="panel-body col-sm-12">
 	<table class="table we7-table table-hover vertical-middle table-manage">
 		<tr>
-			<th>内容</th>
+			<th>标题</th>
+			<th style="width:25%">内容</th>
 			<th>类型</th>
 			<th>延迟时间</th>
+			<th style="width:10%">排序</th>
 			<th>操作</th>
 		</tr>
 		<?php  if(is_array($data)) { foreach($data as $index => $item) { ?>
 		<?php  if($item['msgtype'] == 'text') { ?>
 		<tr>
+			<td><a href="javascript:;" class="title-edit" data-id="<?php  echo $item['id'];?>"><?php echo $item['title']?$item['title']:'点击编辑'?></a></td>
 			<td><?php  echo $item['content'];?></td>
 			<td>文本</td>
 			<td><?php  echo $item['time'];?></td>
-			<td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;                                                                                                                                                                                                               " class="btn btn-danger">删除</a>
+			<td><a href=" " id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a></td>
+			<!-- <td><input type="number" name="sort" data-id="<?php  echo $item['id'];?>" value="<?php  echo $item['sort'];?>" class="form-control paxu-sort"></td>
+			 --><td>
+			<a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false; " class="btn btn-danger">删除</a>
 			<?php  if($item['status'] == 1) { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
 			<?php  } else { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 			<?php  } ?>
+			<a href="javascript:;" onclick='select_mediaids("basic","<?php  echo zhuanhuan($item["content"])?>",<?php  echo $item["id"];?>)' class="btn btn-success edit-gray">编辑</a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'mpnews') { ?>
 		<tr>
+			<td><a href="javascript:;" class="title-edit" data-id="<?php  echo $item['id'];?>"><?php echo $item['title']?$item['title']:'点击编辑'?></a></td>
 			<td><img src="<?php  echo $item['content'];?>" width="100"></td>
 			<td>图文</td>
 			<td><?php  echo $item['time'];?></td>
-			<td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
+			
+			<td><a href=" " id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a></td>
+			<!-- <td><input type="number" name="sort" data-id="<?php  echo $item['id'];?>" value="<?php  echo $item['sort'];?>" class="form-control paxu-sort"></td>
+			 --><td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
 			<?php  if($item['status'] == 1) { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
 			<?php  } else { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 			<?php  } ?>
+			<a href="<?php  echo url('platform/material-post',array('type'=>'reply','newsid'=>$item['tuwenid']))?>" target="_blank" class="btn btn-success edit-gray">编辑</a>
 			</td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'news') { ?>
 		<tr>
+			<td><a href="javascript:;" class="title-edit" data-id="<?php  echo $item['id'];?>"><?php echo $item['title']?$item['title']:'点击编辑'?></a></td>
 			<td><img src="<?php  echo $item['content'][0]['picurl'];?>" width="100"></td>
 			<td>图文链接</td>
 			<td><?php  echo $item['time'];?></td>
-			<td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
+			
+			<td><a href=" " id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a></td>
+			<!-- <td><input type="number" name="sort" data-id="<?php  echo $item['id'];?>" value="<?php  echo $item['sort'];?>" class="form-control paxu-sort"></td>
+			 --><td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
 			<?php  if($item['status'] == 1) { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
 			<?php  } else { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认启用?')?true:false;" class="btn btn-success">启用</a>
 			<?php  } ?>
-			</td>
+			<!-- <a href="<?php  echo url('platform/material-post',array('type'=>'reply','newsid'=>$item['tuwenid']))?>" target="_blank" class="btn btn-success edit-gray">编辑</a>
+			 --></td>
 		</tr>
 		<?php  } else if($item['msgtype'] == 'image') { ?>
 		<tr>
+			<td><a href="javascript:;" class="title-edit" data-id="<?php  echo $item['id'];?>"><?php echo $item['title']?$item['title']:'点击编辑'?></a></td>
 			<td><img src="<?php  echo $item['content'];?>" width="100"></td>
 			<td>图片</td>
 			<td><?php  echo $item['time'];?></td>
-			<td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
+			
+			<td><a href=" " id="sort" onclick="Mysort(<?php  echo $item['id'];?>,1)" class="btn btn-success edit-gray layui-icon layui-icon-up" ></a>
+<a href="javascript:" id="sort" onclick="Mysort(<?php  echo $item['id'];?>,0)" class="btn btn-success edit-gray layui-icon layui-icon-down" ></a></td>
+			<!-- <td><input type="number" name="sort" data-id="<?php  echo $item['id'];?>" value="<?php  echo $item['sort'];?>" class="form-control paxu-sort"></td>
+			 --><td><a href="<?php  echo url('platform/reply/delete_event',array('id'=>$item['id']))?>" onclick="return confirm('确认删除?')?true:false;" class="btn btn-danger">删除</a>
 			<?php  if($item['status'] == 1) { ?>
 			<a href="<?php  echo url('platform/reply/status',array('id'=>$item['id']))?>" onclick="return confirm('确认禁用?')?true:false;" class="btn btn-warning">禁用</a>
 			<?php  } else { ?>
@@ -441,6 +466,110 @@
 		<?php  } } ?>
 	</table>
 </div>
+<script>
+   function Mysort(e,direction) {
+      $.ajax({
+         url:"<?php  echo url('platform/reply',array('m'=>'sort'))?>",
+         type:'post',
+         data:{'id':e,'direction':direction},
+         dataType:'json',
+         success:function (data) {
+            var info = data.success;
+            if (info == 1){
+               layui.use('layer', function(){
+                  var layer = layui.layer;
+                  layer.msg('修改成功');
+                  location.reload();
+               });
+            }
+         },
+      });
+   }
+   
+   
+</script>
+<script>
+layui.use('layer', function(){
+  	var layer = layui.layer;
+	$('.paxu-sort').change(function(){
+	  	var id = $(this).attr('data-id');
+	  	var val = $(this).val();
+      	$.post("<?php  echo url('platform/reply',array('do'=>'sort'))?>",{'id':id,'val':val},function(res){
+      		layer.msg(res.message.message,{time:800},function(){
+				location.href="";
+			});
+		},'json')
+	});
+	
+	
+	$('.title-edit').click(function(){
+		var id = $(this).attr('data-id');
+		layer.prompt({title: '请输入新标题',formType: 3}, function(pass, index){
+			  layer.close(index);
+			  $.post("<?php  echo url('platform/reply',array('do'=>'titleedit'))?>",{id:id,val:pass},function(res){
+					layer.msg(res.message.message,{time:800},function(){
+						location.href="";
+					});
+			  },'json')
+		});
+	 })
+	
+	window.select_mediaids = function(type, otherVal ,thisid){
+		var option = {
+				type: type,
+				isWechat : true, // 默认显示微信
+				needType : 3, //  除了图文 其他只能微信
+				otherVal : otherVal,//
+				others: {
+					image: {
+						needType : 1
+					},
+					video : {
+						needType : 1
+					},
+					voice : {
+						needType : 3
+					}
+				}
+			};
+			if (type == 'module'){
+				document.cookie = "special_reply_type=<?php  echo $_GPC['type'];?>";
+			}
+			util.material(function(material){
+				var replyVal = [];
+				if (type == 'basic') {
+					if (angular.isDefined(otherVal)) {
+						var editmedia = $(".del-basic-media");
+						material.content = material.content.replace(/,/g, '，');
+						var replyVal = angular.toJson(material.content);
+						$.post("<?php  echo url('platform/reply',array('do'=>'delayedit'))?>",{id:thisid,val:replyVal,type:type},function(res){
+							layer.msg(res.message.message,{time:800},function(){
+								location.href="";
+							});
+						},'json')
+					} else {
+						if($.trim(material.content).length == 0) {
+							return false;
+						}
+						material.content = material.content.replace(/,/g, '，');
+						replyVal.push(angular.toJson(material.content));
+						$.post("<?php  echo url('platform/reply',array('do'=>'delayedit'))?>",{id:thisid,val:replyVal,type:type},function(res){
+							layer.msg(res.message.message,{time:800},function(){
+								location.href="";
+							});
+						},'json')
+					}
+				}
+				
+				//显示隐藏-start
+				if((action == 'qr' || action == 'mass' || m == 'special' || m == 'welcome' || m == 'default') && replyVal.length > 0) {
+					$('.we7-select-msg').addClass('hide');
+				}
+				//显示隐藏-end
+			}, option);
+		};
+})
+</script>
 <!-- <hr>
 <span><b>添加延迟推送</b></span>
 <br>

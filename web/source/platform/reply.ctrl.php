@@ -5,47 +5,47 @@
  */
 defined('IN_IA') or exit('Access Denied');
 /* if ($_GPC['uniacid']) {
-	$uniacid = intval($_GPC['uniacid']);
-	$_W['uniacid'] = $uniacid;
-	$_W['account'] = uni_fetch($uniacid);
-	$role = permission_account_user_role($_W['uid'], $uniacid);
-	if(empty($role)) {
-		itoast('操作失败, 非法访问.', '', 'error');
-	}
-	if (empty($_W['isfounder'])) {
-		$account_endtime = uni_fetch($uniacid);
-		$account_endtime = $account_endtime['endtime'];
-		if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
-			itoast('公众号已到期。', '', 'error');
-		}
-	}
-	uni_account_save_switch($uniacid);
-	uni_account_switch($uniacid);
-}else{
-	$account = pdo_get('account',array('isdeleted'=>0));
-	$uniacid = $account['uniacid'];
-	$_W['uniacid'] = $uniacid;
-	$_W['account'] = uni_fetch($uniacid);
-	$role = permission_account_user_role($_W['uid'], $uniacid);
-	if(empty($role)) {
-		itoast('操作失败, 非法访问.', '', 'error');
-	}
-	if (empty($_W['isfounder'])) {
-		$account_endtime = uni_fetch($uniacid);
-		$account_endtime = $account_endtime['endtime'];
-		if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
-			itoast('公众号已到期。', '', 'error');
-		}
-	}
-	uni_account_save_switch($uniacid);
-	uni_account_switch($uniacid);
-} */
+ $uniacid = intval($_GPC['uniacid']);
+ $_W['uniacid'] = $uniacid;
+ $_W['account'] = uni_fetch($uniacid);
+ $role = permission_account_user_role($_W['uid'], $uniacid);
+ if(empty($role)) {
+ itoast('操作失败, 非法访问.', '', 'error');
+ }
+ if (empty($_W['isfounder'])) {
+ $account_endtime = uni_fetch($uniacid);
+ $account_endtime = $account_endtime['endtime'];
+ if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
+ itoast('公众号已到期。', '', 'error');
+ }
+ }
+ uni_account_save_switch($uniacid);
+ uni_account_switch($uniacid);
+ }else{
+ $account = pdo_get('account',array('isdeleted'=>0));
+ $uniacid = $account['uniacid'];
+ $_W['uniacid'] = $uniacid;
+ $_W['account'] = uni_fetch($uniacid);
+ $role = permission_account_user_role($_W['uid'], $uniacid);
+ if(empty($role)) {
+ itoast('操作失败, 非法访问.', '', 'error');
+ }
+ if (empty($_W['isfounder'])) {
+ $account_endtime = uni_fetch($uniacid);
+ $account_endtime = $account_endtime['endtime'];
+ if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
+ itoast('公众号已到期。', '', 'error');
+ }
+ }
+ uni_account_save_switch($uniacid);
+ uni_account_switch($uniacid);
+ } */
 
 load()->model('reply');
 load()->model('module');
 load()->model('material');
 
-$dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status', 'getAccessToken', 'delete_event', 'status');
+$dos = array('display', 'post', 'delete', 'change_status', 'change_keyword_status', 'getAccessToken', 'delete_event', 'status','sort','delayedit','titleedit');
 $do = in_array($do, $dos) ? $do : 'display';
 
 $m = empty($_GPC['m']) ? 'keyword' : trim($_GPC['m']);
@@ -195,13 +195,14 @@ if ($do == 'display') {
             }
         }
     }
-
+    
     if ($m == 'delay') {//延迟推送
-        $data = pdo_getall('event_list', array('uniacid' => $_W['uniacid']));
+        $data = pdo_getall('event_list', array('uniacid' => $_W['uniacid']),array(),'','sort desc');
         $result = pdo_get('interaction_type', array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']));
         foreach ($data as $k => $v) {
             $data[$k]['time'] = changeTime($v['time'] / 1000);//转换时间
             if ($v['msgtype'] == 'text') {//文本类型
+                //urlencode
                 $content = json_decode($v['content'], true);
                 $data[$k]['content'] = $content['content'];
             } elseif ($v['msgtype'] == 'image') {//图片类型
@@ -211,12 +212,36 @@ if ($do == 'display') {
             } elseif ($v['msgtype'] == 'news') {//图片类型
                 $content = json_decode($v['content'], true);
                 $data[$k]['content'] = $content['articles'];
+                //var_dump($content['articles']);exit;
             } elseif ($v['msgtype'] == 'mpnews') {//图文消息
                 $content = json_decode($v['content'], true);
                 $material = material_get($content['media_id']);
                 $data[$k]['content'] = $material['news'][0]['thumb_url'];
+                $data[$k]['tuwenid'] = $material['news'][0]['attach_id'];
             }
         }
+    }
+    
+    
+    if ($m == 'sort'){ //获取默认排序
+        $id = $_GPC['id'];
+        $direction = $_GPC['direction'];
+        $sort = pdo_getcolumn('event_list',array('id' => $id),'sort');
+        if ($direction == 1){
+            $up_sort = $sort+1;
+            $up_id = pdo_getcolumn('event_list',array('sort' => $up_sort),'id');
+            $res = pdo_update('event_list',array('sort'=>$up_sort),array('id'=>$id));
+            $res_n = pdo_update('event_list',array('sort'=>$sort),array('id'=>$up_id));
+        }else{
+            $down_sort = $sort-1;
+            $down_id = pdo_getcolumn('event_list',array('sort' => $down_sort),'id');
+            $res = pdo_update('event_list',array('sort'=>$down_sort),array('id'=>$id));
+            $res_n = pdo_update('event_list',array('sort'=>$sort),array('id'=>$down_id));
+        }
+        if ($res && $res_n){
+            echo json_encode(array('success'=> 1));
+        }
+        exit;
     }
     template('platform/reply');
 }
@@ -259,9 +284,9 @@ if ($do == 'post') {
             }
         }
         if (checksubmit('submit')) {
-
+            
             $keywords = @json_decode(htmlspecialchars_decode($_GPC['keywords']), true);
-
+            
             if (empty($keywords)) {
                 itoast('必须填写有效的触发关键字.');
             }
@@ -290,14 +315,14 @@ if ($do == 'post') {
             } else {
                 $rule['displayorder'] = range_limit($rule['displayorder'], 0, 254);
             }
-
+            
             if ($m == 'userapi') {
                 $module = WeUtility::createModule('userapi');
             } else {
                 $module = WeUtility::createModule('core');
             }
             $msg = $module->fieldsFormValidate();
-
+            
             $module_info = module_fetch($m);
             if (!empty($module_info) && empty($module_info['issystem'])) {
                 $user_module = WeUtility::createModule($m);
@@ -315,10 +340,10 @@ if ($do == 'post') {
                 $result = pdo_insert('rule', $rule);
                 $rid = pdo_insertid();
             }
-
+            
             if (!empty($rid)) {
                 pdo_delete('rule_keyword', array('rid' => $rid, 'uniacid' => $_W['uniacid']));
-
+                
                 $rowtpl = array(
                     'rid' => $rid,
                     'uniacid' => $_W['uniacid'],
@@ -362,7 +387,7 @@ if ($do == 'post') {
             if (is_error($result)) {
                 itoast($result['message'], '', 'info');
             }
-
+            
             if ($reply_type == 'module') {
                 $setting[$type] = array('type' => 'module', 'module' => $module);
             } else {
@@ -432,7 +457,7 @@ if ($do == 'post') {
                 }
             }
             $module['icon'] = $cion;
-
+            
             if ($module['enabled'] == 1) {
                 $enable_modules[$name] = $module;
             } else {
@@ -446,14 +471,14 @@ if ($do == 'post') {
         $moudles = true;
         template('platform/reply-post');
     }
-
+    
     if ($m == 'delay') {//延迟推送
         $data['time'] = (intval($_GPC['delay-hour']) * 3600 + intval($_GPC['delay-minute']) * 60 + intval($_GPC['delay-second'])) * 1000;
         $data['uniacid'] = $_GPC['__uniacid'];
         $res['type'] = $_GPC['type'];
         $res['uniacid'] = $data['uniacid'];
         $res['acid'] = $_W['acid'];
-
+        
         $result = pdo_get('interaction_type', array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']));
         if ($result) {
             $result = pdo_update('interaction_type', array('type' => $res['type']), array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid']));
@@ -461,12 +486,15 @@ if ($do == 'post') {
             $res = pdo_insert('interaction_type', $res);
         }
         //判断数据类型
-        if ($_GPC['reply']['reply_basic']) {  //text类型
+        if ($_GPC['reply']['reply_basic']) {//text类型
             $data['msgtype'] = 'text';
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_basic']);
             $contents = explode(',', $contents);
             $get_content = array_rand($contents, 1);
-            $content = trim($contents[$get_content], '\"');
+            $msg = trim($contents[$get_content], '\"');
+            
+            //$msg = htmlspecialchars_decode($msg);
+            
             $preg = preg_match_all("/\[U\+[A-Za-z0-9]+\]/", $content, $arr);
             foreach ($arr[0] as $k => $v) {
                 $str = emoji($v);
@@ -475,19 +503,12 @@ if ($do == 'post') {
             }
             if (!strpos($_GPC['reply']['reply_basic'], '[U+'))
             {
-                $data['content'] = urldecode(json_encode(array('content' => urlencode($_GPC['reply']['reply_basic']))));
+                $data['content'] = urldecode(json_encode(array('content' =>urlencode($msg))));
             }else{
                 $data['content'] = urldecode(json_encode(array('content' => urlencode($res))));
             }
-
-            $str = trim(trim($data['content'],'}'),'{');
-            $arr = explode(':',$str);
-
-            $str  = substr($str,strpos($str,":"));
-            $new = substr($str , 2 );
-            $newStr = mb_substr($new ,6, -7 );
-            $newnewstr = '"content":'.$newStr;
-            $data['content'] = '{'.$newnewstr.'}';
+            //            $content['content'] = $content;
+            //            $data['content']=json_encode(array('content'=>urlencode($_GPC['reply']['reply_basic'])));
         } elseif ($_GPC['reply']['reply_news']) {
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_news']);
             $contents = json_decode('[' . $contents . ']', true);
@@ -512,29 +533,29 @@ if ($do == 'post') {
             $get_content = array_rand($contents, 1);
             $content = trim($contents[$get_content], '\"');
             $data['content'] = json_encode(array('media_id' => $content));
-
+            
         } elseif ($_GPC['reply']['reply_voice']) {//voice类型
             $data['msgtype'] = 'voice';
             $contents = htmlspecialchars_decode($_GPC['reply']['reply_voice']);
             $contents = explode(',', $contents);
             $get_content = array_rand($contents, 1);
-            $content = trim($contents[$get_content], "\"");
+            $content = trim($contents[$get_content], '\"');
             $data['content'] = json_encode(array('media_id' => $content));
-
+            
         } elseif ($_GPC['reply']['reply_video']) {//vedio类型
             $data['msgtype'] = 'video';
-
+            
         }
-
         $res = pdo_insert('event_list', $data);
         if ($res) {
             itoast('发布成功!', referer(), 'success');
         }
-
+        
     }
-
+    
+    
+    
 }
-
 
 if ($do == 'delete') {
     $rids = $_GPC['rid'];
@@ -612,7 +633,7 @@ if ($do == 'change_status') {
 }
 
 if ($do == 'change_keyword_status') {
-
+    
     $id = intval($_GPC['id']);
     $result = pdo_get('rule', array('id' => $id), array('status'));
     if (!empty($result)) {
@@ -664,6 +685,68 @@ if ($do == 'status') {
     }
 }
 
+if ($do == 'sort'){
+    $id = $_GPC['id'];
+    $val = $_GPC['val'];
+    $res = pdo_update('event_list', array('sort'=>$val), array('id' => $id));
+    if($res){
+        iajax(0, '更新成功！', '');
+    }else{
+        iajax(-1, '更新失败！', '');
+    }
+    exit;
+}
+
+
+if ($do == 'delayedit'){
+    $data['uniacid'] = $_GPC['__uniacid'];
+    $res['type'] = $_GPC['type'];
+    $res['uniacid'] = $_W['uniacid'];
+    $res['acid'] = $_W['acid'];
+    
+    //判断数据类型
+    if ($_GPC['type'] == 'basic'){ //text类型
+        $contents = htmlspecialchars_decode($_GPC['val']);
+        $contents = explode(',', $contents);
+        $get_content = array_rand($contents, 1);
+        $msg = trim($contents[$get_content], '\"');
+        $preg = preg_match_all("/\[U\+[A-Za-z0-9]+\]/", $content, $arr);
+        foreach ($arr[0] as $k => $v) {
+            $str = emoji($v);
+            $res = preg_replace("/\[U\+[A-Za-z0-9]+\]/", $str, $content, 1);
+            $content = $res;
+        }
+        if (!strpos($_GPC['reply']['reply_basic'], '[U+'))
+        {
+            $data['content'] = urldecode(json_encode(array('content' =>urlencode($msg))));
+        }else{
+            $data['content'] = urldecode(json_encode(array('content' => urlencode($res))));
+        }
+    }else{
+        iajax(-1, '请选择类型！', '');
+    }
+   
+    $res = pdo_update('event_list', $data,array('id'=>$_GPC['id']));
+    if($res){
+        iajax(0, '更新成功！', '');
+    }else{
+        iajax(-1, '更新失败！', '');
+    }
+}
+
+
+if ($do == 'titleedit'){
+    $id = trim($_GPC['id']);
+    $data['title'] = $_GPC['val'];
+    $res = pdo_update('event_list', $data,array('id'=>$id));
+    if($res){
+        iajax(0, '编辑成功！', '');
+    }else{
+        iajax(-1, '编辑失败！', '');
+    }
+}
+
+
 
 //转换时间函数
 function changeTime($time)
@@ -680,7 +763,7 @@ function changeTime($time)
             $str = $s . '秒';
         }
     }
-
+    
     return $str;
 }
 
@@ -714,7 +797,7 @@ function UnicodeEncode($str)
 {
     //split word
     preg_match_all('/./u', $str, $matches);
-
+    
     $unicodeStr = "";
     foreach ($matches[0] as $m) {
         //拼接
@@ -730,4 +813,14 @@ function emoji($data)
     $a = str_replace('U+', '0x', $res);//$a的值为0x1F628
     $str = bytes_to_emoji(intval($a, 16));
     return $str;
+}
+
+
+function zhuanhuan($text){
+    $val = json_encode($text);
+    $contents = htmlspecialchars_decode($val);
+    $contents = explode(',', $contents);
+    $get_content = array_rand($contents, 1);
+    $msg = trim($contents[$get_content], '"');
+    return $msg;
 }

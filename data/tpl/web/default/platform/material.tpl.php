@@ -36,6 +36,7 @@
 					</div>
 				</div>
 				<div class="pull-right">
+					<a href="<?php  echo url('platform/material/random')?>" class="btn btn-primary we7-margin-left">随机跳转链接</a>
 					<?php  if($_W['account']['level'] > 2 && $_W['account']['isconnect'] = 1) { ?>
 					<a href="javascript:;" ng-click="sync('<?php  echo $type;?>')" class="btn btn-default">同步微信</a>
 					<?php  } ?>

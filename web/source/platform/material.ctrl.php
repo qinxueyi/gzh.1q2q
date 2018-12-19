@@ -48,9 +48,32 @@ load()->model('account');
 load()->model('attachment');
 load()->func('file');
 
-$dos = array('display', 'sync', 'delete', 'send');
+$dos = array('display', 'sync', 'delete', 'send','random','update_news');
 $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '永久素材-微信素材';
+if($do == 'random'){
+    $uniacid[':uniacid'] = $_W['uniacid'];
+    if (empty($_GPC['limit']) || !is_numeric($_GPC['limit'])) {
+        $_GPC['limit'] = 10;
+    }
+    if (empty($_GPC['page']) || !is_numeric($_GPC['page'])) {
+        $_GPC['page'] = 1;
+    }
+    $select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' AND b.content=''";
+    $list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url,b.id as newid", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . $_GPC['page'] * $_GPC['limit'] . ", " . $_GPC['limit']);
+    // $total_sql = sprintf($select_sql, "count(*)", '');
+    // $total = pdo_fetchcolumn($total_sql, $uniacid);
+    $news_list = pdo_fetchall($list_sql, $uniacid);
+    template('platform/random'); 
+    return ;
+}
+
+if($do =='update_news'){
+    $id = $_GPC['id'];
+    template('platform/updateNews'); 
+    return ;
+}
+
 if ($do == 'send') {
     $group = intval($_GPC['group']);
     $type = trim($_GPC['type']);
@@ -128,12 +151,11 @@ if ($do == 'display') {
     $type = in_array(trim($_GPC['type']), array('news', 'image', 'voice', 'video')) ? trim($_GPC['type']) : 'news';
     $server = in_array(trim($_GPC['server']), array(MATERIAL_LOCAL, MATERIAL_WEXIN)) ? trim($_GPC['server']) : '';
     $group = mc_fans_groups(true);
-    
     //var_dump($group);exit;
     $page_index = max(1, intval($_GPC['page']));
     $page_size = 24;
     $search = addslashes($_GPC['title']);
-
+    
     if ($type == 'news') {
         $material_news_list = material_news_list($server, $search, array('page_index' => $page_index, 'page_size' => $page_size));
     } else {

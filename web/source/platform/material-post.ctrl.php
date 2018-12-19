@@ -4,13 +4,13 @@
  * WeEngine is NOT a free software, it under the license terms, visited http://www.we7.cc/ for more details.
  */
 defined('IN_IA') or exit('Access Denied');
-
+load()->web('export');
+load()->web('util');
 load()->func('file');
 load()->model('material');
 load()->model('account');
-$dos = array('news', 'tomedia', 'addnews', 'upload_material', 'upload_news');
+$dos = array('news', 'tomedia', 'addnews', 'upload_material', 'upload_news','getContent_material');
 $do = in_array($do, $dos) ? $do : 'news';
-
 permission_check_account_user('platform_material');
 
 $_W['page']['title'] = '新增素材-微信素材';
@@ -47,7 +47,9 @@ if ($do == 'news') {
 						'url' => $row_news['url'],
 						'displayorder' => $key,
 						'show_cover_pic' => intval($row_news['incontent']),
-						'content_source_url' => $row_news['content_source_url']
+						'content_source_url' => $row_news['content_source_url'],
+						'imgUrl' => $row_news['imgurl'],
+						'attach_id_array' => $row_news['attach_id_array'],
 					);
 				}
 				unset($row_news);
@@ -79,6 +81,8 @@ if ($do == 'news') {
 }
 
 if ($do == 'addnews') {
+	// var_dump($_GPC['news']);
+	// die;
 	$is_sendto_wechat = trim($_GPC['target']) == 'wechat' ? true : false;
 	$attach_id = intval($_GPC['attach_id']);
 	if (empty($_GPC['news'])) {
@@ -119,3 +123,20 @@ if ($do == 'upload_news') {
 		iajax(0, '转换成功');
 	}
 }
+
+if($do == 'getContent_material'){
+	$uniacid[':uniacid'] = $_GPC['uniacid'];
+	if (empty($_GPC['limit']) || !is_numeric($_GPC['limit'])) {
+        $_GPC['limit'] = 10;
+    }
+    if (empty($_GPC['page']) || !is_numeric($_GPC['page'])) {
+        $_GPC['page'] = 1;
+    }
+	$select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' ";
+	$list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . $_GPC['page'] * $_GPC['limit'] . ", " . $_GPC['limit']);
+	// $total_sql = sprintf($select_sql, "count(*)", '');
+	// $total = pdo_fetchcolumn($total_sql, $uniacid);
+	$news_list = pdo_fetchall($list_sql, $uniacid);
+	echo responseMsg(0, "success", $news_list, count($news_list));
+	// pdo_getall('wechat_news','')	
+}		

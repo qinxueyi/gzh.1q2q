@@ -83,7 +83,7 @@
 				    	<?php  } } ?>
 				  	<?php  } } ?>
 				</div>
-				<a href="javascript:;" onclick="wxSelect(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">选择</a>
+				<a href="javascript:;" class="js-switch-<?php  echo $da['id'];?> color-default" onclick="wxSelect(<?php  echo $da['id'];?>, <?php  echo $da['status'];?>, <?php  echo $da['type'];?>)">选择</a>
 				<script type="text/javascript">
 					function wxSelect(id,status,type){
 						$.post("<?php  echo url('platform/menu/account')?>", {'accountId' : id},function(data) {
@@ -105,6 +105,7 @@
 									  	btn: ['确定'],
 									  	yes: function(index, layero){
 									 		//按钮【按钮一】的回调
+									 		layer.closeAll();
 									 		var val = new Array();
 									 		$.each(layero.find('input'),function(index,value){
 									 		   	if($(this).is(':checked')){
@@ -114,13 +115,11 @@
 									 		$.post("<?php  echo url('platform/menu/editAccount')?>", {'menuId' : id,'account':val},function(data) {
 									 		   	data = $.parseJSON(data);
 							 		   			if(data.message.errno==0){
-							 		   				util.message(data.message.message, '', 'success');	
+							 		   				util.message(data.message.message, "<?php   echo url('platform/menu/display')?>", 'success');	
 							 		   			}else{
 							 		   				util.message(data.message.message, '', 'error');
 							 		   			}
 									 		});
-									 		layer.closeAll();
-									 		// location.href = location.href;
 										}
 								    });
 
@@ -291,9 +290,20 @@
 								<div class="menu-form-hd">
 									<span class="pull-left font-defalut">当前菜单</span>
 									<div class="text-right">
-										<a href="javascript:void(0);" class="color-default" ng-click="context.removeBut(context.activeItem, context.activeType)">删除菜单</a>
+										<a href="javascript:void(0);" data-id="10" class="color-default menu-del" ng-click="context.removeBut(context.activeItem, context.activeType)">删除菜单</a>
 									</div>
 								</div>
+								
+					<script>
+						$('.menu-del').click(function(){
+							var id = $(this).attr('data-id');
+							$.post("<?php  echo url('platform/menu',array('do'=>'menuedit'))?>",{id:id},function(res){
+								layer.msg(res.message.message,{time:800},function(){
+									//location.href="";
+								});
+						  	},'json')
+						})
+					</script>
 								<div style="display: none;" class="we7-padding-top color-gray">已添加子菜单，仅可设置菜单名称。</div>
 								<div class="we7-form we7-padding-top">
 									<div class="form-group">

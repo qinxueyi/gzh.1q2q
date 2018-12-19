@@ -39,7 +39,7 @@ function dump($var){
 function getArticleList($model)
 {
     //获取accessToken
-    $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . 7);
+    $accessToken = file_get_contents("http://www.dmdatas.com/getAccessToken.php?uniacid=" . 7);
     if($accessToken){
         $date = date("Y-m-d", strtotime("-1 day"));
         $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));

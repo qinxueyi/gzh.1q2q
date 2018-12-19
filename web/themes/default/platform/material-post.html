@@ -9,6 +9,7 @@
     width: calc(100% - 30px);
     margin: auto;
 }
+.tz_select_pintures{    margin-top: 14px;margin-left: 14px;}
 </style>
 <div class="" ng-module="materialApp" ng-controller="materialAdd" id="main" ng-cloak>
 	<div class="penel we7-panel panel-special">
@@ -91,9 +92,138 @@
 									<div class="col-sm-12 form-control-box">
 										<div we7-linker we7-my-url="materialList[activeIndex].content_source_url" we7-my-title="materialList[activeIndex].content_source_url"></div>
 									</div>
+	<!-- 								 <button ng-click="multiGraph()" class="btn btn-default tz_select_pintures">选择图片</button>
+									<image ng-repeat="imgsrc in thumbList"  ng-src="{{ imgsrc}}" style="max-height: 200px;"></image> -->
 								</div>
 							</div>
 							<!-- END 跳转链接 -->
+							<!-- BEGIN 判断是不是外链接 -->
+							<div>
+								<label>是否是外链接</label>
+								<select id="select_urls">
+									<option value="false">否</option>
+									<option value="true">是</option>
+								</select>
+							</div>
+							<!-- END 判断是不是外链接 -->
+							<div style="margin-top:15px;display:none;" id="outerJoin">
+								<!-- BEGIN 添加图片 -->
+								<a  href="javascript:void(0);" class="btn btn-default" ng-click="multiGraph()" style="margin-left:15px;">选择图片</a>
+								<image ng-src="{{ materialList[activeIndex].imgurl}}" style="max-height: 100px;max-width:150px;"></image>
+								<input type="text" name="attach_id_array" ng-model="materialList[activeIndex].attach_id_array" id="news_id">
+								<!-- END 添加图片 -->
+								<!-- BEGIN 添加随机链接 -->
+								<style type="text/css">
+									.ex_left{
+										float:left;
+										height:34px;
+										margin-left:15px;
+									}
+									.ex_text{
+										line-height: 34px;
+									}
+								</style>
+								<div style="margin-top:20px;">
+									<div class="ex_left ex_text">微信公众号选择:</div>
+									<div class="ex_left">
+										<select id="ex_select">
+											{loop $_W['tag'] $index $item}
+												{loop $item['account'] $index1 $item1}
+													<option value="{$item1['uniacid']}" {if $item1['uniacid'] == $_W['uniacid']}selected{/if}>{$item1['name']}</option>	
+												{/loop}
+											{/loop}
+										</select>
+									</div>
+									<table id="demo" lay-filter="test" style="display:none;" class="table table-bordered">
+										<thead>
+											<tr>
+								                <th>序号</th>
+								                <th>标题</th>
+								            </tr>
+							            </thead>
+							            <tbody id="J_TbData">
+        								</tbody>
+									</table>
+								</div>	
+								<!-- END 添加随机链接 -->
+								<script type="text/javascript">
+									$('#select_urls').change(function(){
+										if($('#select_urls').val()=="true"){
+											$('#outerJoin').show();
+										}else{
+											$('#outerJoin').hide();
+										}
+									});
+
+									$('#ex_select').change(function(){
+
+								        uniacid = $('#ex_select').val(); //公众号Id
+								        if(!uniacid){
+								        	util.message('未选中公众号', '', 'error');
+								        	return false;
+								        }
+								        $.post("{php echo url('platform/material-post/getContent_material')}", {'uniacid':uniacid},function(data) {
+								        		data = $.parseJSON(data);
+								        		var datas = data.data;
+								        		if(datas){
+								        			$(function(){
+											            //第二种： 动态创建表格的方式，使用动态创建dom对象的方式
+											            //清空所有的子节点
+											            $("#J_TbData").empty();
+
+											            //自杀
+											            // $("#J_TbData").remove();
+
+											            for( var i = 0; i < datas.length; i++ ) {
+											                //动态创建一个tr行标签,并且转换成jQuery对象
+											                var $trTemp = $("<tr></tr>");
+
+											                //往行里面追加 td单元格
+											                $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].id+'" onclick="checkboxOnclick(this)"></td>');
+											                $trTemp.append("<td>"+ datas[i].title +"</td>");
+											                // $("#J_TbData").append($trTemp);
+											                $trTemp.appendTo("#J_TbData");
+											            }
+											        });
+											      	$('#demo').show();		
+								        		}
+
+								        });
+										
+									});
+									Array.prototype.indexOf = function (val) {
+										  for(var i = 0; i < this.length; i++){
+										    if(this[i] == val){return i;}
+										  }
+										  return -1;
+										}
+									Array.prototype.remove = function (val) {
+									  var index = this.indexOf(val);
+									  if(index > -1){this.splice(index,1);}
+									}
+									function checkboxOnclick(a){
+										if($(a).is(':checked')) { 
+											var val = new Array();
+											var new_id=$('#news_id').val();
+											if(new_id){
+												val=new_id.toString().split(",");
+											}
+											val.push($(a).val());
+											b = val.join(',');
+											$('#news_id').val(b)
+							             }else{
+							             	var val = new Array();
+											var new_id=$('#news_id').val();
+											if(new_id){
+												val=new_id.toString().split(",");
+											}
+											val.remove($(a).val()); 
+											b = val.join(',');
+											$('#news_id').val(b)	
+							             }
+									}
+								</script>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -113,6 +243,10 @@
 								<image ng-src="{{ materialList[activeIndex].thumb }}" style="max-height: 200px;"></image>
 							</div>
 						</div>
+
+
+
+
 						<div class="form-group">
 							<label class="col-sm-12 control-label" ng-click="zhaiyao()">摘要<span class="color-gray">(选填，如果不填写会默认抓取正文前54个字)</span></label>
 							<div>

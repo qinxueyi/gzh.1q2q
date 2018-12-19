@@ -16,7 +16,10 @@ $do = $_GET["do"];
 
 function weChatList()
 {
-    $weChatList = pdo_getall('account_wechats');
+    $ids = pdo_getall('account',array('isdeleted'=>0));
+    foreach ($ids as $val){
+        $weChatList[] = pdo_get('account_wechats',array('uniacid'=>$val['uniacid']));
+    }
     return $weChatList;
 }
 
@@ -92,7 +95,7 @@ if ($do == "saveVipCnFan") {
  * 查询粉丝列表与导出
  */
 if ($do == "selectList") {
-    $sql = "SELECT * FROM we8.ims_vipcn_fan fan inner join ims_account_wechats wechats
+    $sql = "SELECT * FROM 1q2q.ims_vipcn_fan fan inner join ims_account_wechats wechats
             on fan.uniacid = wechats.uniacid where 1=1";
     //按时间
     if (!empty($_GET['time'])) {
