@@ -10,7 +10,7 @@
  *发送超过24H客户消息 10H检查一次
  */
 $redis = new Redis();
-$redis->connect("121.40.84.207", 6379);
+$redis->connect("47.107.238.143", 6379);
 $redis->auth('weiying123');
 //取出set需要发送的数据
 $pushMessageList = $redis->sMembers('pushMessage');
@@ -33,7 +33,7 @@ if (!empty($pushMessageList)) {
     //发送数据
     if (!empty($sendMessage)) {
         $param['data'] = serialize($sendMessage);
-        sendUserMessage("http://gzh.1q2q.com:9501", $param);
+        sendUserMessage("http://www.dmdatas.com:9501", $param);
     }
 
 }

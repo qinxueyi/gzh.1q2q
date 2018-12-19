@@ -10,6 +10,7 @@
  */
 $http = new swoole_http_server("0.0.0.0", 9501);
 $http->on('request', function ($request, $response) {
+    echo "207";
     $sear = $request->post;
     $arr = $sear['data'];
     $data = unserialize($arr);

@@ -401,12 +401,12 @@
 									粉丝数据
 								</a>
 							</li>
-							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
+							<!-- <li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="<?php  echo url('account/article-list');?>" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>
 									图文数据
 								</a>
-							</li>
+							</li> -->
 							<li class="list-group-item <?php  if($menu['active']) { ?>active<?php  } ?>">
 								<a href="<?php  echo url('article/article-data');?>" class="text-over two-menu">
 									<i class="wi wi-wechat"></i>

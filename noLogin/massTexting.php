@@ -94,7 +94,7 @@ function fansSendAll($group, $msgtype, $media_id, $uniacid)
         unset($data['wxcard']['media_id']);
         $data['wxcard']['card_id'] = $media_id;
     }
-    $token = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . $uniacid);
+    $token = file_get_contents("http://www.dmdatas.com/getAccessToken.php?uniacid=" . $uniacid);
     if (is_error($token)) {
         return $token;
     }

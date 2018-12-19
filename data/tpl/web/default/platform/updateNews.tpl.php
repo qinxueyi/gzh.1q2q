@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+<?php defined('IN_IA') or exit('Access Denied');?>
+=======
 <?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
     <style>
     #pagecount{
@@ -311,3 +314,4 @@
         });
 
     </script>
+>>>>>>> 5dde9ff2d487619e7dcba2002a77f20c59149e04

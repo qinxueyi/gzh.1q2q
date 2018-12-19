@@ -7,7 +7,7 @@
  * 发送定时群发 1min检查一次
  */
 $redis = new Redis();
-$redis->connect("121.40.84.207", 6379);
+$redis->connect("47.107.238.143", 6379);
 $redis->auth('weiying123');
 //取出set需要发送的数据
 $massTextList = $redis->sMembers('massTexting');
@@ -33,7 +33,7 @@ if (!empty($massTextList)) {
     //发送数据
     if (!empty($massTextModelList)) {
         $param['data'] = serialize($massTextModelList);
-        sendUserMessage("http://1q2q.chaotuozhe.com:9502", $param);
+        sendUserMessage("http://www.dmdatas.com:9502", $param);
     }
 
 }

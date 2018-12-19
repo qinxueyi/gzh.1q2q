@@ -38,7 +38,7 @@ function getAccessToken($appId, $appSecRet)
 function getUserInfo($model)
 {   //获取accessToken
     $date = date("Y-m-d", strtotime("-1 day"));
-    $accessToken = file_get_contents("http://1q2q.chaotuozhe.com/getAccessToken.php?uniacid=" . $model['uniacid']);
+    $accessToken = file_get_contents("http://www.dmdatas.com/getAccessToken.php?uniacid=" . $model['uniacid']);
     if($accessToken){
         $json = json_encode(array("access_token" => $accessToken, "begin_date" => $date, "end_date" => $date));
         $getAddReduceFanUrl = "https://api.weixin.qq.com/datacube/getusersummary?access_token=" . $accessToken;
@@ -61,7 +61,7 @@ function getUserInfo($model)
         $sql = 'SELECT count(fanid) FROM '.tablename('mc_mapping_fans').' WHERE uniacid = '.$model['uniacid'].' and sex = 1';
         $sql2 = 'SELECT count(fanid) FROM '.tablename('mc_mapping_fans').' WHERE uniacid = '.$model['uniacid'].' and sex = 2';
         $fan['sum_sex_nan'] = pdo_fetchcolumn($sql); //男粉丝
-        $fan['sum_sex_nv'] = pdo_fetchcolumn($sql2); //男粉丝
+        $fan['sum_sex_nv'] = pdo_fetchcolumn($sql2); //女粉丝
         $activeEvent = pdo_get('active_event', array('uniacid =' => $model["uniacid"], 'statistics_date =' => $date));
         if (!empty($activeEvent)) {
             $fan['active_fan'] = $activeEvent['active_fan_sum'];

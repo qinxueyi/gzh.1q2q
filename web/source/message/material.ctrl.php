@@ -113,7 +113,7 @@ if ($do == 'send') {
 function dealy_send($_GPC, $_W)
 {
     $redis = new Redis();
-    $redis->connect("121.40.84.207", 6379);
+    $redis->connect("47.107.238.143", 6379);
     $redis->auth('weiying123');
     //接受参数
     $group = intval($_GPC['group']);

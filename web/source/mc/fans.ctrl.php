@@ -139,7 +139,7 @@ if ($do == 'display') {
 	$total = pdo_fetchcolumn($total_sql, $param);
 	$pager = pagination($total, $pageindex, $pagesize);
 	$fans['total'] = pdo_getcolumn("mc_mapping_fans", array('uniacid' => $_W['uniacid'], 'acid' => $_W['acid'], 'follow' => 1), 'count(*)');
-	
+	//var_dump($fans_list);
 }
 
 
@@ -374,3 +374,4 @@ if ($do == 'register') {
 	iajax('0', '注册成功', url('mc/member/base_information', array('uid' => $member_info['uid'])));
 }
 template('mc/fans');
+
