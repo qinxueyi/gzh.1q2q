@@ -79,7 +79,7 @@ class WeiXinAccount extends WeAccount {
 		if(is_error($packet)) {
 			return error(-1, $packet['message']);
 		}
-				$istrue = $this->local_checkSignature($packet);
+		$istrue = $this->local_checkSignature($packet);
 		if(!$istrue) {
 			return error(-1, "微信公众平台返回接口错误. \n错误代码为: 40001 \n,错误描述为: " . $this->encryptErrorCode('40001'));
 		}

@@ -47,23 +47,38 @@ load()->model('mc');
 load()->model('account');
 load()->model('attachment');
 load()->func('file');
+load()->func('global');
 
-$dos = array('display', 'sync', 'delete', 'send','random','update_news');
+$dos = array('display', 'sync', 'delete', 'send','random','update_news','setContent_material');
 $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '永久素材-微信素材';
+if($do == 'setContent_material'){
+    $content_id = $_GPC['content_id'];
+    $news_id = $_GPC['news_id'];
+    $imgurl = $_GPC['imgurl'];
+    if($content_id && $news_id){
+        $url = $_W['siteroot'].'random.php?id='.$content_id;
+        $result = pdo_update('wechat_news', array('attach_id_array'=>$news_id,'imgUrl'=>$imgurl,'content_source_url'=>$url), array('id' => $content_id));
+        if (!empty($result)) {
+            iajax(0,'更新成功');
+        }else{
+            iajax(1,'更新失败');    
+        }
+    }else{
+        iajax(1, '取消参数！', '');   
+    }
+}
 if($do == 'random'){
+    global $_W,$_GPC;
     $uniacid[':uniacid'] = $_W['uniacid'];
-    if (empty($_GPC['limit']) || !is_numeric($_GPC['limit'])) {
-        $_GPC['limit'] = 10;
-    }
-    if (empty($_GPC['page']) || !is_numeric($_GPC['page'])) {
-        $_GPC['page'] = 1;
-    }
-    $select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' AND b.content=''";
-    $list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url,b.id as newid", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . $_GPC['page'] * $_GPC['limit'] . ", " . $_GPC['limit']);
-    // $total_sql = sprintf($select_sql, "count(*)", '');
-    // $total = pdo_fetchcolumn($total_sql, $uniacid);
+    $_GPC['limit'] = 10;
+    $pindex = max(1, intval($_GPC['page']));
+    $select_sql = "SELECT  %s FROM " . tablename('wechat_attachment') . " AS a RIGHT JOIN " . tablename('wechat_news') . " AS b ON a.id = b.attach_id WHERE  a.uniacid = :uniacid AND a.type = 'news' AND a.id <> '' AND b.content='' %s";
+    $list_sql = sprintf($select_sql, "a.id as id, a.filename, a.attachment, a.media_id, a.type, a.model, a.tag, a.createtime, b.displayorder, b.title, b.digest, b.thumb_url, b.thumb_media_id, b.attach_id, b.url,b.id as newid", " ORDER BY a.createtime DESC, b.displayorder ASC LIMIT " . ($pindex-1) * $_GPC['limit'] . ", " . $_GPC['limit']);
+    $total_sql = sprintf($select_sql, "count(*)", '');
+    $total = pdo_fetchcolumn($total_sql, $uniacid);
     $news_list = pdo_fetchall($list_sql, $uniacid);
+    $pager = pagination($total, $pindex, $_GPC['limit']);
     template('platform/random'); 
     return ;
 }

@@ -58,7 +58,7 @@ function module_entries($name, $types = array(), $rid = 0, $args = null) {
 
 	global $_W;
 	
-		$ts = array('rule', 'cover', 'menu', 'home', 'profile', 'shortcut', 'function', 'mine', 'system_welcome');
+	$ts = array('rule', 'cover', 'menu', 'home', 'profile', 'shortcut', 'function', 'mine', 'system_welcome');
 	
 	
 	if(empty($types)) {

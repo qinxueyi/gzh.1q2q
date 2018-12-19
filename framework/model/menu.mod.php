@@ -34,13 +34,13 @@ function menu_languages() {
 }
 
 
-function menu_get($id) {
+function menu_get($id,$value="") {
 	global $_W;
 	$id = intval($id);
 	if (empty($id)) {
 		return array();
 	}
-	$menu_info = table('menu')->accountMenuInfo(array('id' => $id));
+	$menu_info = table('menu')->accountMenuInfo(array('id' => $id),$value);
 	if (!empty($menu_info)) {
 		return $menu_info;
 	} else {
@@ -290,11 +290,27 @@ function menu_delete($id) {
 }
 
 
-function menu_push($id) {
+function menu_push($id,$value="") {
 	global $_W;
-	$menu_info = menu_get($id);
+	if($value){
+		$uniacid = intval($value);
+		$role = permission_account_user_role($_W['uid'], $value);	
+		if(empty($role)) {
+			itoast('操作失败, 非法访问.', '', 'error');
+		}
+		if (empty($_W['isfounder'])) {
+			$account_endtime = uni_fetch($value);
+			$account_endtime = $account_endtime['endtime'];
+			if ($account_endtime > 0 && TIMESTAMP > $account_endtime) {
+				itoast('公众号已到期。', '', 'error');
+			}
+		}
+		uni_account_save_switch($value);
+	}
+
+	$menu_info = menu_get($id,$value);
 	if (empty($menu_info)) {
-		return error(-1, '菜单不存在或已删除');
+		return $value;
 	}
 	if ($menu_info['status'] == STATUS_OFF) {
 		$post = iunserializer(base64_decode($menu_info['data']));
@@ -303,8 +319,7 @@ function menu_push($id) {
 		}
 		$is_conditional = (!empty($post['matchrule']) && $menu_info['type'] == MENU_CONDITIONAL) ? true : false;
 		$menu = menu_construct_createmenu_data($post, $is_conditional);
-
-		$account_api = WeAccount::create();
+		$account_api = WeAccount::create($value);
 		$result = $account_api->menuCreate($menu);
 		if (is_error($result)) {
 			return error(-1, $result['message']);
@@ -313,16 +328,18 @@ function menu_push($id) {
 			pdo_update('uni_account_menus', array('status' => '1'), array('id' => $menu_info['id']));
 			pdo_update('uni_account_menus', array('status' => '0'), array('id !=' => $menu_info['id'], 'uniacid' => $_W['uniacid'], 'type' => MENU_CURRENTSELF));
 		} elseif ($menu_info['type'] == MENU_CONDITIONAL) {
-						if ($post['matchrule']['group_id'] != -1) {
+			if ($post['matchrule']['group_id'] != -1) {
 				$menu['matchrule']['groupid'] = $menu['matchrule']['tag_id'];
 				unset($menu['matchrule']['tag_id']);
 			}
 			$status = pdo_update('uni_account_menus', array('status' => STATUS_ON, 'menuid' => $result), array('uniacid' => $_W['uniacid'], 'id' => $menu_info['id']));
 		}
 		return true;
+	}else{
+	    return $menu_info;
 	}
 		if ($menu_info['status'] == STATUS_ON && $menu_info['type'] == MENU_CONDITIONAL && $menu_info['menuid'] > 0) {
-		$account_api = WeAccount::create();
+		$account_api = WeAccount::create($value);
 		$result = $account_api->menuDelete($menu_info['menuid']);
 		if (is_error($result)) {
 			return error(-1, $result['message']);
@@ -330,5 +347,7 @@ function menu_push($id) {
 			pdo_update('uni_account_menus', array('status' => STATUS_OFF), array('id' => $menu_info['id']));
 			return true;
 		}
+	}else{
+	    return $menu_info;
 	}
 }

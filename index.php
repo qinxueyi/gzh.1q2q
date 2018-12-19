@@ -1,5 +1,4 @@
 <?php
-echo 1111;
 require './framework/bootstrap.inc.php';
 $host = $_SERVER['HTTP_HOST'];
 if (!empty($host)) {
