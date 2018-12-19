@@ -20,4 +20,5 @@
         <?php  } } ?>
     </tbody>
 </table>
+    <?php  echo $pager;?>
 
