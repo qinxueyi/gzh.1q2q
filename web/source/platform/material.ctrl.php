@@ -49,7 +49,7 @@ load()->model('attachment');
 load()->func('file');
 load()->func('global');
 
-$dos = array('display', 'sync', 'delete', 'send','random','update_news','setContent_material');
+$dos = array('display', 'sync', 'delete', 'send','random','update_news','setContent_material','random_add','random_list','random_add_post','random_detele');
 $do = in_array($do, $dos) ? $do : 'display';
 $_W['page']['title'] = '永久素材-微信素材';
 if($do == 'setContent_material'){
@@ -68,6 +68,59 @@ if($do == 'setContent_material'){
         iajax(1, '取消参数！', '');   
     }
 }
+if($do == 'random_list'){
+    global $_W,$_GPC;
+    $uniacid[':uniacid'] = $_W['uniacid'];
+    $_GPC['limit'] = 10;
+    $pindex = max(1, intval($_GPC['page']));
+    $select_sql = "SELECT  %s FROM " . tablename('random') . " WHERE  uniacid = :uniacid %s";
+    $list_sql = sprintf($select_sql, "*", " LIMIT " . ($pindex-1) * $_GPC['limit'] . ", " . $_GPC['limit']);
+    $total_sql = sprintf($select_sql, "count(*)", '');
+    $total = pdo_fetchcolumn($total_sql, $uniacid);
+    $result = pdo_fetchall($list_sql, $uniacid);
+    $pager = pagination($total, $pindex, $_GPC['limit']);
+    // $uniacid = $_W['uniacid'];
+    // $result = pdo_getall('random',array('uniacid'=>$uniacid));
+    template('platform/random_list');
+    return ;   
+}
+if($do == "random_add"){
+    $id = $_GPC['id'];
+    $uniacid = $_W['uniacid'];
+    if($id){
+        $result = pdo_get('random',array('uniacid'=>$uniacid,'id'=>$id));
+    }
+    template('platform/random_add');
+    return ;
+}
+
+if($do == "random_add_post"){
+    $uniacid = $_W['uniacid'];
+    $imgurl = $_GPC['img_url'];
+    $url = $_GPC['url_tel'];
+    $id = $_GPC['id'];
+    $data = array('uniacid'=>$uniacid,'imgurl'=>$imgurl ,'url'=>$url);
+    if($id){
+        $result = pdo_update('random', $data,array('id'=>$id));
+    }else{
+        $result = pdo_insert('random', $data);
+    }
+    if($result){
+        iajax(0,'操作成功');
+    }else{
+        iajax(1, '操作失败！');     
+    }
+}
+
+if($do=='random_detele'){
+    $id = $_GPC['id'];
+    $result = pdo_delete('random', array('id' => $id));
+    if($result){
+        iajax(0,'操作成功');
+    }else{
+        iajax(1, '操作失败！');     
+    }
+}
 if($do == 'random'){
     global $_W,$_GPC;
     $uniacid[':uniacid'] = $_W['uniacid'];
@@ -79,7 +132,7 @@ if($do == 'random'){
     $total = pdo_fetchcolumn($total_sql, $uniacid);
     $news_list = pdo_fetchall($list_sql, $uniacid);
     $pager = pagination($total, $pindex, $_GPC['limit']);
-    template('platform/random'); 
+    template('platform/randoms'); 
     return ;
 }
 

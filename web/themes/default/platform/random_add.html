@@ -1,0 +1,114 @@
+{template 'common/header'}
+        <a  href="javascript:void(0);" class="btn btn-default" onclick="window.history.back()" style="margin-left:15px;">返回</a>
+        <input type="hidden" name="id" value="{$id}" id="random_id">
+        <div style="width:400px;margin:30px auto;">
+            <label style="margin:10px 0px;">请选择图片:</label>
+            <a  href="javascript:void(0);" class="btn btn-default" onclick="select_mediaid('image');">选择图片</a>
+            <ul class="keywords-list">
+            </ul>
+            <input type="hidden" name="img_url" id="image_url" value="{$result['imgurl']}">
+            <label style="margin:10px 0px;">请输入链接:</label>
+            <input type="tel" name="url" lay-verify="url" autocomplete="off" class="layui-input" placeholder="http://example.com" style="width:200px" id="url_tel" value="{$result['url']}">
+            <br>
+            <button class="layui-btn layui-btn-normal">点击确定</button>
+        </div>
+        <script type="text/javascript">
+        var image_array =  $('#image_url').val();
+        var data_array = new Array();
+        if(image_array){
+                data_array=image_array.toString().split(",");
+                for (var i = data_array.length - 1; i >= 0; i--) {
+                    $('.keywords-list').append(
+                    '<li>'+
+                    '<div class="del-image-media">'+
+                    '   <div class="desc">'+
+                    '       <div class="media-content">'+
+                    '           <div class="appmsgSendedItem">'+
+                    '               <a class="title-wrp" href="javascript:;">'+
+                    '                    <span class="icon cover" style="background-image:url('+data_array[i]+');"></span>'+
+                    '                   <span class="title">[图片]</span>'+
+                    '               </a>'+
+                    '           </div>'+
+                    '       </div>'+
+                    '   </div>'+
+                    '</div>'+
+                    '</li>'
+                     );
+                }
+        }
+        window.select_mediaid = function(type, otherVal){
+        var option = {
+            type: type,
+            isWechat : true, // 默认显示微信
+            needType : 3, //  除了图文 其他只能微信
+            otherVal : otherVal,//
+            others: {
+                image: {
+                    needType : 1
+                },
+                video : {
+                    needType : 1
+                },
+                voice : {
+                    needType : 3
+                }
+            }
+        };
+        util.material(function(material){
+                    $('.keywords-list').empty();
+                    $('#image_url').val(material.url);
+                    $('.keywords-list').append(
+                    '<li>'+
+                    '<div class="del-'+type+'-media">'+
+                    '   <div class="desc">'+
+                    '       <div class="media-content">'+
+                    '           <div class="appmsgSendedItem">'+
+                    '               <a class="title-wrp" href="javascript:;">'+
+                    '                    <span class="icon cover" style="background-image:url('+material.url+');"></span>'+
+                    '                   <span class="title">[图片]</span>'+
+                    '               </a>'+
+                    '           </div>'+
+                    '       </div>'+
+                    '   </div>'+
+                    '</div>'+
+                    '</li>'
+                );  
+            //显示隐藏-start
+ 
+            //显示隐藏-end
+        }, option);
+    };
+    function delmedia(a,url){
+        var val = new Array();
+        var image_url = $('#image_url').val();
+        if(image_url){
+            val=image_url.toString().split(",");
+        }
+        val.remove(url); 
+        image_url = val.join(',');
+        $('#image_url').val(image_url);
+        $(a).parent().parent().parent().hide();
+    }
+
+    $('.layui-btn-normal').click(function(){
+        var img_url = $('#image_url').val();
+        var url_tel = $('#url_tel').val();
+        var random_id = $('#random_id').val();
+        if(img_url && url_tel){
+            $.post("{php echo url('platform/material/random_add_post')}", {'img_url':img_url,'url_tel':url_tel,'id':random_id},function(data) {
+                    data = $.parseJSON(data);
+                    if(data.message.errno==0){
+                        util.message(data.message.message, "<?php  echo url('platform/material/random_list')?>", 'success');
+                    }else{
+                         util.message(data.message.message, '', 'error');  
+                    }       
+
+            });
+        }else{
+            util.message('缺少参数', '', 'error');
+        }
+
+    });
+
+    </script>
+    {template 'common/footer'}

@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-<?php defined('IN_IA') or exit('Access Denied');?>
-=======
 <?php defined('IN_IA') or exit('Access Denied');?><?php (!empty($this) && $this instanceof WeModuleSite || 0) ? (include $this->template('common/header', TEMPLATE_INCLUDEPATH)) : (include template('common/header', TEMPLATE_INCLUDEPATH));?>
     <style>
     #pagecount{
@@ -107,8 +104,6 @@
                     '</li>'
                 );  
             }
-
-
             //显示隐藏-start
  
             //显示隐藏-end
@@ -182,7 +177,7 @@
             getData()
             
         });
-
+        $('#ex_select').change();
         function getData(page=''){
             uniacid = $('#ex_select').val(); //公众号Id
             if(!uniacid){
@@ -192,16 +187,19 @@
             $.post("<?php  echo url('platform/material-post/getContent_material')?>", {'uniacid':uniacid,'page':page},function(data) {
                     data = $.parseJSON(data);
                     if(data.code!=0){
-                        var $trTemp = $("<tr></tr>");
+                         $("#J_TbData").empty();
+                        var trTemp = $("<tr></tr>");
                         //往行里面追加 td单元格
-                        $trTemp.append('<td width="50" colspan=2 style="text-align:center">暂无数据</td>');
-                        $trTemp.appendTo("#J_TbData");  
+                        trTemp.append('<td width="50" colspan=2 style="text-align:center">暂无数据</td>');
+                        trTemp.appendTo("#J_TbData"); 
+                         $("#pagecount").empty(); 
                         return false;
                     }
                     var datas = data.data.data;
                     var page = data.data.page;
                     var total = data.data.total;
                     var totalPage = data.data.totalPage;
+                    $("#J_TbData").empty();
                     if(datas){
                         $(function(){
                             //第二种： 动态创建表格的方式，使用动态创建dom对象的方式
@@ -211,25 +209,30 @@
                             //自杀
                             // $("#J_TbData").remove();
                             var news_id = $('#news_id').val();
+                            var val_news = new Array();
                             if(news_id){
-                                var val_news = new Array();
-                                val=news_id.toString().split(",");
-
+                                val_news=news_id.toString().split(",");
                             }
-                            for( var i = 0; i < datas.length; i++ ) {
+                            $.each(datas,function(i,val){
                                 //动态创建一个tr行标签,并且转换成jQuery对象
                                 var $trTemp = $("<tr></tr>");
                                 //往行里面追加 td单元格
-                                if(in_array(datas[i].newid,val)){
-                                    $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].newid+'" onclick="checkboxOnclick(this)" checked></td>');
+                                if(val_news){
+                                       if(in_array(datas[i].newid,val_news)){
+                                        $trTemp.append('<td width="50"><input type="checkbox" value="'+val.newid+'" onclick="checkboxOnclick(this)" checked></td>');
+                                        }else{
+                                             $trTemp.append('<td width="50"><input type="checkbox" value="'+val.newid+'" onclick="checkboxOnclick(this)"></td>'); 
+                                        }
                                 }else{
-                                   $trTemp.append('<td width="50"><input type="checkbox" value="'+datas[i].newid+'" onclick="checkboxOnclick(this)"></td>'); 
+                                    $trTemp.append('<td width="50"><input type="checkbox" value="'+val.newid+'" onclick="checkboxOnclick(this)"></td>'); 
+
                                 }
+                           
                                 
-                                $trTemp.append("<td>"+ datas[i].title +"</td>");
+                                $trTemp.append("<td>"+ val.title +"</td>");
                                 // $("#J_TbData").append($trTemp);
                                 $trTemp.appendTo("#J_TbData");
-                            }
+                            });
                         });
                         getPageBar(page,total,totalPage);
                         $('#demo').show();      
@@ -314,4 +317,3 @@
         });
 
     </script>
->>>>>>> 5dde9ff2d487619e7dcba2002a77f20c59149e04
