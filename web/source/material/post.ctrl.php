@@ -131,7 +131,7 @@ if($do == 'submit') {
 			$reply['content'] =  str_replace($hasimgs, $wximgs, $reply['content']);
 		}
 		$row = array(
-			'title' => $reply['title'],
+			'title' => urldecode($reply['title']),
 			'author' => $reply['author'],
 			'digest' => $reply['description'],
 			'content' => $reply['content'],

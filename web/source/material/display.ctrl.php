@@ -8,7 +8,6 @@ uni_user_permission_check('material_mass');
 $_W['page']['title'] = '永久素材-微信素材';
 $dos = array('image', 'del', 'export', 'news', 'down', 'list', 'purview', 'modal', 'send');
 $do = in_array($do, $dos) ? $do : 'list';
-
 if($do == 'down') {
 	set_time_limit(0);
 	load()->func('file');

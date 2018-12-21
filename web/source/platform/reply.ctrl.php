@@ -318,7 +318,6 @@ if ($do == 'post') {
             }
         }
         if (checksubmit('submit')) {
-
             $keywords = @json_decode(htmlspecialchars_decode($_GPC['keywords']), true);
 
             if (empty($keywords)) {
@@ -349,14 +348,12 @@ if ($do == 'post') {
             } else {
                 $rule['displayorder'] = range_limit($rule['displayorder'], 0, 254);
             }
-
             if ($m == 'userapi') {
                 $module = WeUtility::createModule('userapi');
             } else {
                 $module = WeUtility::createModule('core');
             }
             $msg = $module->fieldsFormValidate();
-
             $module_info = module_fetch($m);
             if (!empty($module_info) && empty($module_info['issystem'])) {
                 $user_module = WeUtility::createModule($m);

@@ -1149,7 +1149,7 @@ abstract class WeModuleProcessor extends WeBase {
 		foreach ($news as $row) {
 			$row = array_change_key_case($row);
 			$response['Articles'][] = array(
-				'Title' => $row['title'],
+				'Title' => urldecode($row['title']),
 				'Description' => ($response['ArticleCount'] > 1) ? '' : $row['description'],
 				'PicUrl' => tomedia($row['picurl']),
 				'Url' => $this->buildSiteUrl($row['url']),

@@ -1,4 +1,5 @@
 <?php
+header('Content-type:text/html;charset=utf-8');
 defined('IN_IA') or exit('Access Denied');
 load()->func('file');
 
@@ -60,6 +61,8 @@ function material_sync($material, $exist_material, $type) {
 			$attachid = empty($attachid) ? $material_exist['id'] : $attachid;
 			pdo_delete('wechat_news', array('uniacid' =>$_W['uniacid'], 'attach_id' => $attachid));
 			foreach ($news['content']['news_item'] as $key => $new) {
+				$new['title']= preg_replace_callback('/\:\:([0-9a-zA-Z_-]+)\:\:/', create_function('$matches', 'return utf8_bytes(hexdec($matches[1]));'), $new['title']);
+				$new['title'] = urlencode($new['title']);
 				$new_data = array(
 					'uniacid' => $_W['uniacid'],
 					'attach_id' => $attachid,
@@ -97,11 +100,14 @@ function material_news_set($data, $attach_id) {
 		if (!material_url_check($news['content_source_url']) || !material_url_check($news['url']) || !material_url_check($news['thumb'])) {
 			return error('-3', '提交链接参数不合法');
 		}
+		$news['title']= preg_replace_callback('/\:\:([0-9a-zA-Z_-]+)\:\:/', create_function('$matches', 'return utf8_bytes(hexdec($matches[1]));'), $news['title']);
+		$news['title'] = urlencode($news['title']);
 		$post_news[] = array(
 			'id' => intval($news['id']),
 			'uniacid' => $_W['uniacid'],
 			'thumb_url' => $news['thumb'],
-			'title' => addslashes($news['title']),
+			// 'title' => addslashes($news['title']),
+			'title' => $news['title'],
 			'author' => addslashes($news['author']),
 			'digest' => addslashes($news['digest']),
 			'content' => safe_gpc_html(htmlspecialchars_decode($news['content'])),
@@ -153,7 +159,7 @@ function material_news_set($data, $attach_id) {
 }
 
 
-function material_get($attach_id) {
+function material_get($attach_id,$bool=false) {
 	if (empty($attach_id)) {
 		return error(1, "素材id参数不能为空");
 	}
@@ -169,6 +175,11 @@ function material_get($attach_id) {
 			$news = $material_table->materialNewsList($material['id']);
 			if (!empty($news)) {
 				foreach ($news as &$news_row) {
+					if($bool){
+						$news_row['title'] = $news_row['title'];
+					}else{
+						$news_row['title'] = urldecode($news_row['title']);
+					}
 					$news_row['content_source_url'] = $news_row['content_source_url'];
 					$news_row['thumb_url'] = tomedia($news_row['thumb_url']);
 					preg_match_all('/src=[\'\"]?([^\'\"]*)[\'\"]?/i', $news_row['content'], $match);
@@ -288,7 +299,7 @@ function material_parse_content($content) {
 function material_local_news_upload($attach_id) {
 	global $_W;
 	$account_api = WeAccount::create($_W['acid']);
-	$material = material_get($attach_id);
+	$material = material_get($attach_id,true);
 	if (is_error($material)){
 		return error('-1', '获取素材文件失败');
 	}
@@ -497,6 +508,7 @@ function material_news_list($server = '', $search ='', $page = array('page_index
 	$material_list = array();
 	if (! empty($news_list)) {
 		foreach ($news_list as $news){
+			$news['title'] = urldecode($news['title']);
 			if (isset($material_list[$news['attach_id']])){
 				$material_list[$news['attach_id']]['items'][$news['displayorder']] = $news;
 			}else{

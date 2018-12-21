@@ -8,7 +8,6 @@ defined('IN_IA') or exit('Access Denied');
 load()->model('module');
 load()->model('wxapp');
 load()->model('account');
-
 $dos = array('display', 'switch', 'getall_last_switch', 'have_permission_uniacids', 'accounts_dropdown_menu', 'rank');
 $do = in_array($do, $dos) ? $do : 'display';
 

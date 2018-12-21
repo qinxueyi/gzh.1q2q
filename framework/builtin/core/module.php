@@ -112,8 +112,7 @@ class CoreModule extends WeModule {
 				if (!empty($isexists)) {
 					$module = $isexists['module'];
 					$module = $module == 'images' ? 'image' : $module;
-
-										if ($_GPC['a'] == 'reply' && (!empty($_GPC['m']) && $_GPC['m'] == 'keyword')) {
+					if ($_GPC['a'] == 'reply' && (!empty($_GPC['m']) && $_GPC['m'] == 'keyword')) {
 						foreach ($this->tablename as $key => $tablename) {
 							if ($key != 'keyword') {
 								$replies[$key] = pdo_fetchall("SELECT * FROM ".tablename($tablename)." WHERE rid = :rid ORDER BY `id`", array(':rid' => $rid));
@@ -134,6 +133,8 @@ class CoreModule extends WeModule {
 													$news_value['model'] = $news_material['model'];
 													$news_value['description'] = $news_material['news'][0]['digest'];
 													$news_value['thumb'] = tomedia($news_material['news'][0]['thumb_url']);
+													$news_value['title'] = urldecode($news_value['title']);
+
 												}
 											} else {
 												$news_value['thumb'] = tomedia($news_value['thumb']);
@@ -171,6 +172,7 @@ class CoreModule extends WeModule {
 				$reply = ltrim($_GPC['reply']['reply_'.$value], '{');
 				$reply = rtrim($reply, '}');
 				$reply = explode('},{', $reply);
+				// var_dump($reply);
 				foreach ($reply as &$val) {
 					$val = htmlspecialchars_decode('{'.$val.'}');
 				}
@@ -230,7 +232,7 @@ class CoreModule extends WeModule {
 														if ($reply['model'] == 'local') {
 								$reply['mediaid'] = $reply['attach_id'];
 							}
-							pdo_insert ($tablename, array ('rid' => $rid, 'parent_id' => $reply['parent_id'], 'title' => $reply['title'], 'thumb' => tomedia($reply['thumb']), 'createtime' => $reply['createtime'], 'media_id' => $reply['mediaid'], 'displayorder' => $reply['displayorder'], 'description' => $reply['description'], 'url' => $reply['url']));
+							pdo_insert ($tablename, array ('rid' => $rid, 'parent_id' => $reply['parent_id'], 'title' => urlencode($reply['title']), 'thumb' => tomedia($reply['thumb']), 'createtime' => $reply['createtime'], 'media_id' => $reply['mediaid'], 'displayorder' => $reply['displayorder'], 'description' => $reply['description'], 'url' => $reply['url']));
 							if (empty($attach_id) || $reply['attach_id'] != $attach_id) {
 								$parent_id = pdo_insertid();
 							}

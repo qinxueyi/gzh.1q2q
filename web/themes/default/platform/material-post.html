@@ -60,9 +60,13 @@
 					<div class="reply" ng-if="new_type == 'reply'">
 						<!--标题-->
 						<div class="appmsg-edit-item title">
-							<label for="title" class="" style="display:none">请在这里输入标题</label>
+							<!-- <label for="title" class="" style="display:none">请在这里输入标题</label>
 							<input id="title" placeholder="请在这里输入标题" class="form-control" name="title" id="title" ng-model="materialList[activeIndex].title" max-length="64" type="text">
-							<em class="form-control-append hidden">0/64</em>
+							<em class="form-control-append hidden">0/64</em> -->
+								<div class="input-group">
+									<input type="text" name="" class="form-control" placeholder=""  id="title" ng-model="materialList[activeIndex].title">
+									<span ng-if="!context.group.disabled" class="input-group-addon bg-default color-default" ng-click="selectEmoji();"><a href="">添加表情</a></span>
+								</div>
 						</div>
 						<!--作者-->
 						<div class="appmsg-edit-item author">
@@ -81,8 +85,12 @@
 						<div class="appmsg-edit-function-area ">
 							<!-- 标题 -->
 							<div class="appmsg-edit-item title">
-								<label for="title" class="" style="display:none">请在这里输入标题</label>
-								<input id="title" placeholder="请在这里输入标题" class="form-control" name="title" id="title" ng-model="materialList[activeIndex].title" max-length="64" type="text">
+								<div class="input-group">
+									<input type="text" name="" class="form-control" placeholder=""  id="title" ng-model="materialList[activeIndex].title">
+									<span ng-if="!context.group.disabled" class="input-group-addon bg-default color-default" ng-click="selectEmoji();"><a href="">添加表情</a></span>
+								</div>
+							<!-- 	<label for="title" class="" style="display:none">请在这里输入标题</label>
+								<input id="title" placeholder="请在这里输入标题" class="form-control" name="title" id="title" ng-model="materialList[activeIndex].title" max-length="64" type="text"> -->
 								<em class="form-control-append hidden">0/64</em>
 							</div>
 							<!-- END 标题 -->

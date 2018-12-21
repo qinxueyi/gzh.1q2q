@@ -40,7 +40,7 @@ if ($do == 'news') {
 					$row_news = array(
 						'uniacid' => $_W['uniacid'],
 						'thumb_url' => $row_news['thumb'],
-						'title' => $row_news['title'],
+						'title' => urldecode($row_news['title']),
 						'author' => $row_news['author'],
 						'digest' => $row_news['description'],
 						'content' => $row_news['content'],
