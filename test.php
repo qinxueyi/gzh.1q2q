@@ -9,7 +9,6 @@ $conditionModel['time <'] = 86400000;
 $eventList = pdo_getall("event_list", $conditionModel);
 print_r($eventList);
 
-
 //print_r(hexdec($string));
 //$redis = new Redis();
 //$redis->connect("121.40.84.207", 6379);
